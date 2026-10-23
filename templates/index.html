@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crum4 · Coptic Dictionary Online</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <div>
+        <p class="eyebrow">COPTIC SCRIPTORIUM · EXAMPLE RANKING</p>
+        <h1>Coptic Dictionary Online <span class="brand-mark">⳾</span></h1>
+      </div>
+      <div class="coptic brand-coptic" lang="cop">Ⲗⲉⲝⲓⲕⲟⲛ ⲛϢⲛⲉ</div>
+    </div>
+    <p class="subtitle">Full-corpus Coptic Scriptorium example search with dictionary comparison</p>
+  </header>
+
+  <main>
+    <section class="search-panel" aria-labelledby="search-title">
+      <div class="panel-heading">
+        <span class="section-kicker">LEXICAL SEARCH</span>
+        <h2 id="search-title">Find Coptic examples</h2>
+      </div>
+      <form method="post" action="/search">
+        <div class="form-grid">
+          <label>
+            <span>TLA ID or lemma</span>
+            <input name="query" value="{{QUERY}}" required placeholder="C998 or ⲉⲓⲱⲧ" autofocus>
+          </label>
+          <label>
+            <span>POS <small>required for lemma queries</small></span>
+            <input name="pos" value="{{POS}}" placeholder="NOUN / VERB / ADJ">
+          </label>
+          <label class="definition-field">
+            <span>English definition / sense</span>
+            <input name="definition" value="{{DEFINITION}}" placeholder="TLA queries default to KELLIA gloss">
+          </label>
+          <label>
+            <span>Show top-N</span>
+            <input name="top_n" type="number" min="1" max="50" value="10">
+          </label>
+          <label>
+            <span>Coarse candidate limit <small>max 100</small></span>
+            <input name="candidate_limit" type="number" min="1" max="100" value="100">
+          </label>
+        </div>
+        <div class="form-actions">
+          <label class="check-option">
+            <input type="checkbox" name="compare" value="on" {{COMPARE_CHECKED}}>
+            <span>Compare with local CDO examples</span>
+          </label>
+          <button type="submit"><span aria-hidden="true">⌕</span> Search full corpus</button>
+        </div>
+      </form>
+      <p class="search-note">For lemmas with multiple TLA senses sharing lemma + POS, provide a definition or use a TLA ID directly.</p>
+    </section>
+
+    <div class="feedback" aria-live="polite">{{CONTENT}}</div>
+    {{RESULTS}}
+  </main>
+
+  <footer class="site-footer">
+    <span>Lexical data: CC BY-SA 4.0 · Search interface: Apache 2.0</span>
+    <span>Coptic Scriptorium example ranking · Crum4</span>
+  </footer>
+</body>
+</html>

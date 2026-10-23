@@ -1,0 +1,817 @@
+{
+  "protocol": {
+    "input": "/Users/whua/Desktop/coptic_dictionary/crum3/training_v15_with_sm_bge.tsv",
+    "sample_size": 100,
+    "eligible_groups": 2363,
+    "seed": 42,
+    "k": 6,
+    "old_gain": "2^rel - 1, rel bins: >=30->3, >=20->2, >=10->1, else 0",
+    "linear_gain": "raw clipped label_int in [0, 30], matching train_v15_sm.py",
+    "model": "BAAI/bge-large-en-v1.5",
+    "ranking": "0.55*cosine + 0.30*ROUGE-L + 0.15*frequency"
+  },
+  "mean_ndcg_at_6_old": 0.7885413217747077,
+  "mean_ndcg_at_6_linear": 0.904697322644485,
+  "groups": [
+    {
+      "TLA": "C1104",
+      "lemma": "ⲕⲱⲱⲃⲉ",
+      "gloss": "compel | seize by force",
+      "candidate_count": 10,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 0.9373842293052382
+    },
+    {
+      "TLA": "C1347",
+      "lemma": "ϫⲓⲕⲣⲟϥ",
+      "gloss": "use guile | lie in wait",
+      "candidate_count": 3,
+      "ndcg_at_6_old": 0.8579514172105233,
+      "ndcg_at_6_linear": 0.9860495567260434
+    },
+    {
+      "TLA": "C1366",
+      "lemma": "ⲕⲱⲱⲥ",
+      "gloss": "dress | prepare corpse for burial | bury",
+      "candidate_count": 15,
+      "ndcg_at_6_old": 0.7125197419099832,
+      "ndcg_at_6_linear": 0.9130767183741224
+    },
+    {
+      "TLA": "C1412",
+      "lemma": "ϭⲓⲥⲕⲓⲧⲉ",
+      "gloss": "half a | drachma | carat",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C1464",
+      "lemma": "ⲕⲧⲏⲣ",
+      "gloss": "calf",
+      "candidate_count": 4,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 0.9990622492212717
+    },
+    {
+      "TLA": "C1467",
+      "lemma": "ⲕⲱⲧϥ",
+      "gloss": "gather | leaf-gatherer",
+      "candidate_count": 6,
+      "ndcg_at_6_old": 0.8938995903033766,
+      "ndcg_at_6_linear": 0.9728535297734217
+    },
+    {
+      "TLA": "C1632",
+      "lemma": "ⲗⲉⲗⲉ",
+      "gloss": "wander about | wander forth | about | wandering about",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 0.8339912323981488,
+      "ndcg_at_6_linear": 0.9923583135538461
+    },
+    {
+      "TLA": "C1673",
+      "lemma": "ⲗⲉⲟⲛ",
+      "gloss": "earring | bracelet",
+      "candidate_count": 6,
+      "ndcg_at_6_old": 0.8149222759933163,
+      "ndcg_at_6_linear": 0.9624438159705588
+    },
+    {
+      "TLA": "C1803",
+      "lemma": "ⲣⲙⲏ",
+      "gloss": "make water",
+      "candidate_count": 6,
+      "ndcg_at_6_old": 0.8237322867766167,
+      "ndcg_at_6_linear": 0.9814875611259715
+    },
+    {
+      "TLA": "C1913",
+      "lemma": "ⲙⲟⲩⲛ",
+      "gloss": "remain | continue",
+      "candidate_count": 30,
+      "ndcg_at_6_old": 0.38124670968166946,
+      "ndcg_at_6_linear": 0.5597637680999582
+    },
+    {
+      "TLA": "C1944",
+      "lemma": "ⲙⲁⲛⲕ",
+      "gloss": "building | aedificium | rule | ordinance",
+      "candidate_count": 29,
+      "ndcg_at_6_old": 0.7099636743249783,
+      "ndcg_at_6_linear": 0.874475910270987
+    },
+    {
+      "TLA": "C1963",
+      "lemma": "ϭⲓⲙⲛⲟⲧ",
+      "gloss": "suck the breast",
+      "candidate_count": 3,
+      "ndcg_at_6_old": 0.8075588805057204,
+      "ndcg_at_6_linear": 0.9839478530863458
+    },
+    {
+      "TLA": "C202",
+      "lemma": "ⲁⲣϣⲓⲛ",
+      "gloss": "lentil",
+      "candidate_count": 3,
+      "ndcg_at_6_old": 0.8075588805057204,
+      "ndcg_at_6_linear": 0.9839478530863458
+    },
+    {
+      "TLA": "C2030",
+      "lemma": "ⲙⲁⲥ",
+      "gloss": "bearing | producing",
+      "candidate_count": 10,
+      "ndcg_at_6_old": 0.7125197419099832,
+      "ndcg_at_6_linear": 0.8977915179376439
+    },
+    {
+      "TLA": "C2103",
+      "lemma": "ⲣⲉϥⲙⲟⲩⲧⲉ",
+      "gloss": "enchanter",
+      "candidate_count": 7,
+      "ndcg_at_6_old": 0.8938995903033766,
+      "ndcg_at_6_linear": 0.9666136315657052
+    },
+    {
+      "TLA": "C2186",
+      "lemma": "ⲣⲙⲉⲉⲩⲉ",
+      "gloss": "have mind of | remember",
+      "candidate_count": 25,
+      "ndcg_at_6_old": 0.6989581942167017,
+      "ndcg_at_6_linear": 0.8194145567043805
+    },
+    {
+      "TLA": "C2203",
+      "lemma": "ⲙⲏⲏϣⲉ",
+      "gloss": "multitude | crowd | troop | population",
+      "candidate_count": 28,
+      "ndcg_at_6_old": 0.38124670968166946,
+      "ndcg_at_6_linear": 0.5552045325627114
+    },
+    {
+      "TLA": "C2275",
+      "lemma": "ϭⲓⲙϣⲓϣ",
+      "gloss": "take vengeance | be avenged",
+      "candidate_count": 13,
+      "ndcg_at_6_old": 0.7530167719591868,
+      "ndcg_at_6_linear": 0.9039482987522481
+    },
+    {
+      "TLA": "C233",
+      "lemma": "ⲁⲧ",
+      "gloss": "without leaven",
+      "candidate_count": 7,
+      "ndcg_at_6_old": 0.8562598709549916,
+      "ndcg_at_6_linear": 0.9835073633288354
+    },
+    {
+      "TLA": "C2346",
+      "lemma": "ⲙⲉϭⲧⲱⲗ",
+      "gloss": "tower",
+      "candidate_count": 4,
+      "ndcg_at_6_old": 0.8288377414201495,
+      "ndcg_at_6_linear": 0.9887564374172183
+    },
+    {
+      "TLA": "C2347",
+      "lemma": "ⲛ",
+      "gloss": "fifty",
+      "candidate_count": 9,
+      "ndcg_at_6_old": 0.7125197419099832,
+      "ndcg_at_6_linear": 0.8835436259248531
+    },
+    {
+      "TLA": "C2458",
+      "lemma": "ⲛⲕⲟⲧⲕ",
+      "gloss": "sleep",
+      "candidate_count": 33,
+      "ndcg_at_6_old": 0.40621962414577406,
+      "ndcg_at_6_linear": 0.6048543026696205
+    },
+    {
+      "TLA": "C2644",
+      "lemma": "ⲛⲟⲩϩ",
+      "gloss": "rope | cord",
+      "candidate_count": 23,
+      "ndcg_at_6_old": 0.6506142378758536,
+      "ndcg_at_6_linear": 0.8592723672167053
+    },
+    {
+      "TLA": "C2790",
+      "lemma": "ⲡⲉ",
+      "gloss": "heaven | sky",
+      "candidate_count": 47,
+      "ndcg_at_6_old": 0.3901020088674873,
+      "ndcg_at_6_linear": 0.5661218178036325
+    },
+    {
+      "TLA": "C2813",
+      "lemma": "ⲡⲟⲕϥ",
+      "gloss": "thin sheet | plate",
+      "candidate_count": 4,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 0.9982288894642548
+    },
+    {
+      "TLA": "C2874",
+      "lemma": "ⲡⲱⲱⲣⲉ",
+      "gloss": "dream | dreamer of dreams",
+      "candidate_count": 8,
+      "ndcg_at_6_old": 0.8363307499782424,
+      "ndcg_at_6_linear": 0.9551671310904489
+    },
+    {
+      "TLA": "C3021",
+      "lemma": "ⲡⲓϭⲁ",
+      "gloss": "vanity",
+      "candidate_count": 4,
+      "ndcg_at_6_old": 0.8736582060933374,
+      "ndcg_at_6_linear": 0.9863684275131631
+    },
+    {
+      "TLA": "C3062",
+      "lemma": "ⲙⲁⲛⲣⲟⲉⲓⲥ",
+      "gloss": "place of watching | watch towers",
+      "candidate_count": 4,
+      "ndcg_at_6_old": 0.8736582060933374,
+      "ndcg_at_6_linear": 0.9950075198031826
+    },
+    {
+      "TLA": "C3103",
+      "lemma": "ⲣⲙⲙⲁⲟ",
+      "gloss": "great man | rich man",
+      "candidate_count": 11,
+      "ndcg_at_6_old": 0.8149222759933163,
+      "ndcg_at_6_linear": 0.949158966462664
+    },
+    {
+      "TLA": "C3112",
+      "lemma": "ⲣⲣⲟⲙⲡⲉ",
+      "gloss": "reach year | spend year",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 0.8339912323981488,
+      "ndcg_at_6_linear": 0.9923583135538461
+    },
+    {
+      "TLA": "C3187",
+      "lemma": "ⲙⲫⲣⲏϯ",
+      "gloss": "in form | manner | like as",
+      "candidate_count": 25,
+      "ndcg_at_6_old": 0.7143686797166284,
+      "ndcg_at_6_linear": 0.7992636169227917
+    },
+    {
+      "TLA": "C348",
+      "lemma": "ⲣⲉⲙⲛⲃⲁⲕⲓ",
+      "gloss": "citizen",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 0.8339912323981488,
+      "ndcg_at_6_linear": 0.9923583135538461
+    },
+    {
+      "TLA": "C3557",
+      "lemma": "ⲥⲙⲟⲧ",
+      "gloss": "form | character | likeness | pattern | how he had crossed",
+      "candidate_count": 36,
+      "ndcg_at_6_old": 0.5175783458233083,
+      "ndcg_at_6_linear": 0.6862656483183265
+    },
+    {
+      "TLA": "C3685",
+      "lemma": "ⲥⲓⲣ",
+      "gloss": "first milk | colostrum | butter | fine flour | cooled | butter",
+      "candidate_count": 6,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 0.9983965872039151
+    },
+    {
+      "TLA": "C3713",
+      "lemma": "ⲥⲣⲟⲙ",
+      "gloss": "unconsciousness",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 0.8339912323981488,
+      "ndcg_at_6_linear": 0.9923583135538461
+    },
+    {
+      "TLA": "C3748",
+      "lemma": "ⲥⲁⲣⲁϭⲱⲟⲩϣ",
+      "gloss": "hare | hyrax",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C3789",
+      "lemma": "ⲥⲱⲧ",
+      "gloss": "stretch, reach | spin",
+      "candidate_count": 3,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C3843",
+      "lemma": "ⲥⲁⲧⲏⲟⲩⲧ",
+      "gloss": "mixed, composed (of incense)",
+      "candidate_count": 5,
+      "ndcg_at_6_old": 0.8850729764703048,
+      "ndcg_at_6_linear": 0.9818292527194387
+    },
+    {
+      "TLA": "C3850",
+      "lemma": "ⲥⲏⲩ",
+      "gloss": "time | season | time suffered him not | seasons",
+      "candidate_count": 3,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 0.9978982963603025
+    },
+    {
+      "TLA": "C3851",
+      "lemma": "ⲙⲡⲓⲥⲏⲩ",
+      "gloss": "at this time | at that time | formerly",
+      "candidate_count": 4,
+      "ndcg_at_6_old": 0.8736582060933374,
+      "ndcg_at_6_linear": 0.9950075198031826
+    },
+    {
+      "TLA": "C3860",
+      "lemma": "ⲥⲓⲟⲩ",
+      "gloss": "star | shooting | star",
+      "candidate_count": 14,
+      "ndcg_at_6_old": 0.7125197419099832,
+      "ndcg_at_6_linear": 0.876764683276744
+    },
+    {
+      "TLA": "C3890",
+      "lemma": "ⲥⲱⲟⲩϩ",
+      "gloss": "be gathered | collected",
+      "candidate_count": 33,
+      "ndcg_at_6_old": 0.5950079654425369,
+      "ndcg_at_6_linear": 0.8130679328698056
+    },
+    {
+      "TLA": "C3939",
+      "lemma": "ⲥⲏϥⲉ",
+      "gloss": "sword | knife | razor | Edge of s. | sheath",
+      "candidate_count": 9,
+      "ndcg_at_6_old": 0.7125197419099832,
+      "ndcg_at_6_linear": 0.8684814666064533
+    },
+    {
+      "TLA": "C3952",
+      "lemma": "ⲥⲓϩⲉ",
+      "gloss": "be removed | displaced",
+      "candidate_count": 7,
+      "ndcg_at_6_old": 0.7125197419099832,
+      "ndcg_at_6_linear": 0.934144604695069
+    },
+    {
+      "TLA": "C3999",
+      "lemma": "ⲥⲱϩⲡ",
+      "gloss": "sink in | be swallowed | suck in | drink | comminuto olere | bloodsucker | sink",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C400",
+      "lemma": "ⲃⲁⲗ",
+      "gloss": "eye",
+      "candidate_count": 18,
+      "ndcg_at_6_old": 0.42248341623496144,
+      "ndcg_at_6_linear": 0.5777925844646025
+    },
+    {
+      "TLA": "C4222",
+      "lemma": "ⲧⲱⲕⲙ",
+      "gloss": "pluck | draw | drag",
+      "candidate_count": 19,
+      "ndcg_at_6_old": 0.5043180412458402,
+      "ndcg_at_6_linear": 0.700086058364496
+    },
+    {
+      "TLA": "C4225",
+      "lemma": "ⲧⲱⲕⲥ",
+      "gloss": "pierce | goad",
+      "candidate_count": 5,
+      "ndcg_at_6_old": 0.8443019660324382,
+      "ndcg_at_6_linear": 0.988092885435045
+    },
+    {
+      "TLA": "C4243",
+      "lemma": "ⲧⲁⲗ",
+      "gloss": "heap | hillock",
+      "candidate_count": 3,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 0.9978982963603025
+    },
+    {
+      "TLA": "C4471",
+      "lemma": "ⲉⲓⲣⲉⲛⲁⲧⲟⲟⲧ",
+      "gloss": "do to extent of hand | endeavour",
+      "candidate_count": 4,
+      "ndcg_at_6_old": 0.8288377414201495,
+      "ndcg_at_6_linear": 0.9864728185348743
+    },
+    {
+      "TLA": "C4486",
+      "lemma": "ⲉⲃⲟⲗⲛⲧⲛ",
+      "gloss": "from",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C4487",
+      "lemma": "ϩⲁⲧⲛ",
+      "gloss": "under the hand of | beside | with | subject to",
+      "candidate_count": 29,
+      "ndcg_at_6_old": 0.49690954834247064,
+      "ndcg_at_6_linear": 0.6518223991390025
+    },
+    {
+      "TLA": "C4519",
+      "lemma": "ⲧⲣⲣⲉ",
+      "gloss": "be afraid",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C4523",
+      "lemma": "ⲧⲱⲣⲧⲣ",
+      "gloss": "ladder | step | stair | degree | threshold",
+      "candidate_count": 5,
+      "ndcg_at_6_old": 0.8443019660324382,
+      "ndcg_at_6_linear": 0.9871967572382941
+    },
+    {
+      "TLA": "C4561",
+      "lemma": "ⲧⲥⲁⲃⲟ",
+      "gloss": "make wise | teach | show",
+      "candidate_count": 31,
+      "ndcg_at_6_old": 0.49435348075746566,
+      "ndcg_at_6_linear": 0.6789508021714034
+    },
+    {
+      "TLA": "C4644",
+      "lemma": "ⲣⲁⲧⲏⲩ",
+      "gloss": "open-air space (on roof)",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 0.8339912323981488,
+      "ndcg_at_6_linear": 0.9923583135538461
+    },
+    {
+      "TLA": "C4691",
+      "lemma": "ⲧⲟⲩⲱⲧ",
+      "gloss": "idol | pillar | shrine",
+      "candidate_count": 3,
+      "ndcg_at_6_old": 0.8579514172105233,
+      "ndcg_at_6_linear": 0.9940756301828705
+    },
+    {
+      "TLA": "C4693",
+      "lemma": "ⲧⲟⲟⲩⲧⲉ",
+      "gloss": "be gathered | collected",
+      "candidate_count": 52,
+      "ndcg_at_6_old": 0.23750658063666108,
+      "ndcg_at_6_linear": 0.4042118203770116
+    },
+    {
+      "TLA": "C4884",
+      "lemma": "ⲟⲩⲁ",
+      "gloss": "blasphemy",
+      "candidate_count": 17,
+      "ndcg_at_6_old": 0.765569946758295,
+      "ndcg_at_6_linear": 0.8729580072595902
+    },
+    {
+      "TLA": "C492",
+      "lemma": "ⲃⲟⲛⲧⲉ",
+      "gloss": "gourd, cucumber | gourd-garden",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C5241",
+      "lemma": "ⲟⲩⲱⲧϩ",
+      "gloss": "pour | cast | draw | is not fluid",
+      "candidate_count": 14,
+      "ndcg_at_6_old": 0.7125197419099832,
+      "ndcg_at_6_linear": 0.8521108644134733
+    },
+    {
+      "TLA": "C5257",
+      "lemma": "ⲟⲩⲱϣ",
+      "gloss": "desire | love | or | if thou wilt | nolens volens",
+      "candidate_count": 44,
+      "ndcg_at_6_old": 0.49435348075746566,
+      "ndcg_at_6_linear": 0.6672643082059126
+    },
+    {
+      "TLA": "C5379",
+      "lemma": "ⲫⲟⲣⲡⲉⲣ",
+      "gloss": "open | loosen",
+      "candidate_count": 3,
+      "ndcg_at_6_old": 0.8075588805057204,
+      "ndcg_at_6_linear": 0.9898722229034753
+    },
+    {
+      "TLA": "C5574",
+      "lemma": "ⲱⲧⲡ",
+      "gloss": "shut | enclose | imprison | in",
+      "candidate_count": 5,
+      "ndcg_at_6_old": 0.7895704648871529,
+      "ndcg_at_6_linear": 0.969839420151373
+    },
+    {
+      "TLA": "C5625",
+      "lemma": "ⲱϣϯ",
+      "gloss": "drag | crawl | flow",
+      "candidate_count": 11,
+      "ndcg_at_6_old": 0.8363307499782424,
+      "ndcg_at_6_linear": 0.9248867841488222
+    },
+    {
+      "TLA": "C5676",
+      "lemma": "ϣⲁ",
+      "gloss": "begin",
+      "candidate_count": 32,
+      "ndcg_at_6_old": 0.6569134694766664,
+      "ndcg_at_6_linear": 0.8339994738910368
+    },
+    {
+      "TLA": "C5825",
+      "lemma": "ϣⲗⲟⲗ",
+      "gloss": "folk | people",
+      "candidate_count": 8,
+      "ndcg_at_6_old": 0.8562598709549916,
+      "ndcg_at_6_linear": 0.955209151589852
+    },
+    {
+      "TLA": "C5868",
+      "lemma": "ⲛⲟⲩϣⲏⲙ",
+      "gloss": "a little",
+      "candidate_count": 5,
+      "ndcg_at_6_old": 0.822714918800764,
+      "ndcg_at_6_linear": 0.9784567980275164
+    },
+    {
+      "TLA": "C5891",
+      "lemma": "ϣⲙⲟⲩ",
+      "gloss": "peg | stake | row-lock | pegs",
+      "candidate_count": 3,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C5893",
+      "lemma": "ϣⲙⲙⲟ",
+      "gloss": "stranger",
+      "candidate_count": 15,
+      "ndcg_at_6_old": 0.6613184748683166,
+      "ndcg_at_6_linear": 0.7987428289480364
+    },
+    {
+      "TLA": "C5919",
+      "lemma": "ⲙⲁⲛϣⲏⲛ",
+      "gloss": "forest, grove",
+      "candidate_count": 5,
+      "ndcg_at_6_old": 0.822714918800764,
+      "ndcg_at_6_linear": 0.9824985677884004
+    },
+    {
+      "TLA": "C597",
+      "lemma": "ⲃⲟⲩϩⲉ",
+      "gloss": "eyelid | grow | develop | eyelids",
+      "candidate_count": 4,
+      "ndcg_at_6_old": 0.8288377414201495,
+      "ndcg_at_6_linear": 0.9760626157091096
+    },
+    {
+      "TLA": "C6057",
+      "lemma": "ⲛϣⲱⲣⲡ",
+      "gloss": "early",
+      "candidate_count": 13,
+      "ndcg_at_6_old": 0.7125197419099832,
+      "ndcg_at_6_linear": 0.941060405619221
+    },
+    {
+      "TLA": "C6077",
+      "lemma": "ϣⲥⲛⲉ",
+      "gloss": "stroke of time | on a sudden | subter",
+      "candidate_count": 11,
+      "ndcg_at_6_old": 0.7125197419099832,
+      "ndcg_at_6_linear": 0.8790480637746947
+    },
+    {
+      "TLA": "C6082",
+      "lemma": "ϣⲟⲧ",
+      "gloss": "pillow | cushion | bag",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C6232",
+      "lemma": "ϣϫⲉ",
+      "gloss": "sprig",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C6276",
+      "lemma": "ϥⲛⲧ",
+      "gloss": "worm | vermes",
+      "candidate_count": 5,
+      "ndcg_at_6_old": 0.822714918800764,
+      "ndcg_at_6_linear": 0.9665496834625614
+    },
+    {
+      "TLA": "C6295",
+      "lemma": "ⳉⲟ",
+      "gloss": "road | path",
+      "candidate_count": 5,
+      "ndcg_at_6_old": 0.8443019660324382,
+      "ndcg_at_6_linear": 0.9734912576961674
+    },
+    {
+      "TLA": "C6459",
+      "lemma": "ϩⲱⲃⲥ",
+      "gloss": "hadst thou protected him, he had not died",
+      "candidate_count": 43,
+      "ndcg_at_6_old": 0.28870784767832763,
+      "ndcg_at_6_linear": 0.40338744551155403
+    },
+    {
+      "TLA": "C6486",
+      "lemma": "ϩⲕⲟ",
+      "gloss": "be hungry",
+      "candidate_count": 19,
+      "ndcg_at_6_old": 0.8938995903033766,
+      "ndcg_at_6_linear": 0.8983590983641792
+    },
+    {
+      "TLA": "C6503",
+      "lemma": "ϩⲁⲗ",
+      "gloss": "servant | slave",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C6574",
+      "lemma": "ⲣϩⲗⲟⲥⲧⲛ",
+      "gloss": "become misty | darkened",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C6746",
+      "lemma": "ϩⲁⲡⲟⲣⲕ",
+      "gloss": "saddle | saddle-cloth",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 0.8339912323981488,
+      "ndcg_at_6_linear": 0.9923583135538461
+    },
+    {
+      "TLA": "C6788",
+      "lemma": "ϩⲣⲃ",
+      "gloss": "form | likeness",
+      "candidate_count": 8,
+      "ndcg_at_6_old": 0.7125197419099832,
+      "ndcg_at_6_linear": 0.9544905246195153
+    },
+    {
+      "TLA": "C6823",
+      "lemma": "ϩⲣⲟⲩⲟ",
+      "gloss": "boastfulness",
+      "candidate_count": 4,
+      "ndcg_at_6_old": 0.8736582060933374,
+      "ndcg_at_6_linear": 0.9805425875593284
+    },
+    {
+      "TLA": "C6828",
+      "lemma": "ϩⲣⲟϣ",
+      "gloss": "be heavy | slow | difficult",
+      "candidate_count": 14,
+      "ndcg_at_6_old": 0.6613184748683166,
+      "ndcg_at_6_linear": 0.9228191391614908
+    },
+    {
+      "TLA": "C6860",
+      "lemma": "ϩⲓⲥⲉ",
+      "gloss": "toil",
+      "candidate_count": 3,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C7219",
+      "lemma": "ϫⲱⲱⲙⲉ",
+      "gloss": "sheet | roll of papyrus | written document | book | page | put papers in order",
+      "candidate_count": 9,
+      "ndcg_at_6_old": 0.8562598709549916,
+      "ndcg_at_6_linear": 0.9190044844795299
+    },
+    {
+      "TLA": "C728",
+      "lemma": "ⲥⲁⲡⲉⲥⲏⲧ",
+      "gloss": "(on) lower side, below",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 0.8339912323981488,
+      "ndcg_at_6_linear": 0.9923583135538461
+    },
+    {
+      "TLA": "C7344",
+      "lemma": "ϭⲉⲡϫⲱⲱⲣⲉ",
+      "gloss": "were overpowered",
+      "candidate_count": 4,
+      "ndcg_at_6_old": 0.8051066276347754,
+      "ndcg_at_6_linear": 0.988652046395507
+    },
+    {
+      "TLA": "C7680",
+      "lemma": "ϭⲗⲱⲧ",
+      "gloss": "kidney",
+      "candidate_count": 8,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 0.97195441120396
+    },
+    {
+      "TLA": "C7707",
+      "lemma": "ϭⲟⲙ",
+      "gloss": "powerful, mighty, strong",
+      "candidate_count": 4,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C7730",
+      "lemma": "ϭⲓⲙⲉ",
+      "gloss": "take pleasure | satiety | debauch",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C7824",
+      "lemma": "ϩⲛⲟⲩϭⲉⲡⲏ",
+      "gloss": "forthwith",
+      "candidate_count": 12,
+      "ndcg_at_6_old": 0.5687796128649749,
+      "ndcg_at_6_linear": 0.8456022314146969
+    },
+    {
+      "TLA": "C7825",
+      "lemma": "ⲣⲉϥϭⲉⲡⲏ",
+      "gloss": "one who is quick | hasty",
+      "candidate_count": 2,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C7931",
+      "lemma": "ⲁϣⲛϭⲟⲧ",
+      "gloss": "of what size | sort",
+      "candidate_count": 3,
+      "ndcg_at_6_old": 0.8579514172105233,
+      "ndcg_at_6_linear": 0.9860495567260434
+    },
+    {
+      "TLA": "C8005",
+      "lemma": "ϭⲁϫⲉ",
+      "gloss": "earring",
+      "candidate_count": 5,
+      "ndcg_at_6_old": 0.8443019660324382,
+      "ndcg_at_6_linear": 0.9901030094009922
+    },
+    {
+      "TLA": "C828",
+      "lemma": "ⲉⲓⲉ",
+      "gloss": "come to",
+      "candidate_count": 80,
+      "ndcg_at_6_old": 0.28870784767832763,
+      "ndcg_at_6_linear": 0.42479270679700415
+    },
+    {
+      "TLA": "C8342",
+      "lemma": "ⲁⲡⲁ",
+      "gloss": "father, abbot",
+      "candidate_count": 3,
+      "ndcg_at_6_old": 1.0,
+      "ndcg_at_6_linear": 1.0
+    },
+    {
+      "TLA": "C897",
+      "lemma": "ⲉⲓⲙⲉ",
+      "gloss": "know | understand | whilst we knew not?",
+      "candidate_count": 43,
+      "ndcg_at_6_old": 0.47193663387836615,
+      "ndcg_at_6_linear": 0.6902442820470627
+    }
+  ]
+}
