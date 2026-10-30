@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "coptic-examples"
+version = "0.1.0"
+description = "Reproducible sense-aware Coptic dictionary example retrieval and ranking"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.26", "pandas>=2.2", "lightgbm>=4", "scikit-learn>=1.5"]
+
+[project.optional-dependencies]
+semantic = ["sentence-transformers>=3"]
+
+[project.scripts]
+coptic-examples = "coptic_examples.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,13 @@
+# Metadata aliases are exact after case/whitespace normalization. Add a new
+# section to register a dialect; never modify the ranking algorithm to add one.
+[dialects.sahidic]
+name = "Sahidic"
+codes = ["S", "Sa", "Sf"]
+aliases = ["Sahidic", "Sahidic Coptic", "Sahidic Coptc", "Sahidic Coptic with Fayumic features", "Sahidic Coptic, with Lycopolitan Features"]
+path_globs = ["sahidic.ot/*", "sahidica.nt/*", "coptic-treebank/*"]
+
+[dialects.bohairic]
+name = "Bohairic"
+codes = ["B"]
+aliases = ["Bohairic", "Bohairic Coptic"]
+path_globs = ["bohairic*/*"]
