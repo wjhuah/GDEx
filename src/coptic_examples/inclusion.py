@@ -58,7 +58,13 @@ class EntryFeatures:
         ]
 
     def vector(self, c, e, base=None):
-        key = (c["id"], e.tla)
+        from .sense import targets
+
+        key = (
+            c["id"],
+            e.tla,
+            tuple(targets(c, e)) if all("lemma" in t for t in c["tokens"]) else (),
+        )
         if key in self.memo:
             return self.memo[key]
         base = base if base is not None else numbers(c, e, self.extractor)[0]

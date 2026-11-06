@@ -10,6 +10,8 @@ from .ui import search_page, guide_page, experiments_page
 def serve(config, port=8012):
     search = Search(config)
     reports = {
+        "learning/reference_counts.json",
+        "learning/token_senses.json",
         "learning/DATASET_EXAMPLES.json",
         "learning/dataset_checks.json",
         "learning/corpus_integrity.json",
@@ -91,15 +93,7 @@ def serve(config, port=8012):
 
         def find(self, fields, default="research"):
             ranker = str(fields.get("ranker", default))
-            if ranker not in {
-                "research",
-                "unified",
-                "cheap",
-                "learned",
-                "quality_first",
-                "linear",
-                "definition_syntax",
-            }:
+            if ranker not in {"research", "unified"}:
                 raise ValueError("Unknown ranker")
             return search.search(
                 str(fields.get("query", "")),

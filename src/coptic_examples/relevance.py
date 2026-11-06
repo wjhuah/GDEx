@@ -53,6 +53,7 @@ class DefinitionGate:
                 if len(r["tla_candidates"]) == 1:
                     self.citations[sid].append(
                         dict(
+                            occurrence_id=r["id"],
                             tla=r["tla_candidates"][0],
                             file=r["file"],
                             line=r["line"],

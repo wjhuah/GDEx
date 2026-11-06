@@ -534,35 +534,59 @@ def deduplicate_candidates(rows):
     return list(unique.values()), len(rows) - len(unique)
 
 
+def competing_senses(model, rows, entry, lex, architecture):
+    """Compare model predictions for a single shared target token."""
+    import copy
+
+    from .token_senses import resolve
+
+    resolved = resolve(model, rows, entry, lex, architecture)
+    if resolved is not None:
+        return resolved
+    best = [-float("inf")] * len(rows)
+    evidence = [[] for _ in rows]
+    for rival in model.features.rivals(entry):
+        indices = []
+        probes = []
+        for i, row in enumerate(rows):
+            own = {t["id"] for t in row.get("target_token_evidence", [])}
+            candidate = copy.deepcopy(row)
+            ii = align_candidate(candidate, rival, True)
+            other = {candidate["tokens"][j]["id"] for j in ii}
+            if len(own | other) != 1 or not own.intersection(other):
+                continue
+            indices.append(i)
+            probes.append(candidate)
+        if not probes:
+            continue
+        p, s = model.score(probes, rival, architecture)
+        for i, prob, score in zip(indices, p, s):
+            evidence[i].append(
+                dict(tla=rival.tla, inclusion=float(prob), score=float(score))
+            )
+            best[i] = max(best[i], float(score if architecture == "joint" else prob))
+    result = []
+    for i, row in enumerate(rows):
+        own_score = (
+            row["score"] if architecture == "joint" else row["learned_inclusion_score"]
+        )
+        row["competing_predictions"] = evidence[i]
+        row["sense_margin"] = own_score - best[i] if evidence[i] else None
+        if own_score > best[i] + 1e-10:
+            result.append(row)
+    return result
+
+
 def recommend(config, lex, entry, dialect, k, architecture):
     from .relevance import DefinitionGate
-    from .annotations import forbidden, resolve_manual
+    from .annotations import resolve_manual
     from .shortlist import numbers
-    from .editorial import order
 
     corpus = Corpus(config)
     annotations = load_manual(config.manual)
-    rules = forbidden_rules(annotations)[entry.tla]
     candidates = native_candidates(config, corpus, entry, dialect, True)
     excluded = Counter()
     out = []
-    if "ALL" in {r.upper() for r in rules}:
-        excluded["TAB_ALL"] = len(candidates)
-        return dict(
-            TLA=entry.tla,
-            lemma=entry.lemma,
-            definition=entry.gloss,
-            dialect=dialect,
-            candidate_count=len(candidates),
-            eligible_count=0,
-            shortlist=[],
-            ranker="unified" if architecture == "joint" else "research",
-            model_status={"provisional": False},
-            warnings=[],
-            excluded=dict(excluded),
-            definition_gate_applied=False,
-            architecture=architecture,
-        )
     manual, _ = resolve_manual(
         [a for a in annotations if a["TLA"] == entry.tla and a["URN"].upper() != "X"],
         corpus,
@@ -581,9 +605,6 @@ def recommend(config, lex, entry, dialect, k, architecture):
         issue = alignment_issue(c)
         if issue:
             excluded[issue] += 1
-            continue
-        if forbidden(c, rules, c["id"] in priorities):
-            excluded["TAB_forbidden"] += 1
             continue
         if not real_translation(c["translation"]) or editorial_heading(
             c["translation"]
@@ -614,16 +635,26 @@ def recommend(config, lex, entry, dialect, k, architecture):
                 quality_score=float(p),
             )
         threshold = model.metadata.get("thresholds", {}).get(architecture, 0.5)
-        eligible = [
-            c
-            for c in out
-            if c["manual_selected"]
-            or c["crum_citations"]
-            or (c["learned_inclusion_score"] > threshold)
-        ]
+        eligible = [c for c in out if c["learned_inclusion_score"] > threshold]
         excluded["model_rejected"] = len(out) - len(eligible)
-        selected = order(eligible)[:k]
+        eligible = competing_senses(model, eligible, entry, lex, architecture)
+        selected = sorted(eligible, key=lambda c: (-c["score"], c["id"]))[:k]
+        source_grades = (
+            json.loads((config.work / "cache/source_grades.json").read_text())
+            if (config.work / "cache/source_grades.json").exists()
+            else {}
+        )
+        source_positions = (
+            json.loads((config.work / "cache/crum_source_positions.json").read_text())
+            if (config.work / "cache/crum_source_positions.json").exists()
+            else {}
+        )
         for c in selected:
+            c["source_grades"] = source_grades.get(
+                "|".join([dialect, entry.tla, text_key(c)]), []
+            )
+            for citation in c.get("crum_citations", []):
+                citation.update(source_positions.get(citation.get("occurrence_id"), {}))
             from .text import sm_freq, rouge
             from .relevance import bleu2
 
@@ -638,7 +669,6 @@ def recommend(config, lex, entry, dialect, k, architecture):
             c["information_score"] = syntax["features"]["information_score"]
         model.close()
     else:
-        threshold = model.metadata.get("thresholds", {}).get(architecture, 0.5)
         eligible = []
         selected = []
     return dict(

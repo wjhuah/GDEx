@@ -228,6 +228,52 @@ def experiments(config, dialect):
             + "</section>"
         )
     body += '<section class=panel><h3>Data files and source integrity</h3><p><a href="/reports/learning/DATASET_EXAMPLES.json">Readable training examples with all 62 inputs</a> · <a href="/reports/learning/dataset_checks.json">Dataset counts</a> · <a href="/reports/learning/corpus_integrity.json">Damaged source spans</a></p><p>Dictionary subcategories are preserved. C993 uses the title qualifier in its definition and competing-entry features. Marked short damaged spans paired with long translations are excluded from training pairs and recommendations, with original source evidence retained.</p></section>'
+    sense_path = config.reports / "learning/token_senses.json"
+    if sense_path.exists():
+        token = next(
+            r for r in json.loads(sense_path.read_text()) if r["dialect"] == dialect
+        )
+        held = [
+            r for r in token["contrasts"] if {r["tla"], r["rival"]} == {"C992", "C993"}
+        ]
+        fitted = [
+            r
+            for r in token.get("training_contrasts", [])
+            if {r["tla"], r["rival"]} == {"C992", "C993"}
+        ]
+        body += (
+            "<section class=panel><h3>Token-sense comparison</h3><p>This additional classifier compares entries at individual TT tokens. Base-model tables above score the inclusion and preference heads separately.</p>"
+            + table(
+                [
+                    "Training pairs",
+                    "Inputs",
+                    "Derived-pair held-out AUC",
+                    "Father pair: training",
+                    "Father pair: held-out",
+                ],
+                [
+                    [
+                        token["training_pairs"],
+                        len(token["columns"]),
+                        fmt(token["auc"]),
+                        str(sum(r["correct"] for r in fitted)) + "/" + str(len(fitted)),
+                        str(sum(r["correct"] for r in held)) + "/" + str(len(held)),
+                    ]
+                ],
+            )
+            + "<p>Source-derived labels; spelling-family folds with repeated texts removed. Training and held-out results are shown separately.</p></section>"
+        )
+    ref_path = config.reports / "learning/reference_counts.json"
+    if ref_path.exists():
+        reference = json.loads(ref_path.read_text())
+        body += (
+            "<section class=panel><h3>Crum reference ledger</h3>"
+            + table(
+                ["Marker status", "Count"],
+                [[k, v] for k, v in reference["exclusive_marker_counts"].items()],
+            )
+            + "<p>One marker can link several dialects or corpus versions. Training pairs are then deduplicated by entry and Coptic text.</p></section>"
+        )
     for model, values in data["importance"].items():
         body += (
             "<section class=panel><details><summary>"
@@ -269,7 +315,7 @@ def sense_page(config):
             ]
         )
     body = (
-        "<section class=panel><h2>Amir’s five spelling groups</h2><p>Definitions and dialect forms come from the current Coptic Dictionary Online entry index, matched by TLA ID. Native TT tokens supply the target spans; POS conflicts remain visible.</p>"
+        "<section class=panel><h2>Spelling groups</h2><p>Definitions and dialect forms come from the current Coptic Dictionary Online entry index, matched by TLA ID. Native TT tokens supply the target spans; POS conflicts remain visible.</p>"
         + table(
             [
                 "Dialect",

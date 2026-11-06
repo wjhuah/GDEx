@@ -162,6 +162,22 @@ def citation(c):
     )
 
 
+def source_label(candidate):
+    values = []
+    for rank in candidate.get("source_grades", []):
+        if rank["source"] == "tab":
+            values.append("TAB · " + format(rank["grade"], ".1f"))
+    if candidate.get("manual_selected") and not values:
+        values.append("TAB · inclusion +1")
+    for cite in candidate.get("crum_citations", []):
+        label = "Crum"
+        if cite.get("total"):
+            label += " · " + str(cite["position"]) + "/" + str(cite["total"])
+        if label not in values:
+            values.append(label)
+    return " | ".join(values)
+
+
 def search_page(
     config,
     result=None,
@@ -230,8 +246,8 @@ def search_page(
                 sig = c.get("syntax", {}).get("signature", [])
                 rel = c.get("definition_relevance", {})
                 content += f"""<li id="example-{i}"><div class="example-heading"><b>#{i}</b> {badge}<span class="score">{'Recommendation score' if result['ranker']=='research' else 'Syntax order score' if result['ranker']=='definition_syntax' else 'Rank score'} {c['score']:.3f}</span></div>
-<p class="coptic sentence">{highlighted(c['sent'],e,c)}</p><p class=syntax>TT target tokens: {esc(' | '.join(t['form']+' / '+t['lemma']+' / '+t['xpos']+' / '+t['id'] for t in c.get('target_token_evidence',[])))} — segmentation={esc(c.get('segmentation','unspecified'))}, parsing={esc(c.get('parsing','unspecified'))}</p><p class="translation">{esc(c['translation'])}</p><p class="source">{citation(c)}</p><p class=syntax>{'Crum citation' if c.get('crum_citations') else 'TAB example' if c.get('manual_selected') else ''}</p><p class=syntax>{esc(str((rel.get('construction') or {}).get('display','')))}</p><p class="syntax">{esc(syntax_label(sig))}</p>
-<details><summary>Ranking details</summary><div class="evidence"><p>Preference prediction: {c['score']:.3f}</p><p>{'Inclusion score: '+format(c.get('learned_inclusion_score',0),'.3f') if result['ranker']=='research' else 'Joint inclusion and preference score'}</p><p>Crum references: {esc(str(c.get('crum_citations',[])))}</p><p>Gloss token recall {rel.get('freq_match',0):.3f} · cosine {esc(str(rel.get('cosine')))} · ROUGE-L {rel.get('rouge_l',0):.3f}</p><p>POS alignment review: {esc(str(c.get('target_alignment') or c.get('crum_pos_alignment') or 'lemma and native tags'))}</p><p>Syntactic signature: {esc(', '.join(sig))}</p><p class="muted">Corpus: {esc(c.get('source',''))}<br>Reference: {esc(c.get('urn',''))}</p></div></details></li>"""
+<p class="coptic sentence">{highlighted(c['sent'],e,c)}</p><p class="translation">{esc(c['translation'])}</p><p class="source">{citation(c)}</p><p class=syntax>{esc(source_label(c))}</p><p class=syntax>{esc(str((rel.get('construction') or {}).get('display','')))}</p><p class="syntax">{esc(syntax_label(sig))}</p>
+<details><summary>Ranking details</summary><div class="evidence"><p class=syntax>TT target tokens: {esc(' | '.join(t['form']+' / '+t['lemma']+' / '+t['xpos']+' / '+t['id'] for t in c.get('target_token_evidence',[])))} — segmentation={esc(c.get('segmentation','unspecified'))}, parsing={esc(c.get('parsing','unspecified'))}</p><p>Preference prediction: {c['score']:.3f}</p><p>{'Inclusion score: '+format(c.get('learned_inclusion_score',0),'.3f') if result['ranker']=='research' else 'Joint inclusion and preference score'}</p><p>Crum references: {esc(str(c.get('crum_citations',[])))}</p><p>Gloss token recall {rel.get('freq_match',0):.3f} · cosine {esc(str(rel.get('cosine')))} · ROUGE-L {rel.get('rouge_l',0):.3f}</p><p>POS alignment review: {esc(str(c.get('target_alignment') or c.get('crum_pos_alignment') or 'lemma and native tags'))}</p><p>Syntactic signature: {esc(', '.join(sig))}</p><p class="muted">Corpus: {esc(c.get('source',''))}<br>Reference: {esc(c.get('urn',''))}</p></div></details></li>"""
             content += "</ol></section>"
         review = short.get("definition_review", [])
         if review:

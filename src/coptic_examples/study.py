@@ -102,7 +102,7 @@ def run(config):
         writer.writeheader()
         writer.writerows(rows)
     md = [
-        "# Amir 假设：barley / father 交叉负例验证",
+        "# review 假设：barley / father 交叉负例验证",
         "",
         "本实验先回到原始人工表，按作品 URN、章、节和目标 lemma 找回当前语料中的句子，再计算真实 BGE 相似度。没有训练，也没有为这四个例子调阈值。",
         "",
@@ -123,9 +123,9 @@ def run(config):
         "## 结论与边界",
         "",
         (
-            "这组已核对引用支持 Amir 在 C992/C998 上的思路：同形词的好例句，可以作为互不相容义项的候选负例。"
+            "这组已核对引用支持 review 在 C992/C998 上的思路：同形词的好例句，可以作为互不相容义项的候选负例。"
             if result["correct_contrasts"] == len(rows)
-            else "该组对照没有全部通过，不能把 Amir 的建议当作已证实规则；逐条检查上表。"
+            else "该组对照没有全部通过，不能把 review 的建议当作已证实规则；逐条检查上表。"
         ),
         "原人工表没有把这些句子交叉标为另一 TLA 的 -1。导出的 -1 是本研究的派生假设标签，单独标明来源；不能伪称专家新标注。",
         "这只能验证四个锚点的义项对照；不能证明加入负例会提升排序 NDCG，更不能推广为“所有同形 TLA 互为负例”。father 与 father-as-title 的近义关系必须保留不确定性。",

@@ -225,3 +225,106 @@ class OriginalSpanTests(unittest.TestCase):
         self.assertTrue(row["has_lacuna"])
         self.assertEqual(row["original_groups"], ["[]ⲙⲡⲉϥⲉⲓⲱⲧ"])
         self.assertEqual(alignment_issue(row), "lacuna_fragment_with_full_translation")
+
+
+class ModelOnlySelectionTests(unittest.TestCase):
+    def test_tab_rules_and_source_flags_do_not_override_predictions(self):
+        from unittest.mock import patch, MagicMock
+        from collections import defaultdict
+        import numpy as np
+        from coptic_examples.learning import recommend
+        from coptic_examples.config import Config
+
+        entry = Entry("entry", "ⲉⲓⲱⲧ", "NOUN", "father", ("ⲉⲓⲱⲧ",))
+        candidates = [
+            dict(
+                id=t,
+                sent=s,
+                translation="This is a translated example.",
+                dialect_id="sahidic",
+                tokens=[],
+            )
+            for t, s in [("a", "ⲁ"), ("b", "ⲃ"), ("c", "ⲅ")]
+        ]
+        model = MagicMock()
+        model.metadata = {"thresholds": {"two_models": 0.5}}
+        model.score.return_value = (
+            np.array([0.8, 0.9, 0.4]),
+            np.array([2.0, 3.0, 4.0]),
+        )
+        model.features.vectors.cosine.return_value = 0.4
+        gate = MagicMock()
+        gate.citations = defaultdict(list)
+        manual = [
+            dict(candidate=candidates[0], annotation={"priority": "1"}),
+            dict(candidate=candidates[2], annotation={"priority": "2"}),
+        ]
+        with (
+            tempfile.TemporaryDirectory() as d,
+            patch("coptic_examples.learning.Corpus"),
+            patch(
+                "coptic_examples.learning.load_manual",
+                return_value=[{"TLA": "entry", "URN": "X", "forbidden_urns": "ALL"}],
+            ),
+            patch(
+                "coptic_examples.learning.native_candidates", return_value=candidates
+            ),
+            patch(
+                "coptic_examples.annotations.resolve_manual", return_value=(manual, [])
+            ),
+            patch("coptic_examples.relevance.DefinitionGate", return_value=gate),
+            patch("coptic_examples.learning.LearningModel", return_value=model),
+            patch(
+                "coptic_examples.learning.competing_senses",
+                side_effect=lambda m, r, *args: r,
+            ),
+            patch(
+                "coptic_examples.shortlist.numbers",
+                return_value=([], {"features": {"information_score": 0}}, None),
+            ),
+        ):
+            result = recommend(
+                Config(work=Path(d)),
+                {"entry": entry},
+                entry,
+                "sahidic",
+                10,
+                "two_models",
+            )
+        self.assertEqual([r["id"] for r in result["shortlist"]], ["b", "a"])
+
+
+class TokenSenseTests(unittest.TestCase):
+    def test_ambiguous_pairs_have_target_role_and_entry_type_inputs(self):
+        from coptic_examples.token_senses import dataset, COLUMNS
+
+        lex, features, rows = AugmentationTests().make()
+        features.vector = lambda c, e: [0.0] * 62
+        for r in rows:
+            r["candidate"]["tokens"][0]["dep"] = "vocative"
+        lex["a"].subcategories = ("Titel",)
+        out = dataset(rows, features, lex)
+        self.assertEqual(len(out), 4)
+        self.assertEqual(sum(r["y"] for r in out), 2)
+        self.assertTrue(all(len(r["x"]) == len(COLUMNS) for r in out))
+        a = next(r for r in out if r["tla"] == "a")
+        self.assertEqual(a["x"][62:64], [1.0, 1.0])
+
+    def test_known_dual_positive_sentence_supplies_no_exclusive_pair(self):
+        from coptic_examples.token_senses import dataset
+
+        lex, features, rows = AugmentationTests().make()
+        rows[1]["text_key"] = rows[0]["text_key"]
+        self.assertEqual(dataset(rows, features, lex), [])
+
+
+class SourceLabelTests(unittest.TestCase):
+    def test_only_source_grade_and_printed_position_are_needed(self):
+        from coptic_examples.ui import source_label
+
+        row = dict(
+            manual_selected=True,
+            source_grades=[dict(source="tab", grade=3)],
+            crum_citations=[dict(position=4, total=20)],
+        )
+        self.assertEqual(source_label(row), "TAB · 3.0 | Crum · 4/20")
