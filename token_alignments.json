@@ -1,0 +1,19 @@
+{
+  "C4325": [
+    {
+      "source": "sahidic.ot/21_Ecclesiastes_09.tt",
+      "chapter": "9",
+      "verse": "2",
+      "token_ids": [
+        "u49",
+        "u50"
+      ],
+      "expected_forms": [
+        "ⲧⲱ",
+        "ⲙⲛⲧ"
+      ],
+      "joined_form": "ⲧⲱⲙⲛⲧ",
+      "reference": "Crum 263.txt:15, Ecclesiastes 9:2"
+    }
+  ]
+}

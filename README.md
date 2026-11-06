@@ -1,142 +1,75 @@
-# GDEx: Coptic Dictionary Example Recommendation
+# GDEx
 
-GDEx is a research prototype for retrieving, ranking, and selecting corpus examples for Coptic lexicography.
+Corpus example retrieval and ranking for the Coptic Dictionary Online.
 
-Given a TLA lexical entry and dialect, the system identifies candidate examples and ranks them according to linguistic and lexicographic criteria. A local web interface displays Coptic sentences, English translations, source references, and ranking evidence.
+Search by TLA ID or Coptic lemma, choose a dialect, and compare individual examples and sets of three. Ambiguous lemmas open a list of entries with their meanings and forms. Target words are highlighted using TT token boundaries.
 
-## Features
+## Models
 
-- TLA entry and lemma lookup
-- Sahidic and Bohairic support
-- Feature-based example ranking
-- Selection of syntactically diverse example sets
-- Source attribution and ranking details
-- Ablation and evaluation experiments
+The system learns two related tasks:
 
-## Method
+- **Inclusion:** TAB selections and Crum citations are positive examples. TAB exclusions provide negative examples. Crum citation position does not change the inclusion label.
+- **Preference:** TAB priorities and the order of citations within Crum sections provide ranking supervision.
 
-The Sahidic research ranker uses 45 features:
+Both models use LightGBM. Features cover sentence form, dependency structure, target context, definition similarity, competing senses, and corpus collocations. Lexical overlap is one input; semantic similarity also supports paraphrases in English translations. The optional cross-sense experiment constructs negative entry–sentence pairs for homographs.
 
-| Feature group | Features |
-| --- | ---: |
-| GDEX surface features | 24 |
-| Dependency-based features | 12 |
-| Information-related features | 8 |
-| Gloss overlap | 1 |
+Search results retain recorded TAB and Crum selections first. Crum order is preserved within each source section. Remaining candidates are ranked by the learned models. Sets of three balance recommendation score, dependency coverage and repetition.
 
-Training uses two complementary sources of supervision:
-
-**TAB:** Manually selected examples provide evidence of editorial inclusion. Unselected sentences are not automatically treated as negative examples.
-
-**Crum:** Historical dictionary example ordering provides a weak signal of editorial preference rather than a direct measure of example quality.
-
-LightGBM models learn rankings from these features and supervision signals. The main inference pipeline does not require a large language model or BGE embeddings.
-
-In addition to ranking individual examples, GDEx compares selecting the top three examples with selecting three examples for greater syntactic coverage.
+Sahidic and Bohairic have separate candidate pools, frequency tables and models. Dialects are registered in `dialects.toml`. Attested additional forms and their dialects are recorded in `lexical_forms.json`.
 
 ## Installation
 
-Requires Python 3.11 or newer.
+Requires Python 3.11 or later.
 
-```bash
+```sh
 git clone https://github.com/wjhuah/GDEx.git
 cd GDEx
-
 python3 -m venv .venv
 source .venv/bin/activate
-
-python -m pip install -r requirements.txt
-python -m pip install -e . --no-deps
+pip install -r requirements.txt
+pip install -e . --no-deps
 ```
 
-## Data preparation
+## Data and training
 
-**The repository contains source code, not the underlying research data, generated indexes, or trained model weights.**
-
-To reproduce the system, users must obtain and prepare the necessary resources separately, subject to the relevant licenses and access permissions.
-
-Required sources include:
-
-1. [Coptic SCRIPTORIUM corpora](https://github.com/CopticScriptorium/Corpora)
-2. Comprehensive Coptic Lexicon XML
-3. Manually curated TAB dictionary examples
-4. Crum dictionary material and references
-
-The original development environment uses a source directory containing:
+Set `COPTIC_SOURCE_ROOT` to a directory containing:
 
 ```text
-coptic_dictionary/
-├── corpora/
-├── Comprehensive_Coptic_Lexicon-v1.2-2020.xml
-├── citations_manual_merged.tab
-└── Crum_plain_text/
+corpora/
+Comprehensive_Coptic_Lexicon-v1.2-2020.xml
+citations_manual_merged.tab
+Crum_plain_text/
 ```
 
-Researchers should use their own authorized copies of these resources. TAB annotations and processed Crum material may need to be obtained from the project collaborators.
+Use the project copies of the lexicon, TAB annotations and Crum transcription. TT corpora are available from [Coptic SCRIPTORIUM](https://github.com/CopticScriptorium/Corpora). Data, caches, trained models and experiment reports stay outside version control.
 
-Configure the source-data location:
-
-```bash
+```sh
 export COPTIC_SOURCE_ROOT=/path/to/coptic_dictionary
-```
-
-Build the corpus indexes and models:
-
-```bash
 python run.py build
-python run.py dataset
 python scripts/audit_crum_bible.py
+python run.py dataset
 python run.py train
-```
-
-Some experimental comparisons require additional historical resources and locally generated reports. Consult the technical documentation for details.
-
-## Web interface
-
-After preparing the data and compatible models:
-
-```bash
+python scripts/build_typicality.py
+python scripts/prepare_features.py
+python scripts/train_inclusion.py
 python run.py serve --port 8012
 ```
 
-Open http://localhost:8012.
+Open http://localhost:8012. To reuse the project's BGE vectors, place `embeddings.sqlite3` in `cache/` before extracting features. Missing vectors are recorded as missing values. Computing new embeddings requires the optional packages in `requirements-semantic.txt` and a locally cached `BAAI/bge-large-en-v1.5` model.
 
-Search for a TLA ID (such as `C998`), choose the dialect and ranking method, and inspect the recommended examples.
+## Development
 
-The Evaluation page also requires generated experiment reports that are not included in this repository.
+```sh
+python -m unittest discover -s tests -q
+```
 
-## Evaluation
+- `src/coptic_examples/corpus.py`: TT indexing
+- `src/coptic_examples/crum_audit.py`: Crum reference extraction and alignment
+- `src/coptic_examples/sense.py`: token matching and POS alignment
+- `src/coptic_examples/inclusion.py`: entry-conditioned features and prediction
+- `src/coptic_examples/typicality.py`: dependency frame and collocation counts
+- `src/coptic_examples/editorial.py`: recorded source selections and partial orders
+- `scripts/train_inclusion.py`: training and grouped evaluation
+- `src/coptic_examples/ui.py`: search and comparison pages
 
-The Sahidic full-feature model achieved approximately **0.785 NDCG@6** on the evaluated TAB inclusion-ranking task.
-
-This measures ranking among labeled candidate groups, not full-corpus retrieval accuracy.
-
-Bohairic results remain provisional due to limited annotated supervision.
-
-## Repository structure
-
-- `src/`: retrieval, feature extraction, ranking, and web interface
-- `scripts/`: data preparation, training, and evaluation
-- `cluster/`: example-set selection experiments
-- `assets/`: web interface styles
-- `docs/`: research and technical documentation
-- `tests/`: automated tests
-- `reports/`: selected research notes
-
-## Limitations
-
-GDEx is intended to assist expert lexicographic review, not replace it.
-
-Wordform matching does not guarantee correct sense identification, particularly for homographs. Automatic syntactic coverage is an approximation of example diversity.
-
-The current results require further independent evaluation and expert review.
-
-## Resources
-
-- [Coptic Dictionary Online](https://coptic-dictionary.org/)
-- [Coptic SCRIPTORIUM](https://copticscriptorium.org/)
-- [Coptic SCRIPTORIUM Corpora](https://github.com/CopticScriptorium/Corpora)
-
-## Status
-
-Research prototype. Full corpus data and trained models are not distributed with the source code.
+Evaluation uses spelling-family folds and removes repeated held-out Coptic spans from training. Experimental results are written locally under `reports/`. The web interface also exposes local evaluation results when available.

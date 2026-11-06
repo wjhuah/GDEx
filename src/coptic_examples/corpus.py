@@ -1,4 +1,5 @@
-"""Read all TT files, preserving citation identity, group text and native syntax."""
+"""Index TT translation spans and their token annotations."""
+
 import hashlib
 import html
 import json
@@ -30,7 +31,7 @@ def parse_tt(path, root):
     chapter = verse = translation = vid = ""
     sequence = 0
     has_translation_close = "</translation>" in text
-    registry=Dialects()
+    registry = Dialects()
 
     def finish():
         nonlocal groups, tokens, translation, sequence
@@ -39,15 +40,26 @@ def parse_tt(path, root):
         if sent and COPTIC.search(sent):
             sequence += 1
             source = path.relative_to(root).as_posix()
-            result = dict(id=f"{source}#{sequence}", sent=sent, translation=norm(translation),
-                          source=source, urn=meta.get("document_cts_urn", ""),
-                          work=work_urn(meta.get("document_cts_urn", "")), chapter=chapter,
-                          verse=verse, vid=vid, title=meta.get("title", path.stem),
-                          dialect=meta.get("languages", meta.get("language", "")),
-                          segmentation=meta.get("segmentation", ""),
-                          parsing=meta.get("parsing", ""), license=meta.get("license", ""),
-                          tokens=tokens.copy())
-            result['dialect_id'],result['dialect_evidence']=registry.identify(result['dialect'],source)
+            result = dict(
+                id=f"{source}#{sequence}",
+                sent=sent,
+                translation=norm(translation),
+                source=source,
+                urn=meta.get("document_cts_urn", ""),
+                work=work_urn(meta.get("document_cts_urn", "")),
+                chapter=chapter,
+                verse=verse,
+                vid=vid,
+                title=meta.get("title", path.stem),
+                dialect=meta.get("languages", meta.get("language", "")),
+                segmentation=meta.get("segmentation", ""),
+                parsing=meta.get("parsing", ""),
+                license=meta.get("license", ""),
+                tokens=tokens.copy(),
+            )
+            result["dialect_id"], result["dialect_evidence"] = registry.identify(
+                result["dialect"], source
+            )
         groups, tokens, translation = [], [], ""
         return result
 
@@ -73,14 +85,21 @@ def parse_tt(path, root):
             groups.append(a["norm_group"])
         if re.match(r"<(?:\w+:)?norm(?:\s|>)", line) and "norm_group" not in a:
             rawpos = a.get("pos", "")
-            tokens.append(dict(id=a.get("xml:id", f"local{len(tokens)+1}"),
-                               form=a.get("norm", a.get("orig", "")),
-                               lemma=lemma_key(a.get("lemma", a.get("norm", ""))),
-                               pos=pos(a.get("upos", rawpos)), xpos=rawpos,
-                               dep=a.get("func", a.get("deprel", "")),
-                               head=a.get("head", "").lstrip("#"),
-                               new_sent=a.get("new_sent", "")))
-        if "</translation>" in line or (not has_translation_close and "</verse" in line):
+            tokens.append(
+                dict(
+                    id=a.get("xml:id", f"local{len(tokens)+1}"),
+                    form=a.get("norm", a.get("orig", "")),
+                    lemma=lemma_key(a.get("lemma", a.get("norm", ""))),
+                    pos=pos(a.get("upos", rawpos)),
+                    xpos=rawpos,
+                    dep=a.get("func", a.get("deprel", "")),
+                    head=a.get("head", "").lstrip("#"),
+                    new_sent=a.get("new_sent", ""),
+                )
+            )
+        if "</translation>" in line or (
+            not has_translation_close and "</verse" in line
+        ):
             row = finish()
             if row:
                 yield row
@@ -93,7 +112,7 @@ def fingerprint(root):
     files = sorted(Path(root).rglob("*.tt"))
     if not files:
         raise FileNotFoundError(f"No .tt files under {root}")
-    digest = hashlib.sha256((SCHEMA+Dialects().fingerprint).encode())
+    digest = hashlib.sha256((SCHEMA + Dialects().fingerprint).encode())
     for p in files:
         s = p.stat()
         digest.update(f"{p.relative_to(root)}\0{s.st_size}\0{s.st_mtime_ns}\n".encode())
@@ -113,8 +132,17 @@ class Corpus:
         files, stamp = fingerprint(self.config.corpus)
         if self.config.index.exists() and not force:
             with self.connect() as db:
-                if db.execute("SELECT value FROM metadata WHERE key='fingerprint'").fetchone()[0] == stamp:
-                    return json.loads(db.execute("SELECT value FROM metadata WHERE key='stats'").fetchone()[0])
+                if (
+                    db.execute(
+                        "SELECT value FROM metadata WHERE key='fingerprint'"
+                    ).fetchone()[0]
+                    == stamp
+                ):
+                    return json.loads(
+                        db.execute(
+                            "SELECT value FROM metadata WHERE key='stats'"
+                        ).fetchone()[0]
+                    )
         self.config.index.parent.mkdir(parents=True, exist_ok=True)
         temp = self.config.index.with_suffix(".tmp")
         temp.unlink(missing_ok=True)
@@ -133,30 +161,69 @@ class Corpus:
             frequencies = Counter()
             for i, p in enumerate(files, 1):
                 for row in parse_tt(p, self.config.corpus):
-                    db.execute("INSERT INTO sentence VALUES(?,?,?,?,?,?,?)", (row['id'], row['work'],row['chapter'],row['verse'],row['source'],row['dialect_id'],json.dumps(row,ensure_ascii=False)))
-                    db.executemany("INSERT INTO token VALUES(?,?,?)",[(row['id'],t['lemma'],t['pos']) for t in row['tokens'] if t['lemma']])
+                    db.execute(
+                        "INSERT INTO sentence VALUES(?,?,?,?,?,?,?)",
+                        (
+                            row["id"],
+                            row["work"],
+                            row["chapter"],
+                            row["verse"],
+                            row["source"],
+                            row["dialect_id"],
+                            json.dumps(row, ensure_ascii=False),
+                        ),
+                    )
+                    db.executemany(
+                        "INSERT INTO token VALUES(?,?,?)",
+                        [
+                            (row["id"], t["lemma"], t["pos"])
+                            for t in row["tokens"]
+                            if t["lemma"]
+                        ],
+                    )
                     # Corpus surface-group counts; fixed for training AND inference.
-                    frequencies.update(row['sent'].split())
-                    stats['sentences'] += 1
-                    stats['tokens'] += len(row['tokens'])
-                    stats['unmapped_pos'] += sum(not t['pos'] for t in row['tokens'])
-                    stats['dialect_'+row['dialect_id']] += 1
+                    frequencies.update(row["sent"].split())
+                    stats["sentences"] += 1
+                    stats["tokens"] += len(row["tokens"])
+                    stats["unmapped_pos"] += sum(not t["pos"] for t in row["tokens"])
+                    stats["dialect_" + row["dialect_id"]] += 1
                 if i % 300 == 0:
                     print(f"Indexed {i}/{len(files)} TT files", flush=True)
-            db.executemany("INSERT INTO word_frequency VALUES(?,?)", sorted(frequencies.items()))
-            stats['surface_vocabulary'] = len(frequencies)
-            db.executemany("INSERT INTO metadata VALUES(?,?)", [('fingerprint',stamp),('stats',json.dumps(stats)),('schema',SCHEMA)])
-        os.replace(temp,self.config.index)
+            db.executemany(
+                "INSERT INTO word_frequency VALUES(?,?)", sorted(frequencies.items())
+            )
+            stats["surface_vocabulary"] = len(frequencies)
+            db.executemany(
+                "INSERT INTO metadata VALUES(?,?)",
+                [
+                    ("fingerprint", stamp),
+                    ("stats", json.dumps(stats)),
+                    ("schema", SCHEMA),
+                ],
+            )
+        os.replace(temp, self.config.index)
         return dict(stats)
 
     def candidates(self, lemma, upos=None):
         # No top-N cap at retrieval: all matching examples are returned.
         forms = variants(lemma)
         with self.connect() as db:
-            if ' ' in lemma_key(lemma):
+            if " " in lemma_key(lemma):
                 components = [variants(w) for w in lemma_key(lemma).split()]
                 possible = self.candidates(lemma.split()[0], upos)
-                return [r for r in possible if any(all(t['lemma'] in vs for t,vs in zip(r['tokens'][i:i+len(components)],components)) for i in range(len(r['tokens'])-len(components)+1))]
+                return [
+                    r
+                    for r in possible
+                    if any(
+                        all(
+                            t["lemma"] in vs
+                            for t, vs in zip(
+                                r["tokens"][i : i + len(components)], components
+                            )
+                        )
+                        for i in range(len(r["tokens"]) - len(components) + 1)
+                    )
+                ]
             if not forms:
                 return []
             sql = f"SELECT DISTINCT s.payload FROM sentence s JOIN token t ON t.sentence_id=s.id WHERE t.lemma IN ({','.join('?' for _ in forms)})"
@@ -164,7 +231,9 @@ class Corpus:
             if upos:
                 sql += " AND t.pos=?"
                 params += [upos]
-            return [json.loads(x[0]) for x in db.execute(sql + " ORDER BY s.id", params)]
+            return [
+                json.loads(x[0]) for x in db.execute(sql + " ORDER BY s.id", params)
+            ]
 
     def all(self):
         with self.connect() as db:
@@ -173,7 +242,13 @@ class Corpus:
 
     def citation(self, urn):
         with self.connect() as db:
-            return [json.loads(x[0]) for x in db.execute("SELECT payload FROM sentence WHERE work=? ORDER BY id", (work_urn(urn),))]
+            return [
+                json.loads(x[0])
+                for x in db.execute(
+                    "SELECT payload FROM sentence WHERE work=? ORDER BY id",
+                    (work_urn(urn),),
+                )
+            ]
 
     def frequencies(self):
         with self.connect() as db:

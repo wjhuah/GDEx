@@ -7,21 +7,23 @@ PROJECT = Path(__file__).resolve().parents[2]
 
 
 class ManagedConnection(sqlite3.Connection):
-    def __exit__(self,*args):
+    def __exit__(self, *args):
         try:
             return super().__exit__(*args)
         finally:
             self.close()
 
 
-def database(path,**kwargs):
-    return sqlite3.connect(path,factory=ManagedConnection,**kwargs)
+def database(path, **kwargs):
+    return sqlite3.connect(path, factory=ManagedConnection, **kwargs)
 
 
 @dataclass(frozen=True)
 class Config:
     # All original inputs remain read-only outside this new project.
-    source: Path = Path(os.environ.get("COPTIC_SOURCE_ROOT", str(PROJECT.parent))).resolve()
+    source: Path = Path(
+        os.environ.get("COPTIC_SOURCE_ROOT", str(PROJECT.parent))
+    ).resolve()
     work: Path = PROJECT
 
     @property
@@ -55,5 +57,8 @@ class Config:
 
 def write_json(path, value):
     import json
+
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    path.write_text(
+        json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
