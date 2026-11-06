@@ -1,0 +1,64 @@
+{
+  "original_citation_records": 41808,
+  "unique_ids": 41808,
+  "citation_selection_positives": 41808,
+  "training_status": {
+    "entry_unresolved": 14600,
+    "reference_requires_expansion": 380,
+    "training_pair_available": 10593,
+    "alignment_or_label_review_required": 8890,
+    "local_text_unavailable_in_scope": 4589,
+    "entry_ambiguous": 2756
+  },
+  "augmentation": [
+    {
+      "dialect": "sahidic",
+      "architecture": "two_models",
+      "setting": "mixed_0.5",
+      "rows": 6195,
+      "types": {
+        "homograph": 1310,
+        "unrelated": 4885
+      }
+    },
+    {
+      "dialect": "sahidic",
+      "architecture": "joint",
+      "setting": "hard_0.5",
+      "rows": 1949,
+      "types": {
+        "homograph": 1949
+      }
+    },
+    {
+      "dialect": "bohairic",
+      "architecture": "two_models",
+      "setting": "mixed_0.25",
+      "rows": 330,
+      "types": {
+        "homograph": 24,
+        "unrelated": 306
+      }
+    },
+    {
+      "dialect": "bohairic",
+      "architecture": "joint",
+      "setting": "mixed_2",
+      "rows": 1004,
+      "types": {
+        "homograph": 34,
+        "unrelated": 970
+      }
+    }
+  ],
+  "model_files_unchanged": true,
+  "files": {
+    "citations.jsonl": "b4fa53956364534a49b6d928f86f4b90671e66654475e788b408c7aed0a17e12",
+    "sahidic_two_models_augmentation.jsonl": "88576954f8f20929ec16c9237e01b442e6ec2b61596e10b148e3133b5c7513a8",
+    "bohairic_two_models_augmentation.jsonl": "2abb66a6fa34545932c83d29d8120a1a6b2e08f2b75d280c239b38bbb25230d5",
+    "sahidic_joint_augmentation.jsonl": "7e1da83adeab9713894d26e62a727e633514747d86645264d2850362bd78f232",
+    "bohairic_joint_augmentation.jsonl": "84d2d7dcaf407b981bc3c05e26c951c685eacbce08b05c8d28f0e0553e87fb02",
+    "augmentation_coverage.jsonl": "e5d3f8e2a2302f1e8eccf5b3cef2a91017b2c29ba1e68c9bd00db2921655d6e8"
+  },
+  "label_policy": "Citation-selection positives preserve every printed marker. Dictionary-conditioned sentence labels require resolved and aligned training pairs. Pending citations remain in the dataset with explicit status."
+}
