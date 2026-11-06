@@ -1,4 +1,8 @@
-"""Extract Crum Bible references and align them to corpus spans."""
+"""Lossless Bible occurrence inventory, then separately auditable interpretation.
+
+Extraction does NOT depend on dialect, TLA resolution or local Bible coverage.
+Every explicit {bible:...} occurrence survives with its exact source offsets.
+"""
 
 import bisect
 import csv
@@ -369,6 +373,21 @@ def extract_file(path, lex, byform, pages):
             oid = hashlib.sha256(
                 f"{path.name}\0{absolute}\0{m[0]}".encode()
             ).hexdigest()[:24]
+            local_tlas = list(state["tlas"])
+            local_binding = state["binding"]
+            gender = re.match(r"\s*⟦[fm]⟧\{annotation: (feminine|masculine)\}", after)
+            if gender and len(local_tlas) > 1:
+                code = "f" if gender[1] == "feminine" else "m"
+                selected = [
+                    t for t in local_tlas if getattr(lex[t], "genders", ()) == (code,)
+                ]
+                if selected and len(selected) < len(local_tlas):
+                    local_tlas = selected
+                    local_binding = (
+                        "citation_gender"
+                        if len(selected) == 1
+                        else "ambiguous_citation_gender"
+                    )
             records.append(
                 dict(
                     id=oid,
@@ -389,8 +408,8 @@ def extract_file(path, lex, byform, pages):
                     paragraph_reference_order=j + 1,
                     heading_form=state["form"],
                     heading_gloss=local_gloss or state["gloss"],
-                    tla_candidates=state["tlas"],
-                    tla_binding=state["binding"],
+                    tla_candidates=local_tlas,
+                    tla_binding=local_binding,
                     dialect_codes=codes,
                     dialect_scope=scope,
                     dialect_evidence_before=before_tags,

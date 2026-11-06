@@ -1,21 +1,23 @@
 # GDEx
 
-Corpus example retrieval and ranking for the Coptic Dictionary Online.
+Example retrieval and ranking for the Coptic Dictionary Online.
 
-Search by TLA ID or Coptic lemma, choose a dialect, and compare individual examples and sets of three. Ambiguous lemmas open a list of entries with their meanings and forms. Target words are highlighted using TT token boundaries.
+Search by TLA ID or Coptic lemma and choose a dialect. Ambiguous lemmas open a list of entries with their definitions and attested forms. Highlighting follows native TT token boundaries.
 
-## Models
+## Learning tasks
 
-The system learns two related tasks:
+The interface compares two LightGBM designs:
 
-- **Inclusion:** TAB selections and Crum citations are positive examples. TAB exclusions provide negative examples. Crum citation position does not change the inclusion label.
-- **Preference:** TAB priorities and the order of citations within Crum sections provide ranking supervision.
+- **Inclusion + ranking:** a binary inclusion classifier and a separate continuous preference regressor.
+- **Unified model:** a single continuous model learns negative examples and graded source preferences. Unranked positive selections have a lower-bound loss.
 
-Both models use LightGBM. Features cover sentence form, dependency structure, target context, definition similarity, competing senses, and corpus collocations. Lexical overlap is one input; semantic similarity also supports paraphrases in English translations. The optional cross-sense experiment constructs negative entry–sentence pairs for homographs.
+TAB selections and all uniquely aligned Crum citations are positive inclusion examples. TAB exclusions, including `forbidden_urns=ALL`, have label −1. Binary training maps −1 to class 0. TAB priorities use 3, 2, 1; Crum preferences decrease evenly from 3 to 1.5 across aligned examples of an entry. Inclusion labels stay positive throughout that range.
 
-Search results retain recorded TAB and Crum selections first. Crum order is preserved within each source section. Remaining candidates are ranked by the learned models. Sets of three balance recommendation score, dependency coverage and repetition.
+Augmentation experiments compare shared-token homograph negatives, unrelated examples and mixtures at several sizes. Known positive pairs are protected. Evaluation holds out spelling families and removes repeated held-out Coptic texts from training; generated examples come from the training fold only. Model selection uses these development folds.
 
-Sahidic and Bohairic have separate candidate pools, frequency tables and models. Dialects are registered in `dialects.toml`. Attested additional forms and their dialects are recorded in `lexical_forms.json`.
+Features include sentence form, native dependencies, definition overlap, cached BGE cosine, competing senses and corpus collocations. Recorded source selections appear first, with available TAB/Crum partial orders preserved; learned scores order new candidates. Evaluation tables report model predictions before this source-order restoration. Augmentation comparisons use a fixed threshold; a separate development grid chooses the deployed inclusion operating point.
+
+Sahidic and Bohairic have separate pools, frequencies and models. `dialects.toml` registers dialects. `lexical_forms.json`, `lexical_conditions.json` and `token_alignments.json` record additional forms and reviewed alignments while retaining original TT annotations.
 
 ## Installation
 
@@ -41,21 +43,33 @@ citations_manual_merged.tab
 Crum_plain_text/
 ```
 
-Use the project copies of the lexicon, TAB annotations and Crum transcription. TT corpora are available from [Coptic SCRIPTORIUM](https://github.com/CopticScriptorium/Corpora). Data, caches, trained models and experiment reports stay outside version control.
+Use the project copies of the lexicon, TAB annotations and Crum transcription. TT corpora are available from [Coptic SCRIPTORIUM](https://github.com/CopticScriptorium/Corpora). The current [CDO entry index](https://coptic-dictionary.org/index.json) supplies definitions and dialect forms by TLA ID. Its snapshot is stored locally with a source hash. Updating it requires retraining.
 
 ```sh
 export COPTIC_SOURCE_ROOT=/path/to/coptic_dictionary
+python scripts/sync_dictionary.py
 python run.py build
 python scripts/audit_crum_bible.py
 python run.py dataset
 python run.py train
 python scripts/build_typicality.py
 python scripts/prepare_features.py
-python scripts/train_inclusion.py
+python scripts/compare_learning.py
+python scripts/select_thresholds.py
+python scripts/audit_learning_senses.py
+python scripts/ablate_learning.py
 python run.py serve --port 8012
 ```
 
-Open http://localhost:8012. To reuse the project's BGE vectors, place `embeddings.sqlite3` in `cache/` before extracting features. Missing vectors are recorded as missing values. Computing new embeddings requires the optional packages in `requirements-semantic.txt` and a locally cached `BAAI/bge-large-en-v1.5` model.
+Open http://localhost:8012. `/experiments` displays the current model comparison and all feature importances. `/sense-review` shows the five spelling groups and held-out source diagnostics. Reports, data, caches and model files stay outside version control.
+
+For optional semantic features, install `requirements-semantic.txt` and cache `BAAI/bge-large-en-v1.5` locally. Before model comparison, reuse `cache/embeddings.sqlite3` or run:
+
+```sh
+python scripts/cache_embeddings.py --sentences
+```
+
+Inference reads cached vectors. Missing vectors are explicit missing values. Embedding coverage affects results; local reports record the evaluated data and settings.
 
 ## Development
 
@@ -63,13 +77,11 @@ Open http://localhost:8012. To reuse the project's BGE vectors, place `embedding
 python -m unittest discover -s tests -q
 ```
 
-- `src/coptic_examples/corpus.py`: TT indexing
-- `src/coptic_examples/crum_audit.py`: Crum reference extraction and alignment
-- `src/coptic_examples/sense.py`: token matching and POS alignment
-- `src/coptic_examples/inclusion.py`: entry-conditioned features and prediction
-- `src/coptic_examples/typicality.py`: dependency frame and collocation counts
-- `src/coptic_examples/editorial.py`: recorded source selections and partial orders
-- `scripts/train_inclusion.py`: training and grouped evaluation
-- `src/coptic_examples/ui.py`: search and comparison pages
-
-Evaluation uses spelling-family folds and removes repeated held-out Coptic spans from training. Experimental results are written locally under `reports/`. The web interface also exposes local evaluation results when available.
+- `corpus.py`: TT indexing and native annotations
+- `lexicon.py`: TLA-specific definitions and dialect forms
+- `crum_audit.py`: complete explicit Bible-marker ledger and alignment
+- `sense.py`: target-token matching and reviewed alignments
+- `inclusion.py`: entry-conditioned feature extraction
+- `learning.py`: source labels, augmentation and both model designs
+- `editorial.py`: recorded source selections and partial orders
+- `scripts/compare_learning.py`: fixed-fold comparisons and final training

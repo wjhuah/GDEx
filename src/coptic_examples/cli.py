@@ -40,6 +40,7 @@ def main():
             "cheap",
             "learned",
             "research",
+            "unified",
             "quality_first",
             "linear",
             "definition_syntax",

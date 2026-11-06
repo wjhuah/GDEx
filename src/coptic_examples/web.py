@@ -10,6 +10,12 @@ from .ui import search_page, guide_page, experiments_page
 def serve(config, port=8012):
     search = Search(config)
     reports = {
+        "learning/REPORT.md",
+        "learning/comparison.json",
+        "learning/ablations.json",
+        "learning/senses.json",
+        "learning/thresholds.json",
+        "learning/order_reference.json",
         "CRUM_POSITIVE_UPDATE.md",
         "importance_audit/REPORT.md",
         "importance_audit/results.json",
@@ -83,6 +89,7 @@ def serve(config, port=8012):
             ranker = str(fields.get("ranker", default))
             if ranker not in {
                 "research",
+                "unified",
                 "cheap",
                 "learned",
                 "quality_first",

@@ -1,4 +1,7 @@
-"""Dialect-specific inclusion and editorial preference models."""
+"""Low-cost, per-dialect models: expert acceptance and Crum ordering style.
+
+No embedding model or LLM is loaded. Inference is JSON weights + NumPy dot products.
+"""
 
 import hashlib
 import json
@@ -504,6 +507,17 @@ class Shortlist:
     def search(self, tla, k=10, ranker="research"):
         if not 1 <= k <= 30:
             raise ValueError("shortlist size must be in 1..30")
+        if ranker in {"research", "unified"}:
+            from .learning import recommend
+
+            return recommend(
+                self.config,
+                self.lex,
+                self.lex[tla.upper()],
+                self.dialect,
+                k,
+                "joint" if ranker == "unified" else "two_models",
+            )
         entry = self.lex[tla.upper()]
         rows = []
         seen = set()
@@ -532,7 +546,9 @@ class Shortlist:
             crum_refs = [
                 ref for ref in gate.citations[c["id"]] if ref["tla"] == entry.tla
             ]
-            if forbidden(c, rules, c["id"] in manual_ids) and not crum_refs:
+            if forbidden(c, rules, c["id"] in manual_ids) and (
+                "ALL" in {v.upper() for v in rules} or not crum_refs
+            ):
                 excluded["forbidden"] += 1
                 continue
             if not real_translation(c["translation"]) or editorial_heading(
@@ -814,87 +830,40 @@ def export(config, result, folder="shortlists"):
     if folder not in {"shortlists", "research_shortlists"}:
         raise ValueError("Unknown shortlist export folder")
     output = config.reports / folder / result["dialect"] / result["TLA"]
-    candidates = []
-    for i, r in enumerate(result["shortlist"], 1):
-        candidates.append(
-            dict(
-                candidate_id=r["id"],
-                rank=i,
-                coptic=r["sent"],
-                translation=r["translation"],
-                citation=dict(
-                    urn=r["urn"],
-                    chapter=r["chapter"],
-                    verse=r["verse"],
-                    source=r["source"],
-                ),
-                dialect=r["dialect_id"],
-                learned_inclusion_score=r.get("learned_inclusion_score"),
-                quality_score=r["acceptance_score"],
-                crum_style_percentile=r["crum_style_percentile"],
-                information_score=r["information_score"],
-                combined_score=r["shortlist_score"],
-                syntax_signature=r["syntax"]["signature"],
-                dependency_annotation=r["syntax"]["annotation_status"],
-                sense_status=r["sense_status"],
-            )
+    candidates = [
+        dict(
+            rank=i,
+            candidate_id=r["id"],
+            coptic=r["sent"],
+            translation=r["translation"],
+            urn=r["urn"],
+            chapter=r["chapter"],
+            verse=r["verse"],
+            inclusion_score=r.get("learned_inclusion_score"),
+            preference_score=r["shortlist_score"],
+            syntax=r.get("syntax", {}),
+            crum_citations=r.get("crum_citations", []),
+            manual_selected=r.get("manual_selected", False),
         )
-    selections = {}
-    for method in ["rank", "kmeans", "coverage"]:
-        selected = choose(result["shortlist"], 3, method)
-        selections[method] = dict(
-            candidate_ids=[r["id"] for r in selected],
-            metrics=metrics(selected, result["shortlist"]),
-            experimental_local_selection=True,
-        )
+        for i, r in enumerate(result["shortlist"], 1)
+    ]
     packet = dict(
-        schema_version=2,
+        schema_version=3,
         TLA=result["TLA"],
         lemma=result["lemma"],
         definition=result["definition"],
         dialect=result["dialect"],
-        ranker=result.get("ranker", "research"),
-        inclusion_model=result.get("inclusion_model"),
-        definition_gate_applied=result.get("definition_gate_applied"),
-        intended_next_step="Future LLM may choose three using only these candidates; not run in this phase",
-        criteria=dict(
-            single_sentence=[
-                "correct target sense",
-                "informative target context",
-                "self-contained",
-                "readable and typical",
-            ],
-            set_of_three=[
-                "different target-centered syntactic uses",
-                "avoid redundant contexts",
-                "never mix dialects",
-            ],
-        ),
+        architecture=result.get("architecture"),
         candidates=candidates,
-        local_selection_experiments=selections,
-        model_status=result["model_status"],
-        no_llm_called=True,
-        no_embedding_model_loaded=True,
-        warnings=result["warnings"],
     )
     write_json(output / "packet.json", packet)
-    content = [
-        f"<h1>{html.escape(result['TLA'])} · {html.escape(result['lemma'])} · {html.escape(result['dialect'])}</h1>",
-        "<p>Ten-candidate local shortlist. No LLM was called. Three-example sets below are local experiments.</p>",
-    ]
-    for c in candidates:
-        content.append(
-            f"<article><h2>#{c['rank']} · quality {c['quality_score']:.3f} · style {c['crum_style_percentile']:.3f}</h2><p class=coptic>{html.escape(c['coptic'])}</p><p>{html.escape(c['translation'])}</p><p>{html.escape(', '.join(c['syntax_signature']))}</p><small>{html.escape(c['citation']['urn'])} {c['citation']['chapter']}:{c['citation']['verse']}</small></article>"
-        )
-    content.append(
-        "<h2>Local selection experiments</h2><pre>"
-        + html.escape(json.dumps(selections, ensure_ascii=False, indent=2))
-        + "</pre>"
+    articles = "".join(
+        f"<article><h2>#{r['rank']}</h2><p>{html.escape(r['coptic'])}</p><p>{html.escape(r['translation'])}</p></article>"
+        for r in candidates
     )
-    document = (
-        '<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1"><title>Coptic shortlist</title><style>body{font:16px/1.65 system-ui;max-width:1100px;margin:35px auto;padding:0 20px;color:#183044;background:#f5f7f8}article{padding:24px;background:white;border:1px solid #d8e1e6;margin:20px 0;border-radius:8px}.coptic{font:24px/1.8 serif}small{overflow-wrap:anywhere}pre{white-space:pre-wrap}</style>'
-        + "".join(content)
+    (output / "review.html").write_text(
+        "<!doctype html><html><meta charset=utf-8><title>Coptic examples</title>"
+        + articles
         + "</html>"
     )
-    (output / "review.html").write_text(document, encoding="utf-8")
     return packet

@@ -1,4 +1,4 @@
-"""TAB and Crum training records."""
+"""Rebuild supervision from original manual references and audited Crum references."""
 
 import csv
 import hashlib

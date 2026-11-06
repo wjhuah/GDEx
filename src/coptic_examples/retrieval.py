@@ -78,6 +78,7 @@ class Search:
             "cheap",
             "learned",
             "research",
+            "unified",
             "quality_first",
             "definition_syntax",
         }:

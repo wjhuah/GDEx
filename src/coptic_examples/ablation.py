@@ -1,4 +1,8 @@
-"""Grouped ranking experiments and feature ablations."""
+"""Matched-candidate ablations; Crum style and expert acceptance stay separate.
+
+Only cached, real BGE vectors are read. No downloads, embeddings or LLM calls.
+All generated negatives are training-only, after spelling-family/text purging.
+"""
 
 import hashlib
 import importlib.util

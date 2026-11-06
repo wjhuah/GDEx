@@ -92,7 +92,9 @@ def forbidden_rules(annotations):
 
 def forbidden(candidate, rules, manual_positive=False):
     for rule in rules:
-        if rule.upper() in {"ALL", "ONLY"}:
+        if rule.upper() == "ALL":
+            return True
+        if rule.upper() == "ONLY":
             if not manual_positive:
                 return True
         elif work_urn(rule) == candidate["work"]:

@@ -1,4 +1,4 @@
-"""Index TT translation spans and their token annotations."""
+"""Read all TT files, preserving citation identity, group text and native syntax."""
 
 import hashlib
 import html

@@ -102,7 +102,7 @@ class PipelineTests(unittest.TestCase):
             verse="22",
         )
         self.assertTrue(forbidden(r, {"ALL"}))
-        self.assertFalse(forbidden(r, {"ALL"}, True))
+        self.assertTrue(forbidden(r, {"ALL"}, True))
         self.assertFalse(forbidden(r, set()))
         self.assertTrue(forbidden(r, {"urn:cts:copticLit:ot.ruth.coptot_ed:1"}))
 

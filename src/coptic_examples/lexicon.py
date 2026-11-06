@@ -11,6 +11,9 @@ class Entry:
     gloss: str
     forms: tuple
     form_dialects: dict = None
+    gloss_source: str = "CCL XML"
+    original_gloss: str = ""
+    genders: tuple = ()
 
 
 def load(path):
@@ -59,6 +62,16 @@ def load(path):
                 tuple(dict.fromkeys(forms)),
                 {k: sorted(v) for k, v in form_dialects.items()},
             )
+        if tla in out:
+            out[tla].genders = tuple(
+                sorted(
+                    {
+                        norm(c.text).rstrip(".")
+                        for c in el.iter()
+                        if c.tag.rsplit("}", 1)[-1] == "gen" and norm(c.text)
+                    }
+                )
+            )
         el.clear()
     import json
     from pathlib import Path
@@ -76,4 +89,40 @@ def load(path):
                 entry.form_dialects[key] = sorted(
                     set(entry.form_dialects[key]) | set(codes)
                 )
+    from .config import Config, PROJECT
+
+    snapshot = PROJECT / "cache/cdo_index.json"
+    if snapshot.exists() and Path(path).resolve() == Config().lexicon.resolve():
+        apply_snapshot(out, json.loads(snapshot.read_text()))
     return out
+
+
+def apply_snapshot(entries, records):
+    """Merge current definitions and attested dialect forms by TLA identity."""
+    for remote in records:
+        tla = remote["id"]
+        if tla not in entries:
+            continue
+        entry = entries[tla]
+        english = [
+            text
+            for sense in remote.get("senses", [])
+            for text in sense.get("translations", {}).get("en", [])
+            if text
+        ]
+        if english:
+            entry.original_gloss = entry.gloss
+            entry.gloss = " | ".join(dict.fromkeys(english))
+            entry.gloss_source = "https://coptic-dictionary.org/entry/" + tla
+        for record in remote.get("forms", []):
+            form = lemma_key(record.get("orth", ""))
+            code = record.get("dialect", "")
+            if not form:
+                continue
+            entry.forms = tuple(dict.fromkeys((*entry.forms, form)))
+            if entry.form_dialects is None:
+                entry.form_dialects = {}
+            entry.form_dialects[form] = sorted(
+                set(entry.form_dialects.get(form, [])) | ({code} if code else set())
+            )
+    return entries

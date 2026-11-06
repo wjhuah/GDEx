@@ -1,4 +1,4 @@
-"""Match dictionary entries to TT tokens."""
+"""Token-level eligibility precedes example quality. No substring or invented variants."""
 
 from .text import lemma_key
 from functools import lru_cache
