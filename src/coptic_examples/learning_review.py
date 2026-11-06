@@ -400,5 +400,42 @@ def sense_page(config):
             )
             + "</details></section>"
         )
+    token_path = config.reports / "learning/token_senses.json"
+    if token_path.exists():
+        token_rows = []
+        for item in json.loads(token_path.read_text()):
+            held = [
+                r
+                for r in item["contrasts"]
+                if {r["tla"], r["rival"]} == {"C992", "C993"}
+            ]
+            trained = [
+                r
+                for r in item.get("training_contrasts", [])
+                if {r["tla"], r["rival"]} == {"C992", "C993"}
+            ]
+            token_rows.append(
+                [
+                    item["dialect"],
+                    item["training_pairs"],
+                    fmt(item["auc"]),
+                    str(sum(r["correct"] for r in trained)) + "/" + str(len(trained)),
+                    str(sum(r["correct"] for r in held)) + "/" + str(len(held)),
+                ]
+            )
+        body += (
+            "<section class=panel><h3>Deployed token comparison</h3><p>The preceding tables evaluate the base models. Search also compares competing entries at each target token using this classifier.</p>"
+            + table(
+                [
+                    "Dialect",
+                    "Training pairs",
+                    "Held-out AUC",
+                    "Father: training",
+                    "Father: held-out",
+                ],
+                token_rows,
+            )
+            + "</section>"
+        )
     body += '<section class=panel><h3>Source correction</h3><p>The 2020 local XML gives both C771 and C772 “ox, cow”. The current CDO index gives C771 “cow” and C772 “ox”. The application now reads the current entry-specific definitions; model features and training have been rebuilt from that snapshot.</p><p><a href="https://coptic-dictionary.org/entry/C771">C771 · cow</a> · <a href="https://coptic-dictionary.org/entry/C772">C772 · ox</a> · <a href="/experiments">Current model comparison</a></p></section>'
     return shell(body, "Sense audit", "sense")
