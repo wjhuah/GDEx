@@ -1,6 +1,6 @@
 # GDEx
 
-Coptic dictionary example retrieval and learned ranking. Sahidic and Bohairic are processed separately.
+Coptic dictionary example retrieval and learned ranking. 
 
 ```sh
 pip install -r requirements.txt
