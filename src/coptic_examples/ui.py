@@ -205,7 +205,7 @@ def search_page(
         short = result.get("shortlist_evidence", {})
         provisional = short.get("model_status", {}).get("provisional", False)
         content = (
-            f'<section class="panel entry"><div class="entry-top"><h2><span class="coptic lemma">{esc(e["lemma"])}</span> <span class="pos">{esc(e.get("pos") or "")}</span></h2><span class="dialect">{esc(Dialects().data[result["dialect"]]["name"])}</span></div><p class="definition">{esc(e["gloss"])}</p><p class=muted><a href="https://coptic-dictionary.org/entry/{esc(e['tla'])}">Dictionary entry ↗</a></p><p class="muted">{esc(e["tla"])} · Raw matches:  {result["candidate_count"]:,} · Candidates: {len(rows)} · '
+            f'<section class="panel entry"><div class="entry-top"><h2><span class="coptic lemma">{esc(e["lemma"])}</span> <span class="pos">{esc(e.get("pos") or "")}</span></h2><span class="dialect">{esc(Dialects().data[result["dialect"]]["name"])}</span></div><p class="definition">{esc(e["gloss"])}</p><p class=muted><a href="https://coptic-dictionary.org/entry/{esc(e["tla"])}">Dictionary entry ↗</a></p><p class="muted">{esc(e["tla"])} · Raw matches:  {result["candidate_count"]:,} · Candidates: {len(rows)} · '
             + (
                 "Inclusion + ranking"
                 if result["ranker"] == "research"

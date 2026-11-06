@@ -152,3 +152,16 @@ class DuplicateEvidenceTests(unittest.TestCase):
         self.assertEqual(out[0]["crum_citations"], b["crum_citations"])
         self.assertTrue(out[0]["manual_selected"])
         self.assertEqual(out[0]["manual_priority"], 1)
+
+
+class CompatibilityTests(unittest.TestCase):
+    def test_source_syntax_supports_python_311(self):
+        import ast
+
+        root = Path(__file__).resolve().parents[1]
+        for folder in ["src", "scripts"]:
+            for path in (root / folder).rglob("*.py"):
+                with self.subTest(path=path.relative_to(root)):
+                    ast.parse(
+                        path.read_text(), filename=str(path), feature_version=(3, 11)
+                    )

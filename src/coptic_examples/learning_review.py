@@ -37,7 +37,7 @@ def experiments(config, dialect):
         f'<option value="{d}"'
         + (" selected" if d == dialect else "")
         + f">{d}</option>"
-        for d in ["sahidic", "bohairic"]
+        for d in Dialects().data
     )
     body = f'<section class=panel><h2>Inclusion and ordering</h2><form><label>Dialect <select name=dialect>{options}</select></label><button>Apply</button></form><p>Five spelling-family folds. Identical Coptic sentences are removed from training whenever they occur in the held-out fold. Added negatives use training sentences only.</p><p>{data["examples"]:,} entry–sentence examples. Source counts can overlap: {html.escape(str(data["sources"]))}.</p></section>'
     body += (
