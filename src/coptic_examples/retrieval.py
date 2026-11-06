@@ -88,7 +88,21 @@ class Search:
                 )
             from .shortlist import Shortlist
 
-            short = Shortlist(self.config, dialect).search(e.tla, top_n, ranker=ranker)
+            if ranker in {"research", "unified"}:
+                from .learning import recommend
+
+                short = recommend(
+                    self.config,
+                    self.lex,
+                    e,
+                    dialect,
+                    top_n,
+                    "joint" if ranker == "unified" else "two_models",
+                )
+            else:
+                short = Shortlist(self.config, dialect).search(
+                    e.tla, top_n, ranker=ranker
+                )
             rows = [
                 dict(r, score=r["shortlist_score"], quality_score=r["acceptance_score"])
                 for r in short["shortlist"]
@@ -144,6 +158,10 @@ class Search:
             sense_conflict=0,
         )
         for c in candidates:
+            from .integrity import alignment_issue
+
+            if alignment_issue(c):
+                continue
             if forbidden(c, self.rules[e.tla], c["id"] in manual_ids):
                 counts["forbidden"] += 1
                 continue

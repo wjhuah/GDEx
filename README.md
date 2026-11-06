@@ -2,7 +2,7 @@
 
 Example retrieval and ranking for the Coptic Dictionary Online.
 
-Search by TLA ID or Coptic lemma and choose a dialect. Ambiguous lemmas open a list of entries with their definitions and attested forms. Highlighting follows native TT token boundaries.
+Search by TLA ID or Coptic lemma and choose a dialect. Ambiguous lemmas open a list of entries with their definitions and attested forms. Highlighting follows native TT token boundaries. Damaged original spans retain their source markers; marked short fragments paired with long translations are excluded from model examples and recommendations. Dictionary subcategories are retained, with title senses distinguished in English definitions.
 
 ## Learning tasks
 
@@ -58,6 +58,7 @@ python scripts/compare_learning.py
 python scripts/select_thresholds.py
 python scripts/audit_learning_senses.py
 python scripts/ablate_learning.py
+python scripts/check_negative_weights.py
 python run.py serve --port 8012
 ```
 
@@ -85,3 +86,5 @@ python -m unittest discover -s tests -q
 - `learning.py`: source labels, augmentation and both model designs
 - `editorial.py`: recorded source selections and partial orders
 - `scripts/compare_learning.py`: fixed-fold comparisons and final training
+
+Training exports are written to `data/derived/model_rows_<dialect>.jsonl`, with the ordered input columns in `feature_schema.json` and validation assignments in `fold_manifest_<dialect>.json`. `check_negative_weights.py` compares class balancing with class-and-entry balancing on the same folds.

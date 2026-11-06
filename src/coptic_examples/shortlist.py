@@ -15,6 +15,7 @@ from .dialects import Dialects
 from .features import Features, GDEX, UD, quality
 from .lexicon import load
 from .selection import profile, choose, metrics
+from .integrity import alignment_issue
 from .text import real_translation, editorial_heading, sm_freq, norm, lemma_key
 
 INFO = [
@@ -245,8 +246,10 @@ def train(config):
             seen.add(key)
             entry = lex[r["TLA"]]
             c = r["candidate"]
-            if not real_translation(c["translation"]) or editorial_heading(
-                c["translation"]
+            if (
+                alignment_issue(c)
+                or not real_translation(c["translation"])
+                or editorial_heading(c["translation"])
             ):
                 continue
             x, _, _ = numbers(c, entry, extractor)
@@ -469,13 +472,10 @@ class Shortlist:
             stamp = db.execute(
                 "SELECT value FROM metadata WHERE key='fingerprint'"
             ).fetchone()[0]
-        if (
+        self.model_stale = (
             stamp != self.meta["corpus_fingerprint"]
             or Dialects().fingerprint != self.meta["dialect_registry_fingerprint"]
-        ):
-            raise RuntimeError(
-                "Rebuild dialect models after changing corpus or registry"
-            )
+        )
         self.extractor = Features(
             json.loads((directory / "frequencies.json").read_text())
         )
@@ -518,6 +518,10 @@ class Shortlist:
                 k,
                 "joint" if ranker == "unified" else "two_models",
             )
+        if self.model_stale:
+            raise RuntimeError(
+                "Rebuild legacy models after changing corpus or registry"
+            )
         entry = self.lex[tla.upper()]
         rows = []
         seen = set()
@@ -551,8 +555,10 @@ class Shortlist:
             ):
                 excluded["forbidden"] += 1
                 continue
-            if not real_translation(c["translation"]) or editorial_heading(
-                c["translation"]
+            if (
+                alignment_issue(c)
+                or not real_translation(c["translation"])
+                or editorial_heading(c["translation"])
             ):
                 excluded["unusable_translation_or_heading"] += 1
                 continue

@@ -199,6 +199,35 @@ def experiments(config, dialect):
             )
             + "</section>"
         )
+    weight_path = config.reports / "learning/negative_weight_comparison.json"
+    if weight_path.exists():
+        weights = [
+            r for r in json.loads(weight_path.read_text()) if r["dialect"] == dialect
+        ]
+        body += (
+            "<section class=panel><h3>Negative-weight diagnostic</h3><p>All original exclusion labels are retained. Class balancing gives each class half the total training weight. The alternative also gives each entry equal weight within its class. Same folds and augmentation; threshold 0.5.</p>"
+            + table(
+                [
+                    "Architecture",
+                    "Class-balanced AUC",
+                    "Entry-balanced AUC",
+                    "Class-balanced F1",
+                    "Entry-balanced F1",
+                ],
+                [
+                    [
+                        r["architecture"],
+                        fmt(r["class_balanced_auc"]),
+                        fmt(r["entry_class_balanced_auc"]),
+                        fmt(r["class_balanced_f1"]),
+                        fmt(r["entry_class_balanced_f1"]),
+                    ]
+                    for r in weights
+                ],
+            )
+            + "</section>"
+        )
+    body += '<section class=panel><h3>Data files and source integrity</h3><p><a href="/reports/learning/DATASET_EXAMPLES.json">Readable training examples with all 62 inputs</a> · <a href="/reports/learning/dataset_checks.json">Dataset counts</a> · <a href="/reports/learning/corpus_integrity.json">Damaged source spans</a></p><p>Dictionary subcategories are preserved. C993 uses the title qualifier in its definition and competing-entry features. Marked short damaged spans paired with long translations are excluded from training pairs and recommendations, with original source evidence retained.</p></section>'
     for model, values in data["importance"].items():
         body += (
             "<section class=panel><details><summary>"

@@ -20,7 +20,9 @@ corpus = Corpus(cfg)
 report = json.loads((cfg.reports / "learning/comparison.json").read_text())
 rows = [json.loads(s) for s in (cfg.derived / "learning_examples.jsonl").open()]
 spellings = {"ϩⲟⲟⲩ", "ⲧⲱⲙⲧ", "ⲉϩⲉ", "ⲡⲉ", "ⲉ"}
-entries = [e for e in lex.values() if e.lemma in spellings or e.tla in {"C992", "C998"}]
+entries = [
+    e for e in lex.values() if e.lemma in spellings or e.tla in {"C992", "C993", "C998"}
+]
 ids = {e.tla for e in entries}
 inventory = []
 heldout = []

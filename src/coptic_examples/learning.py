@@ -4,6 +4,7 @@ import hashlib, json, math
 from collections import Counter, defaultdict
 import numpy as np
 import lightgbm as lgb
+from .integrity import alignment_issue
 from .dialects import Dialects
 from .config import write_json
 from .annotations import load_manual, forbidden_rules
@@ -34,6 +35,8 @@ def build_examples(config):
     conflicts = []
     for r in raw:
         if not r.get("TLA") or r["task"] not in {"acceptance", "crum_style"}:
+            continue
+        if alignment_issue(r["candidate"]):
             continue
         key = (r["dialect"], r["TLA"], r["text_key"])
         negative = r["task"] == "acceptance" and r["gain"] == 0
@@ -104,6 +107,8 @@ def build_examples(config):
                         source="TAB_ALL",
                     )
                 )
+                if alignment_issue(c):
+                    continue
                 if not real_translation(c["translation"]) or editorial_heading(
                     c["translation"]
                 ):
@@ -181,12 +186,27 @@ def build_examples(config):
     return result
 
 
-def fit_inclusion(rows):
+def sample_weights(rows, balance="class"):
+    labels = [r["y"] > 0 for r in rows]
+    counts = Counter(labels)
+    if balance == "class":
+        return np.asarray([len(rows) / (2 * counts[y]) for y in labels])
+    groups = Counter((r["tla"], y) for r, y in zip(rows, labels))
+    entries = Counter(y for tla, y in groups)
+    return np.asarray(
+        [
+            len(rows) / (2 * entries[y] * groups[(r["tla"], y)])
+            for r, y in zip(rows, labels)
+        ]
+    )
+
+
+def fit_inclusion(rows, balance="class"):
     y = np.asarray([r["y"] > 0 for r in rows], dtype=int)
     counts = np.bincount(y, minlength=2)
     if not all(counts):
         return None
-    weights = np.asarray([len(rows) / (2 * counts[v]) for v in y])
+    weights = sample_weights(rows, balance)
     d = lgb.Dataset(
         np.asarray([r["x"] for r in rows]),
         label=y,
@@ -228,7 +248,7 @@ def rank_observations(rows):
     return out
 
 
-def fit_score(rows, joint=False):
+def fit_score(rows, joint=False, balance="class"):
     values = rank_observations(rows)
     if not joint:
         values = [r for r in values if r["y"] > 0 and not r["bounded"]]
@@ -240,7 +260,7 @@ def fit_score(rows, joint=False):
     if joint:
         positive = np.asarray([r["y"] > 0 for r in values])
         counts = Counter(positive)
-        weights = np.asarray([len(values) / (2 * counts[v]) for v in positive])
+        weights = sample_weights(values, balance)
 
     def objective(pred, data):
         delta = pred - target
@@ -419,6 +439,25 @@ def augment(train, ratio, kind, ef, lex, memo):
     return out
 
 
+def model_fingerprints(config, lex):
+    from .config import database
+
+    with database(config.index) as db:
+        corpus_stamp = db.execute(
+            "SELECT value FROM metadata WHERE key='fingerprint'"
+        ).fetchone()[0]
+    payload = [
+        (e.tla, e.gloss, e.forms, e.form_dialects, e.subcategories)
+        for e in sorted(lex.values(), key=lambda e: e.tla)
+    ]
+    return dict(
+        corpus_fingerprint=corpus_stamp,
+        lexicon_sha256=hashlib.sha256(
+            json.dumps(payload, ensure_ascii=False, sort_keys=True).encode()
+        ).hexdigest(),
+    )
+
+
 class LearningModel:
     def __init__(self, config, lex, dialect):
         self.config = config
@@ -432,6 +471,16 @@ class LearningModel:
             ).hexdigest()
         ):
             raise RuntimeError("Retrain after updating the dictionary snapshot")
+        if (
+            self.metadata["manual_sha256"]
+            != hashlib.sha256(config.manual.read_bytes()).hexdigest()
+        ):
+            raise RuntimeError("Retrain entry models after changing TAB annotations")
+        for key, value in model_fingerprints(config, lex).items():
+            if self.metadata.get(key) != value:
+                raise RuntimeError(
+                    "Retrain entry models after changing corpus or dictionary fields"
+                )
         self.features = EntryFeatures(config, lex, dialect)
         self.models = {
             name: lgb.Booster(model_file=str(self.folder / (name + ".txt")))
@@ -529,6 +578,10 @@ def recommend(config, lex, entry, dialect, k, architecture):
     }
     evidence = DefinitionGate(config, lex, entry, dialect)
     for c in candidates:
+        issue = alignment_issue(c)
+        if issue:
+            excluded[issue] += 1
+            continue
         if forbidden(c, rules, c["id"] in priorities):
             excluded["TAB_forbidden"] += 1
             continue

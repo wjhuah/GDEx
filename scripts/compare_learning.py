@@ -18,6 +18,7 @@ from coptic_examples.config import Config, write_json
 from coptic_examples.lexicon import load
 from coptic_examples.learning import (
     build_examples,
+    model_fingerprints,
     fit_inclusion,
     fit_score,
     predict,
@@ -79,9 +80,35 @@ for dialect in Dialects().data:
     ef = EntryFeatures(cfg, lex, dialect)
     for r in data:
         r["x"] = ef.vector(r["candidate"], lex[r["tla"]])
+    write_json(
+        cfg.derived / "feature_schema.json",
+        dict(columns=COLUMNS_INCLUSION, labels={"positive": 1, "negative": -1}),
+    )
+    with (cfg.derived / ("model_rows_" + dialect + ".jsonl")).open("w") as stream:
+        for r in data:
+            clean = dict(
+                r,
+                x=[
+                    float(v) if v is not None and np.isfinite(v) else None
+                    for v in r["x"]
+                ],
+            )
+            stream.write(json.dumps(clean, ensure_ascii=False, allow_nan=False) + "\n")
     fam = sorted({r["family"] for r in data})
     np.random.default_rng(42).shuffle(fam)
     folds = {f: i % 5 for i, f in enumerate(fam)}
+    write_json(
+        cfg.derived / ("fold_manifest_" + dialect + ".json"),
+        [
+            dict(
+                tla=r["tla"],
+                sentence_id=r["candidate"]["id"],
+                text_key=r["text_key"],
+                fold=folds[r["family"]],
+            )
+            for r in data
+        ],
+    )
     predictions = defaultdict(list)
     counts = []
     memo = {}
@@ -218,6 +245,7 @@ for dialect in Dialects().data:
             key=lambda r: -r["gain"],
         )
     metadata = dict(
+        **model_fingerprints(cfg, lex),
         columns=COLUMNS_INCLUSION,
         choices=choices,
         manual_sha256=hashlib.sha256(cfg.manual.read_bytes()).hexdigest(),

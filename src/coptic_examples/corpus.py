@@ -13,7 +13,7 @@ from .text import ATTR, COPTIC, lemma_key, norm, pos, variants, work_urn
 from .config import database
 from .dialects import Dialects
 
-SCHEMA = "5"
+SCHEMA = "6"
 
 
 def attrs(line):
@@ -28,13 +28,14 @@ def parse_tt(path, root):
     """
     text = path.read_text(encoding="utf-8-sig")
     groups, tokens, meta = [], [], {}
+    original_groups = []
     chapter = verse = translation = vid = ""
     sequence = 0
     has_translation_close = "</translation>" in text
     registry = Dialects()
 
     def finish():
-        nonlocal groups, tokens, translation, sequence
+        nonlocal groups, tokens, translation, sequence, original_groups
         sent = norm(" ".join(groups)) or norm(" ".join(t["form"] for t in tokens))
         result = None
         if sent and COPTIC.search(sent):
@@ -56,11 +57,16 @@ def parse_tt(path, root):
                 parsing=meta.get("parsing", ""),
                 license=meta.get("license", ""),
                 tokens=tokens.copy(),
+                original_groups=original_groups.copy(),
+                has_lacuna=any(
+                    "[" in g or "]" in g or "…" in g for g in original_groups
+                ),
             )
             result["dialect_id"], result["dialect_evidence"] = registry.identify(
                 result["dialect"], source
             )
         groups, tokens, translation = [], [], ""
+        original_groups = []
         return result
 
     for raw in text.splitlines():
@@ -83,6 +89,7 @@ def parse_tt(path, root):
             translation = a["translation"]
         if "norm_group" in a:
             groups.append(a["norm_group"])
+            original_groups.append(a.get("orig_group", a["norm_group"]))
         if re.match(r"<(?:\w+:)?norm(?:\s|>)", line) and "norm_group" not in a:
             rawpos = a.get("pos", "")
             tokens.append(

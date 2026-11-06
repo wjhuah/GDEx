@@ -14,6 +14,7 @@ class Entry:
     gloss_source: str = "CCL XML"
     original_gloss: str = ""
     genders: tuple = ()
+    subcategories: tuple = ()
 
 
 def load(path):
@@ -63,6 +64,15 @@ def load(path):
                 {k: sorted(v) for k, v in form_dialects.items()},
             )
         if tla in out:
+            out[tla].subcategories = tuple(
+                sorted(
+                    {
+                        norm(c.text)
+                        for c in el.iter()
+                        if c.tag.rsplit("}", 1)[-1] == "subc" and norm(c.text)
+                    }
+                )
+            )
             out[tla].genders = tuple(
                 sorted(
                     {
@@ -94,6 +104,9 @@ def load(path):
     snapshot = PROJECT / "cache/cdo_index.json"
     if snapshot.exists() and Path(path).resolve() == Config().lexicon.resolve():
         apply_snapshot(out, json.loads(snapshot.read_text()))
+    for entry in out.values():
+        if "Titel" in entry.subcategories:
+            entry.gloss += " (title)"
     return out
 
 

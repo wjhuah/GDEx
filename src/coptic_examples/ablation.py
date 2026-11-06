@@ -331,6 +331,21 @@ def build_rows(config):
         for r in items:
             r["gain"] = 1 - 0.8 * levels.index(r["rank"]) / max(1, len(levels) - 1)
     vectors.connection.close()
+    from .integrity import alignment_issue
+
+    rejected = [r for r in result if alignment_issue(r["candidate"])]
+    write_json(
+        config.reports / "learning/integrity_rejections.json",
+        [
+            dict(
+                tla=r["TLA"],
+                sentence_id=r["candidate"]["id"],
+                reason=alignment_issue(r["candidate"]),
+            )
+            for r in rejected
+        ],
+    )
+    result = [r for r in result if not alignment_issue(r["candidate"])]
     path = config.derived / "ablation_rows.jsonl"
     with path.open("w", encoding="utf-8") as f:
         for i, r in enumerate(result):

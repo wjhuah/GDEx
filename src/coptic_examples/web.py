@@ -10,6 +10,10 @@ from .ui import search_page, guide_page, experiments_page
 def serve(config, port=8012):
     search = Search(config)
     reports = {
+        "learning/DATASET_EXAMPLES.json",
+        "learning/dataset_checks.json",
+        "learning/corpus_integrity.json",
+        "learning/negative_weight_comparison.json",
         "learning/REPORT.md",
         "learning/comparison.json",
         "learning/ablations.json",

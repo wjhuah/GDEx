@@ -165,3 +165,63 @@ class CompatibilityTests(unittest.TestCase):
                     ast.parse(
                         path.read_text(), filename=str(path), feature_version=(3, 11)
                     )
+
+
+class IntegrityTests(unittest.TestCase):
+    def test_damaged_three_token_span_with_full_verse_is_rejected(self):
+        from coptic_examples.integrity import alignment_issue
+
+        c = dict(
+            tokens=[{}, {}, {}],
+            original_groups=["[]ⲙⲡⲉϥⲉⲓⲱⲧ"],
+            translation="And if he have no brethren ye shall give his inheritance to his father's brother",
+        )
+        self.assertEqual(alignment_issue(c), "lacuna_fragment_with_full_translation")
+        c["original_groups"] = ["ⲙⲡⲉϥⲉⲓⲱⲧ"]
+        self.assertIsNone(alignment_issue(c))
+
+    def test_title_subcategory_is_retained_and_disambiguates_gloss(self):
+        from coptic_examples.lexicon import load
+
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "lex.xml"
+            p.write_text(
+                '<TEI><entry xml:id="title"><form><orth>ⲉⲓⲱⲧ</orth></form><gramGrp><pos>Subst.</pos><subc>Titel</subc></gramGrp><sense><quote xml:lang="en">father</quote></sense></entry></TEI>'
+            )
+            e = load(p)["title"]
+        self.assertEqual(e.subcategories, ("Titel",))
+        self.assertEqual(e.gloss, "father (title)")
+
+
+class NegativeWeightTests(unittest.TestCase):
+    def test_class_and_entry_totals(self):
+        from coptic_examples.learning import sample_weights
+
+        rows = (
+            [dict(tla="common", y=-1)] * 100
+            + [dict(tla="rare", y=-1)]
+            + [dict(tla="positive", y=1)] * 5
+        )
+        w = sample_weights(rows, "entry_class")
+        self.assertAlmostEqual(sum(w[:100]), w[100])
+        self.assertAlmostEqual(sum(w[:101]), sum(w[101:]))
+
+
+class OriginalSpanTests(unittest.TestCase):
+    def test_parser_preserves_missing_text_markers(self):
+        from coptic_examples.corpus import parse_tt
+        from coptic_examples.integrity import alignment_issue
+
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "sample.tt"
+            p.write_text("""<meta languages="Sahidic">
+<verse_n verse_n="10" translation="And if he have no brethren ye shall give his inheritance to his father brother">
+<norm_group orig_group="[]ⲙⲡⲉϥⲉⲓⲱⲧ" norm_group="ⲙⲡⲉϥⲉⲓⲱⲧ">
+<norm xml:id="u1" norm="ⲙ" lemma="ⲛ" pos="PREP">
+<norm xml:id="u2" norm="ⲡⲉϥ" lemma="ⲡⲉϥ" pos="PPOS">
+<norm xml:id="u3" norm="ⲉⲓⲱⲧ" lemma="ⲉⲓⲱⲧ" pos="N">
+</verse_n>""")
+            row = list(parse_tt(p, Path(d)))[0]
+        self.assertTrue(row["has_lacuna"])
+        self.assertEqual(row["original_groups"], ["[]ⲙⲡⲉϥⲉⲓⲱⲧ"])
+        self.assertEqual(alignment_issue(row), "lacuna_fragment_with_full_translation")
