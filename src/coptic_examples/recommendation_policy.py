@@ -1,5 +1,6 @@
 """Recommendation length and reviewed dialect restrictions."""
 
+import base64
 import json
 import time
 import unicodedata
@@ -8,7 +9,7 @@ from urllib.error import HTTPError
 from .text import COPTIC
 
 MAX_LETTERS = 30
-REMOTE = "https://raw.githubusercontent.com/wjhuah/GDEx/main/dialect_bias.md"
+REMOTE = "https://api.github.com/repos/wjhuah/GDEx/contents/dialect_bias.md?ref=main"
 _checked = {}
 
 
@@ -57,14 +58,17 @@ def dialect_bias(config):
             with urlopen(
                 Request(REMOTE, headers={"User-Agent": "GDEx"}), timeout=2
             ) as response:
-                remote = parse_bias(response.read(100000).decode("utf-8"))
+                payload = json.loads(response.read(150000))
+                remote = parse_bias(
+                    base64.b64decode(payload["content"], validate=False).decode("utf-8")
+                )
             cache.parent.mkdir(parents=True, exist_ok=True)
             tmp = cache.with_suffix(".tmp")
             tmp.write_text(json.dumps(remote))
             tmp.replace(cache)
         except HTTPError as exc:
             exc.close()
-        except (OSError, ValueError, UnicodeError):
+        except (OSError, ValueError, UnicodeError, KeyError, TypeError):
             pass
     if cache.exists():
         try:
