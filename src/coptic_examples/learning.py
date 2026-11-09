@@ -488,15 +488,25 @@ class LearningModel:
             if (self.folder / (name + ".txt")).exists()
         }
 
+        self.forest = None
+        if self.metadata.get("inclusion_algorithm") == "random_forest":
+            import joblib
+
+            self.forest = joblib.load(self.folder / "inclusion_rf.joblib")
+
     def score(self, candidates, entry, architecture):
         matrix = np.asarray([self.features.vector(c, entry) for c in candidates])
         if architecture == "joint":
             raw = self.models["joint_v2"].predict(matrix, num_threads=4)
             return 1 / (1 + np.exp(-np.clip(raw, -30, 30))), raw
         inc = (
-            self.models["inclusion_v2"].predict(matrix, num_threads=4)
-            if "inclusion_v2" in self.models
-            else np.full(len(candidates), 0.5)
+            self.forest.predict_proba(matrix)[:, 1]
+            if self.forest is not None
+            else (
+                self.models["inclusion_v2"].predict(matrix, num_threads=4)
+                if "inclusion_v2" in self.models
+                else np.full(len(candidates), 0.5)
+            )
         )
         rank = (
             self.models["ranking_v2"].predict(matrix, num_threads=4)
@@ -601,7 +611,14 @@ def recommend(config, lex, entry, dialect, k, architecture):
         if r["candidate"]["dialect_id"] == dialect
     }
     evidence = DefinitionGate(config, lex, entry, dialect)
+    from .recommendation_policy import exclusion_reason, dialect_bias
+
+    dialect_rules = dialect_bias(config)
     for c in candidates:
+        policy_issue = exclusion_reason(config, entry.tla, dialect, c, dialect_rules)
+        if policy_issue:
+            excluded[policy_issue] += 1
+            continue
         issue = alignment_issue(c)
         if issue:
             excluded[issue] += 1

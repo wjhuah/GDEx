@@ -49,7 +49,8 @@ class Search:
         found = [
             e
             for e in self.lex.values()
-            if lemma_key(query) in e.forms and (not upos or e.pos == pos(upos))
+            if lemma_key(query).casefold() in {f.casefold() for f in e.forms}
+            and (not upos or e.pos == pos(upos))
         ]
         if len(found) != 1:
             if found:

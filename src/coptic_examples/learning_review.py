@@ -53,6 +53,7 @@ def experiments(config, dialect):
         )
         + "<p>Unranked TAB selections supervise inclusion. The unified model gives them a lower bound of 1; their relative order stays unspecified. Binary training maps −1 to class 0.</p></section>"
     )
+    body = forest_panel(config, dialect) + body
     threshold_path = config.reports / "learning/thresholds.json"
     if threshold_path.exists():
         decision = json.loads(threshold_path.read_text())
@@ -439,3 +440,43 @@ def sense_page(config):
         )
     body += '<section class=panel><h3>Source correction</h3><p>The 2020 local XML gives both C771 and C772 “ox, cow”. The current CDO index gives C771 “cow” and C772 “ox”. The application now reads the current entry-specific definitions; model features and training have been rebuilt from that snapshot.</p><p><a href="https://coptic-dictionary.org/entry/C771">C771 · cow</a> · <a href="https://coptic-dictionary.org/entry/C772">C772 · ox</a> · <a href="/experiments">Current model comparison</a></p></section>'
     return shell(body, "Sense audit", "sense")
+
+
+def forest_panel(config, dialect):
+    path = config.reports / "forest/comparison.json"
+    if not path.exists():
+        return ""
+    report = json.loads(path.read_text())
+    result = next(r for r in report["results"] if r["dialect"] == dialect)
+    rows = []
+    for name, values in result["classification"].items():
+        m = values["fixed_05"]
+        rows.append(
+            [
+                "LightGBM" if name == "lgb" else "Random forest",
+                *[
+                    fmt(m[k])
+                    for k in [
+                        "auc",
+                        "average_precision",
+                        "macro_f1",
+                        "precision",
+                        "recall",
+                    ]
+                ],
+            ]
+        )
+    body = "<section class=panel><h2>Current inclusion classifier: Random forest</h2><p>Same candidate rows, spelling-family folds, duplicate-text purge and training-only augmentation. Classification below uses threshold 0.5. Deployed thresholds are selected on development folds; these folds also supplied the comparison.</p>"
+    body += table(
+        ["Classifier", "AUC", "Average precision", "Macro F1", "Precision", "Recall"],
+        rows,
+    )
+    body += '<p>Preference ordering and the token-sense head retain LightGBM. Older model comparisons follow below.</p><p><a href="/reports/forest/REPORT.md">Full comparison and all feature importances</a> · <a href="/reports/crum_lengths/REPORT.md">Crum lengths</a> · <a href="https://github.com/wjhuah/GDEx/blob/main/dialect_bias.md">Edit dialect restrictions</a> · <a href="https://github.com/wjhuah/GDEx/blob/main/regression_vocabulary.md">Regression vocabulary</a></p>'
+    body += table(
+        ["Feature", "Forest MDI share"],
+        [
+            [html.escape(r["feature"]), f'{r["mdi"]:.2%}']
+            for r in result["forest_importance"]
+        ],
+    )
+    return body + "</section>"

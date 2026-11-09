@@ -10,6 +10,12 @@ from .ui import search_page, guide_page, experiments_page
 def serve(config, port=8012):
     search = Search(config)
     reports = {
+        "forest/REPORT.md",
+        "forest/comparison.json",
+        "crum_lengths/REPORT.md",
+        "crum_lengths/summary.json",
+        "crum_lengths/entries.csv",
+        "crum_lengths/examples.csv",
         "learning/reference_counts.json",
         "learning/token_senses.json",
         "learning/DATASET_EXAMPLES.json",
