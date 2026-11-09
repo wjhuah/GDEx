@@ -4,6 +4,14 @@
 
 ### Planned work
 - [x] Replace the inclusion classifier with Random Forest; compare inclusion, ranking, and feature importance with the existing algorithms.
+
+On Sahidic, changing into Random Forest improve `inclusion` module a lot 🎉:
+
+| Classifier | AUC | Macro F1 |
+| :--- | :---: | :---: |
+| Tree | 0.9376 | 0.7128 |
+| RF | **0.9408** | **0.8089** |
+
 - [ ] Make Coptic input case-insensitive: `Ϩⲟⲟⲩ` and `ϩⲟⲟⲩ` should return the same entries.
 - [ ] Count Crum citations and aligned examples. Analyze sentence-length distributions, means, and Z-scores within each entry: are earlier examples shorter, and does Crum avoid long examples? Distinguish printed citation fragments from full corpus sentences.
 - [ ] Compare length-based adjustments with a simple cutoff above 30. Define the counting unit: characters, bound groups, or TT tokens. The adjustment formula and the note `+0.3` remain to be clarified. Regression case: the excessively long Proverbs 9:12 example.
