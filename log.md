@@ -86,35 +86,49 @@ also:
 
 - [x] Compare algorithm scores; report classification and ranking metrics separately.
 
-Inclusion Results (5-Fold Cross-Validation Mean)
+Inclusion
+Algorithm	AUC	Macro F1
+Random Forest	0.9337	0.7770
+LightGBM	0.9218	0.6530
+XGBoost	0.9210	0.6685
+CatBoost	0.9111	0.6262
 
-| Algorithm | AUC | Macro F1 |
-| :--- | :---: | :---: |
-| Random Forest | 0.9337 | 0.7776 |
-| LightGBM | 0.9213 | 0.6506 |
-| XGBoost | 0.9211 | 0.6655 |
-| CatBoost | 0.9144 | 0.6390 |
 
-Top 10 of RF: 
-Feature | Importance |
-|---|---:|
-| target_pos_conflict | 13.10% |
-| target_pos_match_ratio | 11.86% |
-| sense_cosine | 9.98% |
-| sense_cosine_missing | 8.83% |
-| rival_count | 6.69% |
-| sense_cosine_margin | 5.81% |
-| frame_log_frequency | 4.85% |
-| sense_overlap_margin | 4.19% |
-| sense_overlap | 3.89% |
-| sense_rouge | 3.48% |
+Ranking
+Algorithm	TAB NDCG@6	Crum NDCG@6
+Random Forest	0.9497	0.8994
+LightGBM	0.9510	0.9013
+XGBoost	0.9523	0.9023
+CatBoost	0.9128	0.9029
 
-| Ranking Algorithm | TAB NDCG@6 | Crum NDCG@6 |
-| :--- | :---: | :---: |
-| Random Forest | 0.9497 | 0.8994 |
-| LightGBM | 0.9510 | 0.9013 |
-| XGBoost | 0.9523 | 0.9023 |
-| CatBoost | 0.9128 | 0.9029 |
+
+
+Random Forest — Inclusion: Top 10 Features
+Feature	Importance
+target_pos_conflict	13.17%
+target_pos_match_ratio	11.69%
+sense_cosine	9.96%
+sense_cosine_missing	8.91%
+rival_count	6.67%
+sense_cosine_margin	5.70%
+frame_log_frequency	4.85%
+sense_overlap_margin	4.16%
+sense_overlap	3.92%
+sense_rouge	3.49%
+
+
+Random Forest — Ranking: Top 10 Features
+Feature	Importance
+sense_cosine_margin	4.91%
+mean_dep_distance	4.60%
+sense_cosine	4.58%
+frame_probability	4.55%
+mean_word_frequency	4.31%
+avg_word_length	4.21%
+target_position_ratio	4.10%
+unique_word_ratio	4.07%
+mean_log_word_frequency	3.69%
+rival_cosine_max	3.22%
 
 ### Future work
 
