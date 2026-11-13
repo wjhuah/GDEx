@@ -1,5 +1,46 @@
 # Task log
 
+## 2026-11-13
+
+
+20 spaces, good examlpls might less than average sentences lentgh
+
+apply a penalty (maybe complicated)
+
+tune a penalty based on human annotation on s
+
+50 TLA have different exaomples , output 3 expamples 
+
+next week: cluster idea
+
+ϣⲁ - not a good example actually is prefix
+
+start with form_covered depl_cover... features 
+
+internal in a cluster!!!
+
+
+
+
+
+
+
+
+
+#4
+Recommendation score 2.354
+ⲙⲁⲣⲉⲧⲉϣⲡⲏⲣⲉ ⲙⲡϣⲁ ⲙⲡⲉⲛⲥⲱⲧⲏⲣ ϫⲣⲟ ⲉⲛⲉⲛϣⲁϫⲉ ·
+
+May the precious miracle of our Saviour overcome our(halting) speech
+
+Proclus Homily 13 on Easter in Budge ed. · 2:1
+
+Main clause or fragment · Target has modifier · Nominal modifier
+
+Ranking details
+
+WRONG！
+
 ## 2026-11-06
 
 ### Planned work
@@ -101,6 +142,10 @@ LightGBM	0.9510	0.9013
 XGBoost	0.9523	0.9023
 CatBoost	0.9128	0.9029
 
+Hyperopt to tune XGBoost
+
+after cluster !!
+
 
 
 Random Forest — Inclusion: Top 10 Features
@@ -109,11 +154,15 @@ target_pos_conflict	13.17%
 target_pos_match_ratio	11.69%
 sense_cosine	9.96%
 sense_cosine_missing	8.91%
+
+cosine missing is the same with sense_cosine
+make columns to figureing out each of them co-related
+
 rival_count	6.67%
 sense_cosine_margin	5.70%
 frame_log_frequency	4.85%
 sense_overlap_margin	4.16%
-sense_overlap	3.92%
+sense_overlap	3.92% / sen
 sense_rouge	3.49%
 
 
@@ -122,7 +171,7 @@ Feature	Importance
 sense_cosine_margin	4.91%
 mean_dep_distance	4.60%
 sense_cosine	4.58%
-frame_probability	4.55%
+frame_probability	4.55% (rethink before clustering)
 mean_word_frequency	4.31%
 avg_word_length	4.21%
 target_position_ratio	4.10%
