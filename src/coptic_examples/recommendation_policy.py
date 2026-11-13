@@ -8,13 +8,17 @@ from urllib.request import Request, urlopen
 from urllib.error import HTTPError
 from .text import COPTIC
 
-MAX_LETTERS = 30
+MAX_BOUND_GROUPS = 30
 REMOTE = "https://api.github.com/repos/wjhuah/GDEx/contents/dialect_bias.md?ref=main"
 _checked = {}
 
 
 def coptic_letters(text):
     return sum(unicodedata.category(c).startswith("L") for c in COPTIC.findall(text))
+
+
+def bound_group_count(text):
+    return len(text.split())
 
 
 def parse_bias(text):
@@ -85,6 +89,6 @@ def exclusion_reason(config, tla, dialect, candidate, rules=None):
         .get(dialect.casefold(), False)
     ):
         return "reviewed_dialect_restriction"
-    if coptic_letters(candidate["sent"]) > MAX_LETTERS:
-        return "over_30_coptic_letters"
+    if bound_group_count(candidate["sent"]) > MAX_BOUND_GROUPS:
+        return "over_30_bound_groups"
     return None

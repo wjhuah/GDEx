@@ -41,6 +41,12 @@ NATIVE = {
 
 
 def targets(candidate, entry):
+    from .token_review import apply
+
+    return apply(candidate, entry, _unreviewed_targets(candidate, entry))
+
+
+def _unreviewed_targets(candidate, entry):
     override = candidate.get("target_alignment", {}).get(entry.tla) or candidate.get(
         "crum_pos_alignment", {}
     ).get(entry.tla)
@@ -145,6 +151,9 @@ def align_candidate(candidate, entry, allow_pos_mismatch=False):
             candidate.setdefault("target_alignment", {})[entry.tla] = [
                 candidate["tokens"][i]["id"] for i in indices
             ]
+    from .token_review import apply
+
+    indices = apply(candidate, entry, indices)
     if indices:
         candidate["target_token_evidence"] = [candidate["tokens"][i] for i in indices]
         candidate["target_pos_mismatch"] = any(
@@ -153,11 +162,36 @@ def align_candidate(candidate, entry, allow_pos_mismatch=False):
     return indices
 
 
+def recommendation_alignment(candidate, entry, source_selected=False):
+    """Keep POS repairs tied to a citation or a checked token context."""
+    import copy
+    from .token_review import apply
+
+    probe = copy.deepcopy(candidate)
+    probe.get("target_alignment", {}).pop(entry.tla, None)
+    strict = targets(probe, entry)
+    indices = targets(candidate, entry) if source_selected else strict
+    indices = apply(candidate, entry, indices)
+    candidate.setdefault("target_alignment", {})[entry.tla] = [
+        candidate["tokens"][i]["id"] for i in indices
+    ]
+    candidate["target_token_evidence"] = [candidate["tokens"][i] for i in indices]
+    candidate["target_pos_mismatch"] = any(
+        candidate["tokens"][i]["pos"] != entry.pos for i in indices
+    )
+    return indices
+
+
 def native_candidates(config, corpus, entry, dialect, allow_pos_mismatch=False):
     import json, sqlite3
     from .config import database
 
-    path = config.work / "cache/native_tokens.sqlite3"
+    cache_name = (
+        "native_tokens_extended.sqlite3"
+        if getattr(corpus, "retrieval_overlay", False)
+        else "native_tokens.sqlite3"
+    )
+    path = config.work / "cache" / cache_name
     with corpus.connect() as source:
         stamp = source.execute(
             "SELECT value FROM metadata WHERE key='fingerprint'"
@@ -207,14 +241,18 @@ def native_candidates(config, corpus, entry, dialect, allow_pos_mismatch=False):
                 )
             }
     ids.update(cited)
+    from .token_review import records
+
+    for (review_dialect, _), reviews in records().items():
+        if review_dialect == dialect:
+            ids.update(r["source"] for r in reviews if entry.tla in r["accepted"])
     candidates = []
     with corpus.connect() as db:
         for sid in sorted(ids):
-            c = json.loads(
-                db.execute(
-                    "SELECT payload FROM sentence WHERE id=?", (sid,)
-                ).fetchone()[0]
-            )
+            row = db.execute("SELECT payload FROM sentence WHERE id=?", (sid,)).fetchone()
+            if row is None:
+                continue
+            c = json.loads(row[0])
             ii = align_candidate(c, entry, allow_pos_mismatch)
             if not ii and sid in cited:
                 ii = [i for i, t in enumerate(c["tokens"]) if t["lemma"] in entry.forms]
@@ -228,6 +266,9 @@ def native_candidates(config, corpus, entry, dialect, allow_pos_mismatch=False):
                     c["crum_pos_alignment"] = {
                         entry.tla: [c["tokens"][i]["id"] for i in ii]
                     }
+            from .token_review import apply
+
+            ii = apply(c, entry, ii)
             if ii:
                 c["target_token_evidence"] = [c["tokens"][i] for i in ii]
                 candidates.append(c)

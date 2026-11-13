@@ -561,7 +561,9 @@ def competing_senses(model, rows, entry, lex, architecture):
         for i, row in enumerate(rows):
             own = {t["id"] for t in row.get("target_token_evidence", [])}
             candidate = copy.deepcopy(row)
-            ii = align_candidate(candidate, rival, True)
+            from .sense import recommendation_alignment
+
+            ii = recommendation_alignment(candidate, rival)
             other = {candidate["tokens"][j]["id"] for j in ii}
             if len(own | other) != 1 or not own.intersection(other):
                 continue
@@ -592,7 +594,9 @@ def recommend(config, lex, entry, dialect, k, architecture):
     from .annotations import resolve_manual
     from .shortlist import numbers
 
-    corpus = Corpus(config)
+    from .source_pool import SupplementedCorpus
+
+    corpus = SupplementedCorpus(config)
     annotations = load_manual(config.manual)
     candidates = native_candidates(config, corpus, entry, dialect, True)
     excluded = Counter()
@@ -631,6 +635,13 @@ def recommend(config, lex, entry, dialect, k, architecture):
         c["crum_citations"] = [
             r for r in evidence.citations[c["id"]] if r["tla"] == entry.tla
         ]
+        from .sense import recommendation_alignment
+
+        if not recommendation_alignment(
+            c, entry, c["id"] in priorities or bool(c["crum_citations"])
+        ):
+            excluded["unreviewed_pos_conflict"] += 1
+            continue
         c.update(
             tla=entry.tla,
             manual_selected=c["id"] in priorities,
@@ -654,7 +665,9 @@ def recommend(config, lex, entry, dialect, k, architecture):
         threshold = model.metadata.get("thresholds", {}).get(architecture, 0.5)
         eligible = [c for c in out if c["learned_inclusion_score"] > threshold]
         excluded["model_rejected"] = len(out) - len(eligible)
+        before_sense_comparison = len(eligible)
         eligible = competing_senses(model, eligible, entry, lex, architecture)
+        excluded["unresolved_token_sense"] = before_sense_comparison - len(eligible)
         selected = sorted(eligible, key=lambda c: (-c["score"], c["id"]))[:k]
         source_grades = (
             json.loads((config.work / "cache/source_grades.json").read_text())

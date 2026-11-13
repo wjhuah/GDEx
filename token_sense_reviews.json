@@ -1,0 +1,1014 @@
+[
+  {
+    "dialect": "sahidic",
+    "text_sha256": "7e5e0fc1619412f557b67c350130af256a5b22b05b1e3342ee8636b6bdb09ef4",
+    "token_index": 2,
+    "expected_form": "ⲉϩⲟⲟⲩ",
+    "expected_lemma": "ⲉϩⲉ",
+    "scope": [
+      "C771",
+      "C772",
+      "C6965"
+    ],
+    "accepted": [
+      "C6965"
+    ],
+    "source": "sahidic.ot/10_II_Samuel_11.tt#27",
+    "rationale": "The plural days in the mourning/time clause have been assigned the cattle lemma in TT.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "0b83d7f3d31f79a6f22834ee0681d1f0536e534f71c75198b10a8e9c86a96f23",
+    "token_index": 8,
+    "expected_form": "ⲉϩⲟⲟⲩ",
+    "expected_lemma": "ⲉϩⲉ",
+    "scope": [
+      "C771",
+      "C772",
+      "C6965"
+    ],
+    "accepted": [
+      "C6965"
+    ],
+    "source": "sahidica.nt/49_Ephesians_05.tt#16",
+    "rationale": "The plural days in the mourning/time clause have been assigned the cattle lemma in TT.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "f5176af994da56337b290e51e7065283d2d247b2c961fb22bdc4629a3cc7487c",
+    "token_index": 29,
+    "expected_form": "ⲓⲱⲧ",
+    "expected_lemma": "ⲓⲱⲧ",
+    "scope": [
+      "C992",
+      "C993",
+      "C998"
+    ],
+    "accepted": [
+      "C992"
+    ],
+    "source": "archive:bohairic.ot/23_Isaias_22.tt#23",
+    "rationale": "Kinship/ancestral reference, not an address or title of a monastic superior.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "7a9c76f7ec5614f2aaec3b975fd34b82c9d8332dfeda7cd0cb7760b00377e49a",
+    "token_index": 27,
+    "expected_form": "ⲓⲟϯ",
+    "expected_lemma": "ⲓⲱⲧ",
+    "scope": [
+      "C992",
+      "C993",
+      "C998"
+    ],
+    "accepted": [
+      "C992"
+    ],
+    "source": "archive:bohairic.ot/05_Deuteronomium_19.tt#8",
+    "rationale": "Kinship/ancestral reference, not an address or title of a monastic superior.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "7a9c76f7ec5614f2aaec3b975fd34b82c9d8332dfeda7cd0cb7760b00377e49a",
+    "token_index": 52,
+    "expected_form": "ⲓⲟϯ",
+    "expected_lemma": "ⲓⲱⲧ",
+    "scope": [
+      "C992",
+      "C993",
+      "C998"
+    ],
+    "accepted": [
+      "C992"
+    ],
+    "source": "archive:bohairic.ot/05_Deuteronomium_19.tt#8",
+    "rationale": "Kinship/ancestral reference, not an address or title of a monastic superior.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "fee398bead93179af47777745a97b78254643925006ad53c89ec84420a19d9b2",
+    "token_index": 35,
+    "expected_form": "ⲧⲟⲙⲧ",
+    "expected_lemma": "ⲧⲱⲙⲧ",
+    "scope": [
+      "C4324"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.ot/03_Leviticus_26.tt#16",
+    "rationale": "The stative describes the afflicted eyes; the context contains no meeting or event befalling a person.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "d493d77b242f7bb26f7455ddec505fc4864c1aa07be9e49d23146ad91357da69",
+    "token_index": 34,
+    "expected_form": "ⲛⲁⲩ",
+    "expected_lemma": "ⲛⲁⲩ",
+    "scope": [
+      "C2584",
+      "C2589",
+      "C2578"
+    ],
+    "accepted": [
+      "C2589"
+    ],
+    "source": "sahidic.ot/23_Isaiah_45.tt#21",
+    "rationale": "The expression tnau asks when; it is temporal rather than a vision.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "de690203fa50f0c804b4800c7afbaa7cb0de91f7accd304b6975eac275a3f212",
+    "token_index": 1,
+    "expected_form": "ⲛⲁⲩ",
+    "expected_lemma": "ⲛⲁⲩ",
+    "scope": [
+      "C2584",
+      "C2589",
+      "C2578"
+    ],
+    "accepted": [
+      "C2578"
+    ],
+    "source": "sahidica.mark/sahidica.mark_TT/Mark_13.tt#14",
+    "rationale": "The conditional conjugation etetnshannau governs the object abomination; TT N conflicts with the verbal context.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "d49c3018e3a9af303ef875b779d916fc1239acce18f5336b8bc8a57bfe74973f",
+    "token_index": 24,
+    "expected_form": "ⲛⲁⲩ",
+    "expected_lemma": "ⲛⲁⲩ",
+    "scope": [
+      "C2589"
+    ],
+    "accepted": [],
+    "source": "bohairic-life-shenoute/bohairic.life.shenoute_TT/bohairic.life.shenoute_01.tt#143",
+    "rationale": "The context concerns seeing and eyes, without an hour or temporal expression.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "c1f926d4b82b975138f955f3656b9984df7f01f6b8baaa77d3f5d9e182384e40",
+    "token_index": 29,
+    "expected_form": "ⲛⲁⲩ",
+    "expected_lemma": "ⲛⲁⲩ",
+    "scope": [
+      "C2589"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.ot/26_Ezechiel_12.tt#2",
+    "rationale": "The context concerns seeing and eyes, without an hour or temporal expression.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "9c7ab157e303ca5e0932f0377ec475072a42b761ee44770e6a5e95a4aed2cc0d",
+    "token_index": 17,
+    "expected_form": "ⲛⲁⲩ",
+    "expected_lemma": "ⲛⲁⲩ",
+    "scope": [
+      "C2584",
+      "C2589",
+      "C2578"
+    ],
+    "accepted": [
+      "C2589"
+    ],
+    "source": "sahidic.ot/06_Joshua_11.tt#6",
+    "rationale": "mpeinau nr aste is the temporal expression at this time tomorrow; the TT verbal tag is erroneous.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "d64760fc08229f1667157b27100e70cc1f93363bbc57bdc8ca12dbb0acdbb233",
+    "token_index": 39,
+    "expected_form": "ⲛⲁⲩ",
+    "expected_lemma": "ⲛⲁⲩ",
+    "scope": [
+      "C2578"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.ot/27_Daniel_02.tt#31",
+    "rationale": "The second occurrence belongs to the derived noun jin-nau (appearance); retain the earlier finite verb.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "1e1f993609b58c6563098f05cc25b0f1bfb2acf0ce5c66bfdc7caf40b52ebcf8",
+    "token_index": 5,
+    "expected_form": "ⲙⲉ",
+    "expected_lemma": "ⲙⲉ",
+    "scope": [
+      "C1785",
+      "C1786",
+      "C1789"
+    ],
+    "accepted": [
+      "C1785"
+    ],
+    "source": "coptic-treebank/coptic.treebank_TT/dormition.john.mercad.tt#21",
+    "rationale": "Conjugated love with a pronominal object; distinguish the verb from the noun love.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "2d6aae674c972778fc7b893273dec68bc4809e13822263824e488cb3ee0c9bbc",
+    "token_index": 44,
+    "expected_form": "ⲙⲉ",
+    "expected_lemma": "ⲙⲉ",
+    "scope": [
+      "C1785",
+      "C1786",
+      "C1789"
+    ],
+    "accepted": [
+      "C1785"
+    ],
+    "source": "sahidic.ot/09_I_Samuel_18.tt#17",
+    "rationale": "Conjugated love with a pronominal object; distinguish the verb from the noun love.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "10c9a88937f0b3e02089dee057e730759352aa42b69bb218c0ea4c5d24840ad7",
+    "token_index": 3,
+    "expected_form": "ⲙⲉⲣⲓⲧ",
+    "expected_lemma": "ⲙⲉⲣⲓⲧ",
+    "scope": [
+      "C1785",
+      "C1786",
+      "C1789"
+    ],
+    "accepted": [
+      "C1785"
+    ],
+    "source": "sahidica.nt/43_John_14.tt#15",
+    "rationale": "Conjugated love with a pronominal object; distinguish the verb from the noun love.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "dac1b61f2744cc4f0f0fe9f5fc7f4dd54635d59e0ca8b3b141fb454d82245d87",
+    "token_index": 18,
+    "expected_form": "ϩⲏⲧ",
+    "expected_lemma": "ϩⲏⲧ",
+    "scope": [
+      "C6884"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/07_Judges_11.tt#31",
+    "rationale": "The phrase el bol het is meeting/coming toward the speaker; the narrative gives no northern direction.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "2b9ed6dce5a6390d1895b6f718a7d2a0c97c67b4b9983a0aab18774309bb1c7d",
+    "token_index": 13,
+    "expected_form": "ϩⲏⲧ",
+    "expected_lemma": "ϩⲏⲧ",
+    "scope": [
+      "C6887"
+    ],
+    "accepted": [],
+    "source": "sahidica.nt/40_Matthew_11.tt#3",
+    "rationale": "The local expression concerns expectation or the heart, not a physical tip/edge.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "bf28d1e81f64512d6f4416b6f8a57f0fe971744d5f39f00af963c19b51d0222e",
+    "token_index": 25,
+    "expected_form": "ϩⲏⲧ",
+    "expected_lemma": "ϩⲏⲧ",
+    "scope": [
+      "C6887"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/71_Sirach_27.tt#4",
+    "rationale": "The local expression concerns expectation or the heart, not a physical tip/edge.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "c4892d1d387b2b394ca7e8dc567aab80186a2f29de9bdb6eec3204778a42e794",
+    "token_index": 19,
+    "expected_form": "ϩⲏⲧ",
+    "expected_lemma": "ϩⲏⲧ",
+    "scope": [
+      "C6887"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/20_Proverbs_12.tt#24",
+    "rationale": "The local expression concerns expectation or the heart, not a physical tip/edge.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "c84cb6b0619346328e240134c48502e3681b864c92991b053848669ee637a62a",
+    "token_index": 43,
+    "expected_form": "ⲣⲱ",
+    "expected_lemma": "ⲣⲟ",
+    "scope": [
+      "C3055"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/09_I_Samuel_25.tt#14",
+    "rationale": "The surface belongs to a particle or another lexical expression in this context; no goose occurs.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "a2c2cc0f4445ee33a12214c1540d57685098f7d7f698e260468176d07e552a1c",
+    "token_index": 27,
+    "expected_form": "ⲣⲱ",
+    "expected_lemma": "ⲣⲟ",
+    "scope": [
+      "C3055"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/17_Esther_08.tt#6",
+    "rationale": "The surface belongs to a particle or another lexical expression in this context; no goose occurs.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "9585ed36db56685b4e21fa46528ed39e4a82b04c1a6393c44c894446db2abec2",
+    "token_index": 8,
+    "expected_form": "ⲣⲟ",
+    "expected_lemma": "ⲣⲟ",
+    "scope": [
+      "C3055"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/78_II_Maccabees_06.tt#1",
+    "rationale": "The surface belongs to a particle or another lexical expression in this context; no goose occurs.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "15baa7e2f4500ed9b26e7f5b7fa36e8570c22ee9d328dccb8689f2b7feeb6038",
+    "token_index": 16,
+    "expected_form": "ⲣⲉ",
+    "expected_lemma": "ⲣⲟ",
+    "scope": [
+      "C3054"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.ot/30_Amos_02.tt#9",
+    "rationale": "The highlighted token is in another expression (including door/mouth), not the strand of a cord.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "00efe62244c7734d8895e3557ff32b407ae016f32288a003c7f8c8533640999f",
+    "token_index": 39,
+    "expected_form": "ⲣⲉ",
+    "expected_lemma": "ⲣⲟ",
+    "scope": [
+      "C3054"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.ot/02_Exodus_34.tt#16",
+    "rationale": "The highlighted token is in another expression (including door/mouth), not the strand of a cord.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "5bc6c1acbcc105c5843a4898a6159f93d623392c723a389f5938ed26399bf55b",
+    "token_index": 33,
+    "expected_form": "ⲣⲱⲟⲩ",
+    "expected_lemma": "ⲣⲟ",
+    "scope": [
+      "C3054"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.ot/19_Psalmi_143.tt#8",
+    "rationale": "The highlighted token is in another expression (including door/mouth), not the strand of a cord.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "e95bcf608311ee0f9a73e9bc01374f0bbb91e6a1e634d66dc8f2bb728e76a86d",
+    "token_index": 16,
+    "expected_form": "ⲣⲟ",
+    "expected_lemma": "ⲣⲟ",
+    "scope": [
+      "C3054"
+    ],
+    "accepted": [],
+    "source": "life-pisentius/life.pisentius_TT/life.pisentius.01.tt#73",
+    "rationale": "The highlighted token is in another expression (including door/mouth), not the strand of a cord.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "8e17cd980987410674d54c102d7104d5542a340c0fc67860b3c13e4eb6716539",
+    "token_index": 19,
+    "expected_form": "ϯ",
+    "expected_lemma": "ϯ",
+    "scope": [
+      "C4050"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.ot/01_Genesis_30.tt#6",
+    "rationale": "The local ti construction gives, puts, strengthens or causes anger/pain; it is not the lexical fight/hit use.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "bb9f0d401bf928a32828ef913c5aaf5480531958210df12f1ec96f5fc4bbb4c2",
+    "token_index": 35,
+    "expected_form": "ϯ",
+    "expected_lemma": "ϯ",
+    "scope": [
+      "C4050"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.nt/02_Mark_08.tt#6",
+    "rationale": "The local ti construction gives, puts, strengthens or causes anger/pain; it is not the lexical fight/hit use.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "cd574fcb793f5c4b8a19ea9ce20110e8cc67fd7eb0748464642ec0186c2bda64",
+    "token_index": 27,
+    "expected_form": "ϯ",
+    "expected_lemma": "ϯ",
+    "scope": [
+      "C4050"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.ot/26_Ezechiel_10.tt#7",
+    "rationale": "The local ti construction gives, puts, strengthens or causes anger/pain; it is not the lexical fight/hit use.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "ac6df683128eab0cf0840514a14b4a26e9ac4ce4da43a91752ac63b7cf7b6fb1",
+    "token_index": 2,
+    "expected_form": "ϯ",
+    "expected_lemma": "ϯ",
+    "scope": [
+      "C4050"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/23_Isaiah_41.tt#10",
+    "rationale": "The local ti construction gives, puts, strengthens or causes anger/pain; it is not the lexical fight/hit use.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "849c83cee09a4d346e0dd90793f6c75ee61c8a02586155ff169d0fd89f48b06c",
+    "token_index": 61,
+    "expected_form": "ϯ",
+    "expected_lemma": "ϯ",
+    "scope": [
+      "C4050"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/68_Judith_08.tt#14",
+    "rationale": "The local ti construction gives, puts, strengthens or causes anger/pain; it is not the lexical fight/hit use.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "db637249c91fd58f6c80ef65f64f3a5bb576ce6a963109cb69e15628c0ba7404",
+    "token_index": 4,
+    "expected_form": "ϯ",
+    "expected_lemma": "ϯ",
+    "scope": [
+      "C4050"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/24_Jeremiah_15.tt#17",
+    "rationale": "The local ti construction gives, puts, strengthens or causes anger/pain; it is not the lexical fight/hit use.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "dc73c7f214c06e8943ceda30e4fdc5f4d1b95f5c279e095f77ddaf7b31c369de",
+    "token_index": 6,
+    "expected_form": "ⲉⲓⲱⲧ",
+    "expected_lemma": "ⲉⲓⲱⲧ",
+    "scope": [
+      "C992",
+      "C993",
+      "C998"
+    ],
+    "accepted": [
+      "C993"
+    ],
+    "source": "AP/apophthegmata.patrum_TT/AP.116.pistus.01.tt#6",
+    "rationale": "Vocative to the elder in a monastic exchange; TAB assigns this occurrence to the title entry.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "fa75e413738b91fc85ce4deb211b9594e7b69ded0ccc2aba8017a1d1bbb3a830",
+    "token_index": 16,
+    "expected_form": "ⲥⲁ",
+    "expected_lemma": "ⲥⲁ",
+    "scope": [
+      "C3271"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/03_Leviticus_18.tt#19",
+    "rationale": "The target sa is in a separation/appearance expression; the woman in the translation is a different Coptic word.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "4bea2bedc0e515340fd968e58dbe65f7e308b076aed14948a10f633cb01cbd5f",
+    "token_index": 10,
+    "expected_form": "ⲥⲁ",
+    "expected_lemma": "ⲥⲁ",
+    "scope": [
+      "C3271"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/71_Sirach_09.tt#5",
+    "rationale": "The target sa is in a separation/appearance expression; the woman in the translation is a different Coptic word.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "9567b0b3ea43358f5ad99292a00e9757ec8cbe310a3e1726b5235b5f2d1d3bc0",
+    "token_index": 45,
+    "expected_form": "ⲥⲁ",
+    "expected_lemma": "ⲥⲁ",
+    "scope": [
+      "C3272"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.ot/24_Ieremias_20.tt#9",
+    "rationale": "The matched sa expresses a side/direction or belongs to another form. The translated man corresponds to another token.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "f2b2bf167328c3014a9c86a0956bbca0800a8caa61244682b3f3f61e95739dd1",
+    "token_index": 24,
+    "expected_form": "ⲥⲁ",
+    "expected_lemma": "ⲥⲁ",
+    "scope": [
+      "C3272"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.nt/05_Acts_07.tt#56",
+    "rationale": "The matched sa expresses a side/direction or belongs to another form. The translated man corresponds to another token.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "5bcd87ba04bb4f297dec6b516e473694890502e70f48312f11afc25b77f6a61d",
+    "token_index": 31,
+    "expected_form": "ⲥⲁ",
+    "expected_lemma": "ⲥⲁ",
+    "scope": [
+      "C3272"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.ot/24_Ieremias_48.tt#9",
+    "rationale": "The matched sa expresses a side/direction or belongs to another form. The translated man corresponds to another token.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "58982ef8b4ef6a048c5df9079a4961f977c4ac2f12b2602bea72f752dec6b002",
+    "token_index": 42,
+    "expected_form": "ⲥⲁ",
+    "expected_lemma": "ⲥⲁ",
+    "scope": [
+      "C3272"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/23_Isaiah_23.tt#15",
+    "rationale": "The matched sa expresses a side/direction or belongs to another form. The translated man corresponds to another token.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "b3efdfb1b73c17965754f708067a91c30ed9b64913c3eb57e27edbfd5490f1a9",
+    "token_index": 14,
+    "expected_form": "ⲥⲁ",
+    "expected_lemma": "ⲥⲁ",
+    "scope": [
+      "C3272"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/09_I_Samuel_20.tt#22",
+    "rationale": "The matched sa expresses a side/direction or belongs to another form. The translated man corresponds to another token.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "8925261f98c363273fe75340aa9506d05c5072226102db815039a83c7763884c",
+    "token_index": 69,
+    "expected_form": "ⲥⲁ",
+    "expected_lemma": "ⲥⲁ",
+    "scope": [
+      "C3272"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/26_Ezekiel_40.tt#5",
+    "rationale": "The matched sa expresses a side/direction or belongs to another form. The translated man corresponds to another token.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "8925261f98c363273fe75340aa9506d05c5072226102db815039a83c7763884c",
+    "token_index": 71,
+    "expected_form": "ⲥⲁ",
+    "expected_lemma": "ⲥⲁ",
+    "scope": [
+      "C3272"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/26_Ezekiel_40.tt#5",
+    "rationale": "The matched sa expresses a side/direction or belongs to another form. The translated man corresponds to another token.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "5110ee2cb9b62c799d755c3d1cac891f229ebde07366ce484a20b6ccded2eafe",
+    "token_index": 11,
+    "expected_form": "ϫⲱ",
+    "expected_lemma": "ϫⲱ",
+    "scope": [
+      "C7098"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.nt/03_Luke_22.tt#20",
+    "rationale": "The cup is aphot in the first two passages; jo means saying. The third target is in a different derived expression.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "e3e3ea514ca29b52c13ac0432e431a07c79f9a656fcca61283d687c902112b42",
+    "token_index": 11,
+    "expected_form": "ϫⲱ",
+    "expected_lemma": "ϫⲱ",
+    "scope": [
+      "C7098"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.nt/07_I_Corinthians_11.tt#25",
+    "rationale": "The cup is aphot in the first two passages; jo means saying. The third target is in a different derived expression.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "612c950a2b415e14c8bb4e80316fb4012d75df69e3ee9bde6407b4a4ac6ed32f",
+    "token_index": 10,
+    "expected_form": "ϫⲓ",
+    "expected_lemma": "ϫⲱ",
+    "scope": [
+      "C7098"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.nt/01_Matthew_04.tt#1",
+    "rationale": "The cup is aphot in the first two passages; jo means saying. The third target is in a different derived expression.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "14a2b4cb8260c4be72c4d96a86c983811049ffc3eb2839c2e779997fb68bfb9d",
+    "token_index": 2,
+    "expected_form": "ⲥⲛⲏⲟⲩ",
+    "expected_lemma": "ⲥⲟⲛ",
+    "scope": [
+      "C3584"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.nt/11_Philippians_04.tt#1",
+    "rationale": "The passage addresses fellow believers or concerns family/legal kinship; it supplies no monastic title use.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "65c2e03da230e288353c1850c44f664b7b9f216bc5db90388df6a86a448a98d0",
+    "token_index": 15,
+    "expected_form": "ⲥⲟⲛ",
+    "expected_lemma": "ⲥⲟⲛ",
+    "scope": [
+      "C3584"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.ot/23_Isaias_19.tt#2",
+    "rationale": "The passage addresses fellow believers or concerns family/legal kinship; it supplies no monastic title use.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "0996ff46d259c0b2d2b9910d01aa76cbd82a93456c6a72c166eda00a53b3bef9",
+    "token_index": 3,
+    "expected_form": "ⲥⲟⲛ",
+    "expected_lemma": "ⲥⲟⲛ",
+    "scope": [
+      "C3584"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/03_Leviticus_25.tt#25",
+    "rationale": "The passage addresses fellow believers or concerns family/legal kinship; it supplies no monastic title use.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "171ef24c87394bb05b27aa4ebfce76e12bdc8d2a89e273119f388eabb1809a9e",
+    "token_index": 3,
+    "expected_form": "ⲥⲛⲏⲩ",
+    "expected_lemma": "ⲥⲟⲛ",
+    "scope": [
+      "C3584"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/05_Deuteronomy_25.tt#5",
+    "rationale": "The passage addresses fellow believers or concerns family/legal kinship; it supplies no monastic title use.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "e3f518b7efe7a7dfaa3f7a13b2ad522b685fca5f7954b6327ac003e60d3618bd",
+    "token_index": 2,
+    "expected_form": "ⲥⲟⲛ",
+    "expected_lemma": "ⲥⲟⲛ",
+    "scope": [
+      "C3583",
+      "C3584"
+    ],
+    "accepted": [
+      "C3584"
+    ],
+    "source": "AP/apophthegmata.patrum_TT/ap.092.n278.thoughts.tt#1",
+    "rationale": "A brother at Kellia handling palm fronds is the monastic use in this setting.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "33983ca40d26f382797c0e0b0bbafd36addf1e54c4809c26113faaa9a6d579d8",
+    "token_index": 25,
+    "expected_form": "ⲟⲩⲱϣ",
+    "expected_lemma": "ⲟⲩⲱϣ",
+    "scope": [
+      "C5263"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.nt/10_Ephesians_02.tt#3",
+    "rationale": "The matched form denotes desire, a finite wish, or destruction; the context supplies no cleft/space/interval.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "ab8670148aed96002391e699e227619c1823b9f2a85257d0e7483d643f563da4",
+    "token_index": 4,
+    "expected_form": "ⲟⲩⲱϣ",
+    "expected_lemma": "ⲟⲩⲱϣ",
+    "scope": [
+      "C5263"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.ot/19_Psalmi_029.tt#8",
+    "rationale": "The matched form denotes desire, a finite wish, or destruction; the context supplies no cleft/space/interval.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "b7d7ed05eaf156f834aa3ca9390e0b5dda6534d96ed10122725b47e97f61b922",
+    "token_index": 46,
+    "expected_form": "ⲟⲩⲱϣ",
+    "expected_lemma": "ⲟⲩⲱϣ",
+    "scope": [
+      "C5263"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/10_II_Samuel_13.tt#16",
+    "rationale": "The matched form denotes desire, a finite wish, or destruction; the context supplies no cleft/space/interval.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "bb0b8c2a392b34a67e2318abbae6d399a8cbc845bdd932ba51f0ed0ec5769211",
+    "token_index": 14,
+    "expected_form": "ⲟⲩⲱϣ",
+    "expected_lemma": "ⲟⲩⲱϣ",
+    "scope": [
+      "C5263"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/23_Isaiah_60.tt#18",
+    "rationale": "The matched form denotes desire, a finite wish, or destruction; the context supplies no cleft/space/interval.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "50b2faa336313403134af3300394be682b6b772c3612b2f6f5cabd367972d66d",
+    "token_index": 14,
+    "expected_form": "ⲟⲩⲱϣ",
+    "expected_lemma": "ⲟⲩⲱϣ",
+    "scope": [
+      "C5258"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.ot/18_Iob_36.tt#13",
+    "rationale": "The matched form is conjugated or belongs to a crying expression, rather than the lexical noun desire.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "0cab95c7e30151813b04dff01fed86394f3bb21d306bd36aaca7ec935fa11155",
+    "token_index": 38,
+    "expected_form": "ⲟⲩⲱϣ",
+    "expected_lemma": "ⲟⲩⲱϣ",
+    "scope": [
+      "C5258"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.ot/24_Ieremias_38.tt#15",
+    "rationale": "The matched form is conjugated or belongs to a crying expression, rather than the lexical noun desire.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "ca3f2145a1fa608d4024df1cb35535e0f3fff5c5fa8ccc79de920feda37f3b82",
+    "token_index": 5,
+    "expected_form": "ⲟⲩⲱϣ",
+    "expected_lemma": "ⲟⲩⲱϣ",
+    "scope": [
+      "C5258"
+    ],
+    "accepted": [],
+    "source": "archive:bohairic.nt/19_Hebrews_10.tt#26",
+    "rationale": "The matched form is conjugated or belongs to a crying expression, rather than the lexical noun desire.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "2d6aae674c972778fc7b893273dec68bc4809e13822263824e488cb3ee0c9bbc",
+    "token_index": 49,
+    "expected_form": "ⲟⲩⲱϣ",
+    "expected_lemma": "ⲟⲩⲱϣ",
+    "scope": [
+      "C5258"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/09_I_Samuel_18.tt#17",
+    "rationale": "The matched form is conjugated or belongs to a crying expression, rather than the lexical noun desire.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "30167d2c1464850cf8d1f74bf77e3beca53fbf0db4fd3b306cb01c9d4f19c56d",
+    "token_index": 11,
+    "expected_form": "ⲟⲩⲁϣ",
+    "expected_lemma": "ⲟⲩⲱϣ",
+    "scope": [
+      "C5258"
+    ],
+    "accepted": [],
+    "source": "sahidic.ot/05_Deuteronomy_10.tt#12",
+    "rationale": "The matched form is conjugated or belongs to a crying expression, rather than the lexical noun desire.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "0d4ddb741463d500701eadb4547d5325a54ca545a3218dca5d5df9162194a06c",
+    "token_index": 57,
+    "expected_form": "ⲉϩⲉⲩ",
+    "expected_lemma": "ⲉϩⲉ",
+    "scope": [
+      "C771",
+      "C772",
+      "C876"
+    ],
+    "accepted": [
+      "C876"
+    ],
+    "source": "archive:bohairic.ot/04_Numeri_31.tt#28",
+    "rationale": "The enumeration distinguishes the oxen from the asses. This occurrence is the asses term eheyu, although TT supplies the cattle lemma.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "5be24b6e28b88a1a4ff635c4f6448432e87e53bac43aac0550634e7e7b5828ab",
+    "token_index": 30,
+    "expected_form": "ⲉϩⲉⲩ",
+    "expected_lemma": "ⲉϩⲉ",
+    "scope": [
+      "C771",
+      "C772",
+      "C876"
+    ],
+    "accepted": [
+      "C876"
+    ],
+    "source": "archive:bohairic.ot/04_Numeri_31.tt#30",
+    "rationale": "The enumeration distinguishes the oxen from the asses. This occurrence is the asses term eheyu, although TT supplies the cattle lemma.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "9d97597cd1804a2c0c0ba1f907489fc0f289ddcbeff2cddc248e60f7949e36aa",
+    "token_index": 2,
+    "expected_form": "ⲉϩⲉⲩ",
+    "expected_lemma": "ⲉϩⲉ",
+    "scope": [
+      "C771",
+      "C772",
+      "C876"
+    ],
+    "accepted": [
+      "C876"
+    ],
+    "source": "archive:bohairic.ot/04_Numeri_31.tt#34",
+    "rationale": "The enumeration distinguishes the oxen from the asses. This occurrence is the asses term eheyu, although TT supplies the cattle lemma.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  },
+  {
+    "dialect": "bohairic",
+    "text_sha256": "d7197a7d2518976fabbe5cf9b97be14a127714e56c3e6efa3f89a095f9624dcb",
+    "token_index": 2,
+    "expected_form": "ⲉϩⲉⲩ",
+    "expected_lemma": "ⲉϩⲉ",
+    "scope": [
+      "C771",
+      "C772",
+      "C876"
+    ],
+    "accepted": [
+      "C876"
+    ],
+    "source": "archive:bohairic.ot/04_Numeri_31.tt#39",
+    "rationale": "The enumeration distinguishes the oxen from the asses. This occurrence is the asses term eheyu, although TT supplies the cattle lemma.",
+    "review_method": "context_reading",
+    "expert_verified": false
+  }
+]

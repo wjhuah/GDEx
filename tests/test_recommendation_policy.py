@@ -21,10 +21,23 @@ TABLE = """| TLA ID | Lemma | Sahidic rare | Bohairic rare |
 class RecommendationPolicyTests(unittest.TestCase):
     def test_letter_count_and_boundary(self):
         self.assertEqual(coptic_letters("Ϩ ⲟ̅ⲟⲩ ."), 4)
-        for n, want in [(30, None), (31, "over_30_coptic_letters")]:
+        for n, want in [(30, None), (31, "over_30_bound_groups")]:
             self.assertEqual(
-                exclusion_reason(None, "C992", "sahidic", {"sent": "ⲁ" * n}, {}), want
+                exclusion_reason(
+                    None, "C992", "sahidic", {"sent": " ".join(["ⲁ"] * n)}, {}
+                ),
+                want,
             )
+
+    def test_long_single_group_is_retained(self):
+        self.assertIsNone(
+            exclusion_reason(None, "C992", "sahidic", {"sent": "ⲁ" * 90}, {})
+        )
+        self.assertIsNone(
+            exclusion_reason(
+                None, "C992", "sahidic", {"sent": "  \t".join(["ⲡⲁϣⲏⲣⲉ"] * 30)}, {}
+            )
+        )
 
     def test_dialect_entry_review(self):
         flags = parse_bias(TABLE)
@@ -112,8 +125,8 @@ class RecommendationPolicyTests(unittest.TestCase):
 
     def test_long_current_error(self):
         self.assertEqual(
-            exclusion_reason(None, "C6971", "sahidic", {"sent": "ⲡⲁϣⲏⲣⲉ " * 20}, {}),
-            "over_30_coptic_letters",
+            exclusion_reason(None, "C6971", "sahidic", {"sent": "ⲡⲁϣⲏⲣⲉ " * 31}, {}),
+            "over_30_bound_groups",
         )
 
 

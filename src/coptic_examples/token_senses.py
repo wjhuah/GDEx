@@ -5,7 +5,7 @@ import json
 import numpy as np
 import lightgbm as lgb
 from .inclusion import COLUMNS_INCLUSION
-from .sense import targets, align_candidate
+from .sense import targets, align_candidate, recommendation_alignment
 
 ROLES = ["vocative", "nsubj", "obj", "nmod", "root", "appos"]
 COLUMNS = COLUMNS_INCLUSION + ["entry_title"] + ["target_role_" + r for r in ROLES]
@@ -100,41 +100,55 @@ def resolve(model, rows, entry, lex, architecture):
             raise RuntimeError("Retrain token-sense model after source changes")
     if not metadata.get("available"):
         return None
+    # Treat nearly equal scores as unresolved; the scores are uncalibrated.
+    min_margin = float(metadata.get("min_selection_margin", 0.05))
     scorer = lgb.Booster(model_file=str(path))
-    out = []
-    for row in rows:
-        matching = targets(row, entry)
-        winners = []
-        scores = []
-        for i in matching:
+    from .token_review import decisions
+
+    probes = []
+    comparisons = []
+    winners = [[] for _ in rows]
+    scores = [[] for _ in rows]
+    rivals = model.features.rivals(entry)
+    for row_index, row in enumerate(rows):
+        reviewed = decisions(row, entry.tla)
+        for i in targets(row, entry):
             tid = row["tokens"][i]["id"]
+            if reviewed.get(i) is True:
+                winners[row_index].append(tid)
+                continue
             entries = [entry]
-            probes = []
-            for rival in model.features.rivals(entry):
+            for rival in rivals:
                 c = copy.deepcopy(row)
-                if i in align_candidate(c, rival, True):
+                if i in recommendation_alignment(c, rival):
                     entries.append(rival)
             if len(entries) == 1:
-                winners.append(tid)
+                winners[row_index].append(tid)
                 continue
+            start = len(probes)
             for e in entries:
                 c = copy.deepcopy(row)
                 c.setdefault("target_alignment", {})[e.tla] = [tid]
                 probes.append(vector(model.features, c, e))
-            p = scorer.predict(np.asarray(probes), num_threads=4)
-            scores.append(
-                dict(
-                    token_id=tid,
-                    predictions={e.tla: float(v) for e, v in zip(entries, p)},
-                )
-            )
-            if p[0] > 0.5 and (len(p) == 1 or p[0] > max(p[1:]) + 1e-10):
-                winners.append(tid)
-        if not winners:
+            comparisons.append((row_index, tid, entries, start, len(probes)))
+    predictions = scorer.predict(np.asarray(probes), num_threads=4) if probes else []
+    for row_index, tid, entries, start, end in comparisons:
+        p = predictions[start:end]
+        scores[row_index].append(dict(
+            token_id=tid,
+            predictions={e.tla: float(v) for e, v in zip(entries, p)},
+        ))
+        if p[0] > 0.5 and p[0] - max(p[1:]) > max(min_margin, 1e-10):
+            winners[row_index].append(tid)
+    out = []
+    for row_index, row in enumerate(rows):
+        if not winners[row_index]:
             continue
-        row.setdefault("target_alignment", {})[entry.tla] = winners
-        row["target_token_evidence"] = [t for t in row["tokens"] if t["id"] in winners]
-        row["token_sense_predictions"] = scores
+        ids = set(winners[row_index])
+        evidence = [t for t in row["tokens"] if t["id"] in ids]
+        row.setdefault("target_alignment", {})[entry.tla] = [t["id"] for t in evidence]
+        row["target_token_evidence"] = evidence
+        row["token_sense_predictions"] = scores[row_index]
         out.append(row)
     if out:
         inclusion, rank = model.score(out, entry, architecture)

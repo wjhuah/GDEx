@@ -25,6 +25,7 @@ class Config:
         os.environ.get("COPTIC_SOURCE_ROOT", str(PROJECT.parent))
     ).resolve()
     work: Path = PROJECT
+    retrieval_vectors: bool = False
 
     @property
     def corpus(self):

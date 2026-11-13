@@ -137,6 +137,10 @@ class CachedVectors:
             "CREATE TABLE IF NOT EXISTS vector(model TEXT,role TEXT,key TEXT,payload TEXT,PRIMARY KEY(model,role,key))"
         )
         self.connection.commit()
+        self.supplement = config.work / "cache/retrieval_embeddings.sqlite3"
+        self.has_supplement = getattr(config, "retrieval_vectors", False) and self.supplement.exists()
+        if self.has_supplement:
+            self.connection.execute("ATTACH DATABASE ? AS retrieval_vectors", (str(self.supplement),))
         self.memo = {}
         self.extractors = {}
 
@@ -148,6 +152,11 @@ class CachedVectors:
                 "SELECT payload FROM vector WHERE model=? AND role=? AND key=?",
                 ("BAAI/bge-large-en-v1.5", role, digest),
             ).fetchone()
+            if row is None and self.has_supplement:
+                row = self.connection.execute(
+                    "SELECT payload FROM retrieval_vectors.vector WHERE model=? AND role=? AND key=?",
+                    ("BAAI/bge-large-en-v1.5", role, digest),
+                ).fetchone()
             self.memo[key] = (
                 np.asarray(json.loads(row[0]), dtype=np.float32) if row else None
             )

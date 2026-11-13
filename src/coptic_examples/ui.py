@@ -221,7 +221,7 @@ def search_page(
         short = result.get("shortlist_evidence", {})
         provisional = short.get("model_status", {}).get("provisional", False)
         content = (
-            f'<section class="panel entry"><div class="entry-top"><h2><span class="coptic lemma">{esc(e["lemma"])}</span> <span class="pos">{esc(e.get("pos") or "")}</span></h2><span class="dialect">{esc(Dialects().data[result["dialect"]]["name"])}</span></div><p class="definition">{esc(e["gloss"])}</p><p class=muted><a href="https://coptic-dictionary.org/entry/{esc(e["tla"])}">Dictionary entry ↗</a></p><p class="muted">{esc(e["tla"])} · Raw matches:  {result["candidate_count"]:,} · Candidates: {len(rows)} · '
+            f'<section class="panel entry"><div class="entry-top"><h2><span class="coptic lemma">{esc(e["lemma"])}</span> <span class="pos">{esc(e.get("pos") or "")}</span></h2><span class="dialect">{esc(Dialects().data[result["dialect"]]["name"])}</span></div><p class="definition">{esc(e["gloss"])}</p><p class=muted><a href="https://coptic-dictionary.org/entry/{esc(e["tla"])}">Dictionary entry ↗</a></p><p class="muted">{esc(e["tla"])} · Corpus matches: {result["candidate_count"]:,} · Model-selected: {len(rows)} · Online examples: {len(result.get("source_examples", []))} · '
             + (
                 "Inclusion + ranking"
                 if result["ranker"] == "research"
@@ -237,8 +237,10 @@ def search_page(
             )
             + "</p></section>"
         )
-        if not rows:
-            content += '<section class="panel"><h2>No eligible examples</h2><p>Try another entry or dialect; results are not mixed across dialects.</p></section>'
+        if not rows and result.get("source_examples"):
+            content += '<section class="panel"><h2>No model-selected examples</h2><p>See the online dictionary examples below.</p></section>'
+        elif not rows:
+            content += '<section class="panel"><h2>No eligible examples</h2><p>Try another entry or dialect.</p></section>'
         else:
             content += '<section class="panel examples"><h3>Candidate Examples</h3><ol class="example-list">'
             for i, c in enumerate(rows, 1):
@@ -249,6 +251,34 @@ def search_page(
 <p class="coptic sentence">{highlighted(c['sent'],e,c)}</p><p class="translation">{esc(c['translation'])}</p><p class="source">{citation(c)}</p><p class=syntax>{esc(source_label(c))}</p><p class=syntax>{esc(str((rel.get('construction') or {}).get('display','')))}</p><p class="syntax">{esc(syntax_label(sig))}</p>
 <details><summary>Ranking details</summary><div class="evidence"><p class=syntax>TT target tokens: {esc(' | '.join(t['form']+' / '+t['lemma']+' / '+t['xpos']+' / '+t['id'] for t in c.get('target_token_evidence',[])))} — segmentation={esc(c.get('segmentation','unspecified'))}, parsing={esc(c.get('parsing','unspecified'))}</p><p>Preference prediction: {c['score']:.3f}</p><p>{'Inclusion score: '+format(c.get('learned_inclusion_score',0),'.3f') if result['ranker']=='research' else 'Joint inclusion and preference score'}</p><p>Crum references: {esc(str(c.get('crum_citations',[])))}</p><p>Gloss token recall {rel.get('freq_match',0):.3f} · cosine {esc(str(rel.get('cosine')))} · ROUGE-L {rel.get('rouge_l',0):.3f}</p><p>POS alignment review: {esc(str(c.get('target_alignment') or c.get('crum_pos_alignment') or 'lemma and native tags'))}</p><p>Syntactic signature: {esc(', '.join(sig))}</p><p class="muted">Corpus: {esc(c.get('source',''))}<br>Reference: {esc(c.get('urn',''))}</p></div></details></li>"""
             content += "</ol></section>"
+        source_rows = result.get("source_examples", [])
+        if source_rows:
+            content += f'<section class="panel" id="online-examples"><h3>Online dictionary examples ({len(source_rows)})</h3><p class="muted">CDO automatic examples · source order</p><ol>'
+            for c in source_rows:
+                content += (
+                    '<li><p class="coptic sentence">'
+                    + online_highlight(c["marked_text"])
+                    + '</p><p class="translation">'
+                    + esc(c["translation"])
+                    + '</p><p class="source">'
+                    + esc(c["title"])
+                    + ' · <a href="https://data.copticscriptorium.org/'
+                    + esc(c["urn"])
+                    + '">Source ↗</a> · <a href="https://coptic-dictionary.org/entry/'
+                    + esc(e["tla"])
+                    + '">CDO ↗</a></p></li>'
+                )
+            content += "</ol></section>"
+        pool_url = "/all-examples?" + urlencode(
+            dict(query=e["tla"], dialect=result["dialect"])
+        )
+        content += (
+            '<section class="panel"><a href="'
+            + esc(pool_url)
+            + '">Browse all corpus matches ('
+            + str(result["candidate_count"])
+            + ")</a></section>"
+        )
         review = short.get("definition_review", [])
         if review:
             content += (
@@ -278,7 +308,7 @@ def search_page(
         content += "</details>"
         excluded = short.get("excluded", result.get("excluded", {}))
         content += (
-            '<details class="panel"><summary>Retrieval details</summary><p>Excluded: '
+            '<details class="panel"><summary>Retrieval details</summary><p>Length limit: 30 whitespace-separated groups.</p><p>Excluded: '
             + esc(", ".join(f"{k}: {v}" for k, v in excluded.items()))
             + "</p></details>"
         )
@@ -346,3 +376,56 @@ def experiments_page(config, dialect="sahidic", task="acceptance"):
     from .learning_review import experiments
 
     return experiments(config, dialect)
+
+
+def online_highlight(marked):
+    pieces = re.split(r"(\*\*.*?\*\*)", marked, flags=re.S)
+    return "".join(
+        (
+            "<mark>" + esc(p[2:-2]) + "</mark>"
+            if p.startswith("**") and p.endswith("**")
+            else esc(p)
+        )
+        for p in pieces
+    )
+
+
+def corpus_candidates_page(entry, dialect, packet):
+    from dataclasses import asdict
+
+    e = asdict(entry)
+    offset, limit, total = packet["offset"], packet["limit"], packet["total"]
+    body = (
+        '<section class="panel"><h2>All corpus matches · '
+        + esc(entry.tla)
+        + " · "
+        + esc(dialect)
+        + "</h2><p>Exact TT token and lemma matches, including archived corpora. Sense review pending.</p><p>"
+        + str(total)
+        + ' matches</p><ol start="'
+        + str(offset + 1)
+        + '">'
+    )
+    for c in packet["rows"]:
+        body += (
+            '<li><p class="coptic sentence">'
+            + highlighted(c["sent"], e, c)
+            + "</p><p>"
+            + esc(c["translation"])
+            + "</p><p>"
+            + citation(c)
+            + " · "
+            + str(c["bound_groups"])
+            + ' groups</p><p class="muted">'
+            + esc(c["source"])
+            + "</p></li>"
+        )
+    body += "</ol><nav>"
+    for label, start in [("Previous", offset - limit), ("Next", offset + limit)]:
+        if 0 <= start < total:
+            url = "/all-examples?" + urlencode(
+                dict(query=entry.tla, dialect=dialect, offset=start)
+            )
+            body += '<a href="' + esc(url) + '">' + label + "</a> "
+    body += "</nav></section>"
+    return shell(body, "All corpus matches")

@@ -239,10 +239,13 @@ class ModelOnlySelectionTests(unittest.TestCase):
         candidates = [
             dict(
                 id=t,
-                sent=s,
+                sent=s + " ⲉⲓⲱⲧ",
                 translation="This is a translated example.",
                 dialect_id="sahidic",
-                tokens=[],
+                tokens=[
+                    dict(id="u0", form=s, lemma=s, pos="ADV", xpos="ADV"),
+                    dict(id="u1", form="ⲉⲓⲱⲧ", lemma="ⲉⲓⲱⲧ", pos="NOUN", xpos="N"),
+                ],
             )
             for t, s in [("a", "ⲁ"), ("b", "ⲃ"), ("c", "ⲅ")]
         ]

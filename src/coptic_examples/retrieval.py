@@ -46,12 +46,27 @@ class Search:
     def resolve(self, query, upos=None, definition=None):
         if query.upper() in self.lex:
             return self.lex[query.upper()]
+        if query.upper().startswith("C"):
+            from .source_pool import online_entry
+
+            source_entry = online_entry(self.config, query.upper())
+            if source_entry is not None:
+                return source_entry
         found = [
             e
             for e in self.lex.values()
             if lemma_key(query).casefold() in {f.casefold() for f in e.forms}
             and (not upos or e.pos == pos(upos))
         ]
+        if getattr(self, "config", None) is not None:
+            from .source_pool import online_matches
+
+            merged = {e.tla: e for e in found}
+            for source_entry in online_matches(self.config, query):
+                entry = self.lex.get(source_entry.tla, source_entry)
+                if not upos or entry.pos == pos(upos):
+                    merged.setdefault(entry.tla, entry)
+            found = list(merged.values())
         if len(found) != 1:
             if found:
                 raise AmbiguousLemma(query, found)
@@ -88,6 +103,24 @@ class Search:
                     "Cheap models use the dictionary definition; custom definitions require explicit semantic review"
                 )
             from .shortlist import Shortlist
+            from .source_pool import online_examples, corpus_page
+
+            source_examples = online_examples(self.config, e.tla, dialect)
+            if e.tla not in self.lex:
+                pool = corpus_page(self.config, e, dialect, 0, 1)
+                return dict(
+                    entry=asdict(e),
+                    dialect=dialect,
+                    definition=gloss,
+                    ranker=ranker,
+                    candidate_count=pool["total"],
+                    results=[],
+                    source_examples=source_examples,
+                    source_only_entry=True,
+                    manual_examples=[],
+                    excluded={},
+                    warnings=[],
+                )
 
             if ranker in {"research", "unified"}:
                 from .learning import recommend
@@ -119,6 +152,7 @@ class Search:
                 sense_eligible_count=short["eligible_count"],
                 excluded=short["excluded"],
                 results=rows,
+                source_examples=source_examples,
                 manual_examples=[
                     r
                     for r in self.manual.get(e.tla, [])

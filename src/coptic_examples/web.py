@@ -130,6 +130,27 @@ def serve(config, port=8012):
                     return self.send(
                         200, "text/html; charset=utf-8", guide_page(config)
                     )
+                if path in {"/all-examples", "/api/all-examples"}:
+                    from .source_pool import corpus_page
+                    from .ui import corpus_candidates_page
+                    from .dialects import Dialects
+
+                    entry = search.resolve(fields.get("query", ""))
+                    dialect = Dialects().require(fields.get("dialect", "sahidic"))
+                    packet = corpus_page(
+                        config, entry, dialect, int(fields.get("offset", 0)), 25
+                    )
+                    if path.startswith("/api/"):
+                        return self.send(
+                            200,
+                            "application/json; charset=utf-8",
+                            json.dumps(packet, ensure_ascii=False),
+                        )
+                    return self.send(
+                        200,
+                        "text/html; charset=utf-8",
+                        corpus_candidates_page(entry, dialect, packet),
+                    )
                 if path == "/sense-review":
                     from .sense_review import page
 

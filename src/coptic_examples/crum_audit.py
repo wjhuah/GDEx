@@ -246,6 +246,13 @@ def heading_forms(para, root):
     return list(dict.fromkeys(forms))
 
 
+def preceding_dialect_codes(before):
+    group = re.search(r"((?:⟪[^⟫]+⟫\s*)+)[,\s]*$", before)
+    if group:
+        return list(dict.fromkeys(DIALECT.findall(group[1])))
+    return DIALECT.findall(before)[-1:]
+
+
 def extract_file(path, lex, byform, pages):
     text = path.read_bytes().decode("utf-8")
     pg = list(PAGE.finditer(text))
@@ -358,11 +365,14 @@ def extract_file(path, lex, byform, pages):
                 scope = "post_reference_evidence"
             elif after_tags:
                 codes = list(
-                    dict.fromkeys((inherited_codes or before_tags[-1:]) + after_tags)
+                    dict.fromkeys(
+                        (inherited_codes or preceding_dialect_codes(before))
+                        + after_tags
+                    )
                 )
                 scope = "inherited_with_parenthetical_variants"
             elif before_tags:
-                codes = before_tags[-1:]
+                codes = preceding_dialect_codes(before)
                 scope = "preceding_scope_evidence"
             else:
                 codes = inherited_codes

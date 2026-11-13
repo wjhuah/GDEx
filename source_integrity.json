@@ -1,0 +1,50 @@
+{
+  "bohairic.ot/27_Daniel_04.tt": {
+    "sha256": "9324b1f4d5c1e0ed000f962c4fa2def89507bead2e78ef6d4c5b3d4a05e16142",
+    "issue": "source_translation_chapter_mismatch"
+  },
+  "bohairic.ot/27_Daniel_05.tt": {
+    "sha256": "2cc6a0a8004b1028117c8488cef9b3914c80d311cfe09471b188d77957074d3d",
+    "issue": "source_translation_chapter_mismatch"
+  },
+  "bohairic.ot/27_Daniel_06.tt": {
+    "sha256": "70853d1ffbe7dc2faf9abb7325313c022cf48b2d9ccab5c460b236f381000943",
+    "issue": "source_translation_chapter_mismatch"
+  },
+  "bohairic.ot/27_Daniel_07.tt": {
+    "sha256": "a67a6732746b7fd4cdf8f9e26cbc31cc4f6b17cd3df97703a017a12da997af0c",
+    "issue": "source_translation_chapter_mismatch"
+  },
+  "bohairic.ot/27_Daniel_08.tt": {
+    "sha256": "32c6bef3a25748ed667e31df48e5f7724e9d89f5537ef006f42dc138aff92925",
+    "issue": "source_translation_chapter_mismatch"
+  },
+  "bohairic.ot/27_Daniel_09.tt": {
+    "sha256": "f07e575f1db96d0738d16846d6fbfc586e8dc69e18097bcd67c99b781bdb69f3",
+    "issue": "source_translation_chapter_mismatch"
+  },
+  "bohairic.ot/27_Daniel_10.tt": {
+    "sha256": "7f8b1dbd76bd84e5b12c6bacb1e8709eb905170b0ea1db18540d2706308be2d4",
+    "issue": "source_translation_chapter_mismatch"
+  },
+  "bohairic.ot/27_Daniel_11.tt": {
+    "sha256": "ad6903aba41a9df1a81898d640ca59a7c2dc8957d2f0bcbe88aea5820f570c0c",
+    "issue": "source_translation_chapter_mismatch"
+  },
+  "bohairic.ot/27_Daniel_12.tt": {
+    "sha256": "f1ae017e4a5bd194b9367aa0da5b9a461609fae375b907863bdadecbbe0eae7c",
+    "issue": "source_translation_chapter_mismatch"
+  },
+  "bohairic.ot/27_Daniel_13.tt": {
+    "sha256": "2f4589d2275b6211ec97d463ff8792fc0efec3191d3e3419ccd317e1d6bd64ee",
+    "issue": "source_translation_chapter_mismatch"
+  },
+  "bohairic.ot/27_Daniel_14.tt": {
+    "sha256": "1ce5f4bf2b27453c895be1ba18e559f57bdb1e4fc1804dd562da610904d7f74d",
+    "issue": "source_translation_chapter_mismatch"
+  },
+  "bohairic.ot/19_Psalmi_110.tt": {
+    "sha256": "df3e5c2f52a1f32884c38d9bf7a8c0e45b75a4c930d8fa68b3296a7a6f37aa51",
+    "issue": "source_translation_verse_mismatch"
+  }
+}
