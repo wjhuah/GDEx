@@ -117,7 +117,7 @@ sense_overlap	3.92%
 sense_rouge	3.49%
 
 
-Random Forest — Ranking: Top 10 Features
+Ranking: Top 10 Features
 Feature	Importance
 sense_cosine_margin	4.91%
 mean_dep_distance	4.60%
