@@ -1,4 +1,4 @@
-"""Apply local, context-specific corrections without changing corpus annotations."""
+pass
 
 import hashlib
 import json
@@ -24,7 +24,7 @@ def records():
 
 
 def decisions(candidate, tla):
-    """Return decisions only when text, token position and form still agree."""
+    pass
     if not candidate.get("sent") or not candidate.get("dialect_id"):
         return {}
     rows = records().get((candidate.get("dialect_id"), text_digest(candidate)), [])

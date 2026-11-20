@@ -1,4 +1,4 @@
-"""All-corpus candidates + transparent sense contrast + learned example quality."""
+pass
 
 import json
 from dataclasses import asdict
@@ -230,7 +230,7 @@ class Search:
         trans = [norm(c["translation"]) for c in eligible]
         v = self.embeddings.encode(trans)
         own = v @ q
-        # Only this pair has been checked against expert anchors in this rebuild.
+        
         other = {"C998": "C992", "C992": "C998"}.get(e.tla)
         competing = (
             v @ self.embeddings.encode([self.lex[other].gloss], "definition")[0]

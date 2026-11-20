@@ -1,8 +1,4 @@
-"""Lossless Bible occurrence inventory, then separately auditable interpretation.
-
-Extraction does NOT depend on dialect, TLA resolution or local Bible coverage.
-Every explicit {bible:...} occurrence survives with its exact source offsets.
-"""
+pass
 
 import bisect
 import csv
@@ -122,8 +118,8 @@ def parse_reference(body):
             no_link=body.startswith("NO-LINK:"),
         )
     clean = re.sub(r"^NO-LINK:\s*", "", body)
-    # Lettered additions use their own printed versification. Preserve, do not
-    # guess a corresponding numbered Daniel/Esther verse.
+    
+    
     m = re.fullmatch(r"(Daniel|Esther)\s+([A-Z]):(\d+)", clean)
     if m:
         return dict(kind="lettered_section", book=m[1], section=m[2], verse=m[3])
@@ -221,8 +217,8 @@ def heading_forms(para, root):
             continue
         forms.append(form)
         if root:
-            # Only exact lexicon+page matches can accept an expansion below.
-            # Never trim arbitrary suffixes (a source of old false bindings).
+            
+            
             compact = form.replace(" ", "")
             base = root.replace(" ", "")
             if re.search(r"[.\-⸗]\s*$", raw):
@@ -286,8 +282,8 @@ def extract_file(path, lex, byform, pages):
             )
             if not root_form or separator:
                 root_form = lemma_key(form)
-            # A new explicit heading never inherits an unrelated previous TLA.
-            # Abbreviated derivatives stay unresolved unless independently exact.
+            
+            
             proposed = []
             for candidate_form in heading_forms(para, root_form):
                 ts, why = bind_heading(
@@ -346,7 +342,7 @@ def extract_file(path, lex, byform, pages):
             after = para[
                 m.end() : local[j + 1].start() if j + 1 < len(local) else len(para)
             ]
-            # Keep all raw dialect evidence. A semicolon ends a post-reference scope.
+            
             after_scope = re.split(r"⟦;⟧|;|\n\s*___", after, maxsplit=1)[0]
             after_tags = DIALECT.findall(after_scope)
             before_tags = DIALECT.findall(before)
@@ -428,7 +424,7 @@ def extract_file(path, lex, byform, pages):
                 )
             )
     captured = {r["char_start"] for r in records}
-    # Includes material before the first ¶. Completeness cannot depend on structure.
+    
     for m in matches:
         if m.start() not in captured:
             records.append(
@@ -500,7 +496,7 @@ def run(config):
                         (ref["book_key"], ref["chapter"], ref["verse"]), []
                     )
                 allowed = registry.from_codes(r["dialect_codes"])
-                # Codes for an unregistered dialect are not equivalent to unspecified.
+                
                 explicit_other = bool(r["dialect_codes"]) and not allowed
                 match_counts = Counter()
                 valid_forms = (
@@ -584,24 +580,24 @@ def run(config):
     stats["training_coverage_is_not_extraction_coverage"] = True
     write_json(config.reports / "crum_bible_audit.json", dict(stats))
     md = [
-        "# Crum 全部 Bible 标记提取与匹配审计",
+        '',
         "",
-        "目标是完整保留 Crum 的专业编纂顺序，用于学习他的风格。所有方言、不能定位到节的引用和暂未归入 TLA 的引用都保留；没有先过滤 Sahidic。",
+        '',
         "",
-        "| 检查 | 数量 |",
+        '| Check | Count |',
         "|---|---:|",
     ]
     md += [f"| {k} | {v} |" for k, v in stats.items()]
     md += [
         "",
-        "## 完整性保证与正确性边界",
+        '',
         "",
-        "逐文件独立数 `{bible:` 标记；逐条核对字符范围可切回完全相同的原始标记。每条保存文件哈希、行号、字节位置、印刷页、原始引用、规范化引用、词条/段落顺序与方言证据。",
-        "这保证当前数字化文本中所有显式 Bible 标记均被提取，不等于证明扫描本所有未标记引用也已由数字化作者正确标注。没有凭空补章节或跨版本节号。",
-        "book-only、chapter-only、titulus 和字母章节是有效的引用形态，不应因不能映射一个句子而从提取结果删除。字母章节暂不猜测成 Daniel 的数字章节。",
-        "TLA 不唯一时保留候选清单；没有像旧 pick_best 一样静默取第一个。只有目标形式实际出现在对应方言 TT 标注中的链接才标 verified_target_form；仍不是逐 token 专家义项判断。",
-        "旧 v15 输出 30,466 条引用，不能代替本次完整原始清单。旧流程还会把尚未识别的新词头继承为上一词条；本次新词头会重置绑定，避免错误继承。",
-        "完整清单：`data/derived/crum_bible_occurrences.jsonl`。逐链接：`cache/crum_bible.sqlite3`。待复核状态均可按字段查询，不用从日志猜测。",
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
     ]
     (config.reports / "CRUM_BIBLE_AUDIT.md").write_text(
         "\n".join(md) + "\n", encoding="utf-8"

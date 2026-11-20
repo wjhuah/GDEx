@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Evaluate filtered output on the same judged candidate pools."""
+
+pass
 
 import sys, json, math
 from pathlib import Path

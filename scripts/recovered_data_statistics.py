@@ -1,4 +1,4 @@
-"""Describe the new data, with explicit separation of corpus and printed text."""
+pass
 
 import sys, json, re, csv
 from pathlib import Path
@@ -11,12 +11,12 @@ from coptic_examples.config import Config, write_json
 from coptic_examples.recommendation_policy import coptic_letters
 
 cfg = Config()
-folder = cfg.reports / "本地复盘/新增数据模型比较"
+folder = cfg.reports / 'local_2218a127/local_77165ac0'
 folder.mkdir(parents=True, exist_ok=True)
-source = cfg.reports / "本地复盘/仅S异写兼容"
-rows = list(map(json.loads, (source / "去重恢复配对.jsonl").open()))
+source = cfg.reports / 'local_2218a127/local_40c6713e'
+rows = list(map(json.loads, (source / '').open()))
 print(rows[0].keys())
-# These are matched full corpus spans, not the short quotation printed in Crum.
+
 groups = defaultdict(list)
 for r in rows:
     text = r.get("text", r.get("sent", ""))
@@ -49,7 +49,7 @@ for tla, rr in groups.items():
         )
     )
 write_json(
-    folder / "新增配对句长.json",
+    folder / '',
     dict(
         examples=samples,
         entries=entry,
@@ -66,7 +66,7 @@ for path in sorted((cfg.source / "Crum_plain_text").glob("*.txt")):
     for m in re.finditer(r"\brare(?:ly)?\b", text, re.I):
         before = text[max(0, m.start() - 120) : m.start()]
         after = text[m.end() : m.end() + 120]
-        # A mention is retained with context; scope remains a review decision.
+        
         rare.append(
             dict(
                 file=path.name,
@@ -75,13 +75,13 @@ for path in sorted((cfg.source / "Crum_plain_text").glob("*.txt")):
                 nearby_S=bool(re.search("⟪S⟫", before[-60:] + after[:60])),
             )
         )
-write_json(folder / "少见用法标记逐处.json", rare)
+write_json(folder / '', rare)
 write_json(
-    folder / "少见用法标记统计.json",
+    folder / '',
     dict(
         mentions=len(rare),
         files=len(set(r["file"] for r in rare)),
         S_within_60_chars=sum(r["nearby_S"] for r in rare),
-        scope="邻近标记仅作查证线索，尚需逐处确认修饰范围",
+        scope='',
     ),
 )

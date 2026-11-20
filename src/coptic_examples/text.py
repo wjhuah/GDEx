@@ -9,7 +9,7 @@ STOP = set(
 UPOS = set(
     "ADJ ADP ADV AUX CCONJ DET INTJ NOUN NUM PART PRON PROPN PUNCT SCONJ VERB X".split()
 )
-# Explicit native mapping from UD Coptic morphology table; raw tags retained.
+
 NATIVE = dict(
     zip(
         "AAOR ACAUS ACOND ACONJ ADV AFUTCONJ AJUS ALIM ANEGAOR ANEGJUS ANEGOPT ANEGPST ANY AOPT APREC APST ART CCIRC CCOND CFOC CONJ COP CPRET CREL EXIST FM FUT IMOD N NEG NOUN NPROP NUM PDEM PINT PPERI PPERO PPERS PPOS PREP PTC PUNCT UNKNOWN V VBD VIMP VSTAT".split(),
@@ -23,7 +23,7 @@ def norm(value):
 
 
 def lemma_key(value):
-    # Preserve MWE boundaries instead of concatenating separate lexemes.
+    
     return " ".join("".join(COPTIC.findall(x)) for x in norm(value).split()).strip()
 
 
@@ -43,7 +43,7 @@ def pos(value):
     if raw.upper() in UPOS:
         return raw.upper()
     if "_" in raw and raw.split("_")[-1].upper().startswith("PP"):
-        return "PRON"  # documented portmanteau subject handling, retain xpos
+        return "PRON"  
     lower = raw.casefold().rstrip(".")
     for prefixes, mapped in [
         (("subst", "noun"), "NOUN"),
@@ -60,7 +60,7 @@ def pos(value):
     ]:
         if lower.startswith(prefixes):
             return mapped
-    return ""  # Unknown is measurable, not silently NOUN/VERB.
+    return ""  
 
 
 def english(value):
@@ -97,7 +97,7 @@ def rouge(gloss, translation):
 
 
 def work_urn(value):
-    # Version aliases seen in manual table vs current Scriptorium; no arbitrary prefix match.
+    
     bits = norm(value).split(":")
     return ":".join(bits[:4]).replace("_ed", "")
 

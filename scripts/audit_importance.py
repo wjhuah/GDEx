@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Matched held-out diagnosis of punctuation and pronouns, with source and sense checks."""
+
+pass
 import sys,json,copy
 from pathlib import Path
 from collections import defaultdict,Counter

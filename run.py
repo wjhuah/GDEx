@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Local entry point; also installable as coptic-examples."""
+
+pass
 
 import sys
 from pathlib import Path

@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Describe aligned Crum spans, including within-entry standardized lengths."""
+
+pass
 
 import sys, json, csv
 from pathlib import Path

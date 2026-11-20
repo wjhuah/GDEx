@@ -1,4 +1,4 @@
-"""Frozen original-data classification and preference comparisons; no deployment writes."""
+pass
 
 import os, sys, json, hashlib, gzip, time
 from pathlib import Path
@@ -33,7 +33,7 @@ from coptic_examples.inclusion import COLUMNS_INCLUSION
 from coptic_examples.ablation import expected_top_metric
 
 root = Path(__file__).resolve().parents[1]
-out = root / "reports/本地复盘/调整后算法比较"
+out = root / 'reports/local_2218a127/local_f9684944'
 out.mkdir(parents=True, exist_ok=True)
 
 
@@ -171,7 +171,7 @@ methods = [
     "XGBoost",
     "CatBoost",
 ]
-with gzip.open(out / "留出预测.jsonl.gz", "wt") as predictions:
+with gzip.open(out / '', "wt") as predictions:
     for dialect in ["sahidic", "bohairic"]:
         file = root / f"data/derived/adjusted_20261113/model_rows_{dialect}.jsonl"
         mf = root / f"data/derived/adjusted_20261113/fold_manifest_{dialect}.json"
@@ -304,11 +304,11 @@ with gzip.open(out / "留出预测.jsonl.gz", "wt") as predictions:
                         + "\n"
                     )
                 predictions.flush()
-                save("逐折指标.json", results)
-                save("逐折特征重要性.json", importance)
+                save('', results)
+                save('', importance)
                 print(dialect, fold, method, cls, flush=True)
 save(
-    "实验协议.json",
+    '',
     dict(
         input_sha256=provenance,
         features=COLUMNS_INCLUSION,
@@ -321,4 +321,4 @@ save(
         hyperparameter_search=False,
     ),
 )
-save("完成.json", dict(completed=True, result_rows=len(results)))
+save('', dict(completed=True, result_rows=len(results)))

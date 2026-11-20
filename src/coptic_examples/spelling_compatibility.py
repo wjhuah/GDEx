@@ -1,4 +1,4 @@
-"""Whole-form Sahidic spelling compatibility from a traceable normalization table."""
+pass
 
 from collections import defaultdict
 import hashlib
@@ -14,7 +14,7 @@ def compatible_spelling(original, normalized):
         return True
     if SACRED_ABBREVIATIONS.get(original) == normalized:
         return True
-    # Consonant substitutions and longer rewrites require separate witnesses.
+    
     consonants = lambda value: "".join(c for c in value if c not in VOWELS)
     if min(len(original), len(normalized)) < 3 or consonants(original) != consonants(
         normalized

@@ -1,4 +1,4 @@
-"""Local printed scope of rarity qualifiers, without inheriting a dialect ban."""
+pass
 
 import re
 
@@ -11,7 +11,7 @@ def rarity_scope(before, after):
     )
     if direct:
         return dict(
-            scope="方言词形",
+            scope='Dialect form',
             dialect_codes=re.findall(r"⟪([^⟫]+)⟫", direct["codes"]),
             form=direct["form"] or "",
             evidence=direct[0],
@@ -21,7 +21,7 @@ def rarity_scope(before, after):
     form = re.search(r"⟨([^⟩]+)⟩\s*\((?:very\s+)?$", before)
     if form:
         return dict(
-            scope="方言词形" if following else "词形",
+            scope='Dialect form' if following else 'Form',
             dialect_codes=re.findall(r"⟪([^⟫]+)⟫", following[1]) if following else [],
             form=form[1],
             evidence=form[0] + ("…" + following[0] if following else ""),
@@ -30,15 +30,15 @@ def rarity_scope(before, after):
     tags = re.search(r"⟦([^⟧]+)⟧\{annotation:[^}]*\}\s*\((?:very\s+)?$", before)
     if tags:
         scope = {
-            "tr": "及物用法",
-            "intr": "不及物用法",
-            "sg": "数的用法",
-            "pl": "数的用法",
-            "qual": "状态形式用法",
-        }.get(tags[1].lower(), "语法用法")
-        # Singular used as plural has its own scope rather than a word-wide ban.
+            "tr": 'Transitive use',
+            "intr": 'Intransitive use',
+            "sg": 'Number use',
+            "pl": 'Number use',
+            "qual": 'Stative use',
+        }.get(tags[1].lower(), 'Grammatical use')
+        
         if re.search(r"⟦sg⟧.*as.*⟦pl⟧", before):
-            scope = "单数形式用作复数"
+            scope = 'Singular form used as plural'
         return dict(
             scope=scope,
             dialect_codes=[],
@@ -48,7 +48,7 @@ def rarity_scope(before, after):
         )
     if re.search(r"⟨gloss:[^⟩]+⟩\s*\($", before) or re.match(r"\s*⟨gloss:", after):
         return dict(
-            scope="特定义项",
+            scope='Specific sense',
             dialect_codes=[],
             form="",
             evidence=before[-100:] + "…" + after[:100],
@@ -56,7 +56,7 @@ def rarity_scope(before, after):
         )
     if re.match(r"\s*⟦(?:sg|pl)⟧", after):
         return dict(
-            scope="数的用法",
+            scope='Number use',
             dialect_codes=[],
             form="",
             evidence=after[:120],
@@ -68,7 +68,7 @@ def rarity_scope(before, after):
         r"\b(?:with|without|following|followed|constructed)\b", before[-160:], re.I
     ):
         return dict(
-            scope="局部构式或搭配",
+            scope='Local construction or collocation',
             dialect_codes=[],
             form="",
             evidence=before[-160:] + "…" + after[:160],
@@ -76,14 +76,14 @@ def rarity_scope(before, after):
         )
     if re.match(r"\s*⟦c⟧", after) or re.match(r"\s*⟨[^⟩]+⟩", after):
         return dict(
-            scope="后接构式或变化词形",
+            scope='Following construction or inflected form',
             dialect_codes=[],
             form="",
             evidence=after[:160],
             rule="following_form",
         )
     return dict(
-        scope="待核定",
+        scope='Pending review',
         dialect_codes=[],
         form="",
         evidence=before[-160:] + "…" + after[:160],

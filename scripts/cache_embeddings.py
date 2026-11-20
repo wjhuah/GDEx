@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Fill the optional BGE cache for current definitions and source examples."""
+
+pass
 
 import sys, json, argparse
 from pathlib import Path

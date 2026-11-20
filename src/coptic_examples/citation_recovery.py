@@ -1,4 +1,4 @@
-"""Recover citation bindings from explicit article headings and native token spans."""
+pass
 
 import re
 from .crum_audit import heading_forms
@@ -7,8 +7,8 @@ from .text import lemma_key
 
 def expanded_heading_forms(paragraph, root):
     forms = heading_forms(paragraph, root)
-    # Bare abbreviated prefixes can also be independent dictionary words.
-    # Prefer the complete derived form when its full spelling is reconstructed.
+    
+    
     header = paragraph.split("⟨gloss:", 1)[0].split("{bible:", 1)[0]
     short = {lemma_key(x) for x in re.findall(r"⟨([^⟩]+)⟩", header)}
     if root in short:
@@ -25,7 +25,7 @@ def bind_forms(forms, page, lexicon, byform, pages):
 
 
 def token_spans(candidate, entry, printed_variants=(), normalizer=None):
-    """Allow different TT splits only when their complete forms concatenate exactly."""
+    pass
     key = (
         normalizer
         if normalizer is not None
@@ -57,7 +57,7 @@ def has_lexical_heading(paragraph):
 
 
 def has_dialect_alternative(paragraph, raw, dialect_codes):
-    """Identify explicitly bracketed dialect readings beside this occurrence."""
+    pass
     following = paragraph.split(raw, 1)[-1]
     following = re.split(r"⟦;⟧|⟦[^⟧]*⟧\{(?:bible|reference):", following, maxsplit=1)[0]
     for bracket in re.findall(r"\(([^)]*)\)", following):
@@ -71,7 +71,7 @@ def has_dialect_alternative(paragraph, raw, dialect_codes):
 
 
 def explicit_dialect_forms(paragraph, raw, dialect_codes, root):
-    """Read the quoted replacement spelling for a dialect at this citation."""
+    pass
     following = paragraph.split(raw, 1)[-1]
     following = re.split(r"⟦;⟧|⟦[^⟧]*⟧\{(?:bible|reference):", following, maxsplit=1)[0]
     forms = []
@@ -88,7 +88,7 @@ def explicit_dialect_forms(paragraph, raw, dialect_codes, root):
 
 
 def add_cdo_only_entries(lexicon, records):
-    """Include online-only entries in a recovery lexicon without changing deployed inputs."""
+    pass
     from .lexicon import Entry, apply_snapshot
     from .text import pos
 
@@ -116,7 +116,7 @@ def add_cdo_only_entries(lexicon, records):
 
 
 def contextual_dialect_reading(paragraph, raw, dialect_codes, root):
-    """Resolve a bracketed spelling or ditto from earlier in the same paragraph."""
+    pass
     tokens = re.finditer(r"⟦[^⟧]*⟧(?:\{[^}]*\})?|⟪[^⟫]+⟫|⟨[^⟩]+⟩|[()]", paragraph)
     remembered = {}
     depth = 0
@@ -168,7 +168,7 @@ def contextual_dialect_reading(paragraph, raw, dialect_codes, root):
 
 
 def explicit_bible_location(work, chapter, verse):
-    """Use a fully stated verse label when the chapter metadata is a default."""
+    pass
     from .text import location_key
 
     book = re.search(r":(?:ot|nt)\.([^.]+)", work)
@@ -183,7 +183,7 @@ def explicit_bible_location(work, chapter, verse):
 
 
 def has_government_alternative(paragraph, raw, dialect_codes):
-    """Distinguish a short governed-preposition change from replacing the headword."""
+    pass
     prefix = paragraph.split("{bible:", 1)[0]
     if has_lexical_heading(paragraph) or "annotation: constructed with" not in prefix:
         return False

@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Compare two-stage and joint learning on fixed held-out examples."""
+
+pass
 
 import sys, json, hashlib
 from pathlib import Path

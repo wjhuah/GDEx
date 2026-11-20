@@ -1,4 +1,4 @@
-"""Target-centered information and interpretable syntactic coverage."""
+pass
 
 import itertools
 import math
@@ -12,7 +12,7 @@ CONTENT = {"NOUN", "ADJ", "VERB", "ADV", "NUM"}
 def target_indices(candidate, lemma, forms=()):
     keys = {v for form in [lemma, *forms] for v in variants(form)}
     if not keys:
-        keys = {norm(lemma).casefold()}  # language-neutral unit fixtures
+        keys = {norm(lemma).casefold()}  
     return [
         i
         for i, t in enumerate(candidate["tokens"])
@@ -243,7 +243,7 @@ def choose(rows, k, method="coverage"):
             + [r for r in ranked if r["id"] not in chosen_ids][: k - len(chosen)],
             key=lambda r: -r["shortlist_score"],
         )
-    # Quality-bounded marginal coverage selection for the ten-candidate stage.
+    
     chosen = []
     for _ in range(k):
         available = [r for r in ranked if r not in chosen]

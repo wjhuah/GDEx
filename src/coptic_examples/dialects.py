@@ -1,4 +1,4 @@
-"""Config-driven dialect identity; unknown never defaults to Sahidic."""
+pass
 
 import fnmatch
 import hashlib
@@ -47,8 +47,8 @@ class Dialects:
                 if paths and key not in paths
                 else "metadata_alias"
             )
-        # A nonempty unrecognized label is positive evidence of a different or
-        # mixed dialect. It must not be overridden by a broad folder fallback.
+        
+        
         if norm(raw):
             return "unknown", "unrecognized_metadata"
         if len(paths) == 1:

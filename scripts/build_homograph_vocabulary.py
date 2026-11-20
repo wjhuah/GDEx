@@ -1,4 +1,4 @@
-"""Publish an auditable homograph candidate list from the pinned online index."""
+pass
 
 import sys, json
 from pathlib import Path
@@ -10,7 +10,7 @@ from coptic_examples.homographs import homograph_groups
 
 cfg = Config()
 records = json.loads((cfg.work / "cache/cdo_online/index.json").read_text())
-root = cfg.reports / "本地复盘/数据规模与同形词"
+root = cfg.reports / 'local_2218a127/local_bde2e0cb'
 root.mkdir(parents=True, exist_ok=True)
 canonical = homograph_groups(records, True)
 forms = homograph_groups(records, False)
@@ -31,13 +31,13 @@ summary = dict(
     all_form_within_dialect=sum(bool(g["shared_dialects"]) for g in forms),
     all_form_entries=len({e["tla"] for g in forms for e in g["senses"]}),
 )
-(root / "规模.json").write_text(
+(root / '').write_text(
     json.dumps(summary, ensure_ascii=False, indent=2) + "\n"
 )
-(root / "同词头候选.json").write_text(
+(root / '').write_text(
     json.dumps(canonical, ensure_ascii=False, indent=2) + "\n"
 )
-(root / "全部词形冲突.json").write_text(
+(root / '').write_text(
     json.dumps(forms, ensure_ascii=False, indent=2) + "\n"
 )
 
@@ -125,6 +125,6 @@ for group in sorted(forms, key=lambda g: (not bool(g["shared_dialects"]), g["wor
         + " |"
     )
 (cfg.work / "homograph_forms.md").write_text("\n".join(form_lines) + "\n")
-# Keep the hand-maintained regression vocabulary and source cases as the focused test list.
+
 assert all(any(g["word"] == f for g in canonical) for f in focus)
 print(json.dumps(summary, ensure_ascii=False, indent=2))

@@ -1,0 +1,350 @@
+{
+  "sent": "ⲙⲡⲟⲩⲣⲏ ⲅⲁⲣ ⲛⲁϩⲱⲧⲡ ⲁⲛ ⲁⲩⲱ ⲙⲡⲟⲩⲟⲟϩ ⲛⲁϭⲱϫⲃ ⲁⲛ ⲡϫⲟⲉⲓⲥ ⲅⲁⲣ ⲡⲛⲟⲩⲧⲉ ⲛⲁϣⲱⲡⲉ ⲛⲉ ⲛⲟⲩⲟⲉⲓⲛ ϣⲁⲉⲛⲉϩ ⲛⲧⲉⲛⲉϩⲟⲟⲩ ⲙⲡⲟⲩϩⲏⲃⲉ ϫⲱⲕ ⲉⲃⲟⲗ",
+  "translation": "For the sun shall no more set, nor shall the moon be eclipsed; for the Lord shall be thine everlasting light, and the days of thy mourning shall be completed.",
+  "tokens": [
+    {
+      "id": "u697",
+      "form": "ⲙ",
+      "lemma": "ⲛ",
+      "pos": "ADP",
+      "xpos": "PREP",
+      "dep": "advmod",
+      "head": "u702",
+      "new_sent": "true"
+    },
+    {
+      "id": "u698",
+      "form": "ⲡⲟⲩ",
+      "lemma": "ⲡⲟⲩ",
+      "pos": "DET",
+      "xpos": "PPOS",
+      "dep": "nmod:poss",
+      "head": "u699",
+      "new_sent": ""
+    },
+    {
+      "id": "u699",
+      "form": "ⲣⲏ",
+      "lemma": "ⲣⲏ",
+      "pos": "NOUN",
+      "xpos": "N",
+      "dep": "nsubj",
+      "head": "u702",
+      "new_sent": ""
+    },
+    {
+      "id": "u700",
+      "form": "ⲅⲁⲣ",
+      "lemma": "ⲅⲁⲣ",
+      "pos": "PART",
+      "xpos": "PTC",
+      "dep": "advmod",
+      "head": "u702",
+      "new_sent": ""
+    },
+    {
+      "id": "u701",
+      "form": "ⲛⲁ",
+      "lemma": "ⲛⲁ",
+      "pos": "AUX",
+      "xpos": "FUT",
+      "dep": "aux",
+      "head": "u702",
+      "new_sent": ""
+    },
+    {
+      "id": "u702",
+      "form": "ϩⲱⲧⲡ",
+      "lemma": "ϩⲱⲧⲡ",
+      "pos": "VERB",
+      "xpos": "V",
+      "dep": "root",
+      "head": "",
+      "new_sent": ""
+    },
+    {
+      "id": "u703",
+      "form": "ⲁⲛ",
+      "lemma": "ⲁⲛ",
+      "pos": "ADV",
+      "xpos": "NEG",
+      "dep": "advmod",
+      "head": "u702",
+      "new_sent": ""
+    },
+    {
+      "id": "u704",
+      "form": "ⲁⲩⲱ",
+      "lemma": "ⲁⲩⲱ",
+      "pos": "CCONJ",
+      "xpos": "CONJ",
+      "dep": "cc",
+      "head": "u709",
+      "new_sent": ""
+    },
+    {
+      "id": "u705",
+      "form": "ⲙ",
+      "lemma": "ⲛ",
+      "pos": "ADP",
+      "xpos": "PREP",
+      "dep": "case",
+      "head": "u707",
+      "new_sent": ""
+    },
+    {
+      "id": "u706",
+      "form": "ⲡⲟⲩ",
+      "lemma": "ⲡⲟⲩ",
+      "pos": "DET",
+      "xpos": "PPOS",
+      "dep": "nmod:poss",
+      "head": "u707",
+      "new_sent": ""
+    },
+    {
+      "id": "u707",
+      "form": "ⲟⲟϩ",
+      "lemma": "ⲟⲟϩ",
+      "pos": "NOUN",
+      "xpos": "N",
+      "dep": "nsubj",
+      "head": "u709",
+      "new_sent": ""
+    },
+    {
+      "id": "u708",
+      "form": "ⲛⲁ",
+      "lemma": "ⲛⲁ",
+      "pos": "AUX",
+      "xpos": "FUT",
+      "dep": "aux",
+      "head": "u709",
+      "new_sent": ""
+    },
+    {
+      "id": "u709",
+      "form": "ϭⲱϫⲃ",
+      "lemma": "ϭⲱϫⲃ",
+      "pos": "VERB",
+      "xpos": "V",
+      "dep": "conj",
+      "head": "u702",
+      "new_sent": ""
+    },
+    {
+      "id": "u710",
+      "form": "ⲁⲛ",
+      "lemma": "ⲁⲛ",
+      "pos": "ADV",
+      "xpos": "NEG",
+      "dep": "advmod",
+      "head": "u709",
+      "new_sent": ""
+    },
+    {
+      "id": "u711",
+      "form": "ⲡ",
+      "lemma": "ⲡ",
+      "pos": "DET",
+      "xpos": "ART",
+      "dep": "det",
+      "head": "u712",
+      "new_sent": ""
+    },
+    {
+      "id": "u712",
+      "form": "ϫⲟⲉⲓⲥ",
+      "lemma": "ϫⲟⲉⲓⲥ",
+      "pos": "NOUN",
+      "xpos": "N",
+      "dep": "nsubj",
+      "head": "u717",
+      "new_sent": ""
+    },
+    {
+      "id": "u713",
+      "form": "ⲅⲁⲣ",
+      "lemma": "ⲅⲁⲣ",
+      "pos": "PART",
+      "xpos": "PTC",
+      "dep": "advmod",
+      "head": "u717",
+      "new_sent": ""
+    },
+    {
+      "id": "u714",
+      "form": "ⲡ",
+      "lemma": "ⲡ",
+      "pos": "DET",
+      "xpos": "ART",
+      "dep": "det",
+      "head": "u715",
+      "new_sent": ""
+    },
+    {
+      "id": "u715",
+      "form": "ⲛⲟⲩⲧⲉ",
+      "lemma": "ⲛⲟⲩⲧⲉ",
+      "pos": "NOUN",
+      "xpos": "N",
+      "dep": "appos",
+      "head": "u712",
+      "new_sent": ""
+    },
+    {
+      "id": "u716",
+      "form": "ⲛⲁ",
+      "lemma": "ⲛⲁ",
+      "pos": "AUX",
+      "xpos": "FUT",
+      "dep": "aux",
+      "head": "u717",
+      "new_sent": ""
+    },
+    {
+      "id": "u717",
+      "form": "ϣⲱⲡⲉ",
+      "lemma": "ϣⲱⲡⲉ",
+      "pos": "VERB",
+      "xpos": "V",
+      "dep": "parataxis",
+      "head": "u702",
+      "new_sent": ""
+    },
+    {
+      "id": "u718",
+      "form": "ⲛⲉ",
+      "lemma": "ⲡⲉ",
+      "pos": "PRON",
+      "xpos": "COP",
+      "dep": "cop",
+      "head": "u717",
+      "new_sent": ""
+    },
+    {
+      "id": "u719",
+      "form": "ⲛ",
+      "lemma": "ⲛ",
+      "pos": "ADP",
+      "xpos": "PREP",
+      "dep": "det",
+      "head": "u720",
+      "new_sent": ""
+    },
+    {
+      "id": "u720",
+      "form": "ⲟⲩⲟⲉⲓⲛ",
+      "lemma": "ⲟⲩⲟⲉⲓⲛ",
+      "pos": "NOUN",
+      "xpos": "N",
+      "dep": "obl",
+      "head": "u717",
+      "new_sent": ""
+    },
+    {
+      "id": "u721",
+      "form": "ϣⲁ",
+      "lemma": "ϣⲁ",
+      "pos": "ADP",
+      "xpos": "PREP",
+      "dep": "case",
+      "head": "u722",
+      "new_sent": ""
+    },
+    {
+      "id": "u722",
+      "form": "ⲉⲛⲉϩ",
+      "lemma": "ⲉⲛⲉϩ",
+      "pos": "NOUN",
+      "xpos": "N",
+      "dep": "obl",
+      "head": "u717",
+      "new_sent": ""
+    },
+    {
+      "id": "u723",
+      "form": "ⲛⲧⲉ",
+      "lemma": "ⲛⲧⲉ",
+      "pos": "AUX",
+      "xpos": "ACONJ",
+      "dep": "aux",
+      "head": "u725",
+      "new_sent": ""
+    },
+    {
+      "id": "u724",
+      "form": "ⲛ",
+      "lemma": "ⲡ",
+      "pos": "DET",
+      "xpos": "ART",
+      "dep": "det",
+      "head": "u725",
+      "new_sent": ""
+    },
+    {
+      "id": "u725",
+      "form": "ⲉϩⲟⲟⲩ",
+      "lemma": "ⲉϩⲉ",
+      "pos": "NOUN",
+      "xpos": "N",
+      "dep": "nsubj",
+      "head": "u729",
+      "new_sent": ""
+    },
+    {
+      "id": "u726",
+      "form": "ⲙ",
+      "lemma": "ⲛ",
+      "pos": "ADP",
+      "xpos": "PREP",
+      "dep": "case",
+      "head": "u728",
+      "new_sent": ""
+    },
+    {
+      "id": "u727",
+      "form": "ⲡⲟⲩ",
+      "lemma": "ⲡⲟⲩ",
+      "pos": "DET",
+      "xpos": "PPOS",
+      "dep": "nmod:poss",
+      "head": "u728",
+      "new_sent": ""
+    },
+    {
+      "id": "u728",
+      "form": "ϩⲏⲃⲉ",
+      "lemma": "ϩⲏⲃⲉ",
+      "pos": "NOUN",
+      "xpos": "N",
+      "dep": "nmod",
+      "head": "u725",
+      "new_sent": ""
+    },
+    {
+      "id": "u729",
+      "form": "ϫⲱⲕ",
+      "lemma": "ϫⲱⲕ",
+      "pos": "VERB",
+      "xpos": "V",
+      "dep": "advcl",
+      "head": "u717",
+      "new_sent": ""
+    },
+    {
+      "id": "u730",
+      "form": "ⲉⲃⲟⲗ",
+      "lemma": "ⲉⲃⲟⲗ",
+      "pos": "ADV",
+      "xpos": "ADV",
+      "dep": "advmod",
+      "head": "u729",
+      "new_sent": ""
+    }
+  ],
+  "dialect_id": "sahidic",
+  "id": "sahidic.ot/23_Isaiah_60.tt#20",
+  "urn": "urn:cts:copticLit:ot.isa.coptot:60",
+  "license": "<a href='https://creativecommons.org/licenses/by-sa/4.0/'>CC-BY-SA 4.0</a>"
+}

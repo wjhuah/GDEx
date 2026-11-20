@@ -1,4 +1,4 @@
-"""Read all TT files, preserving citation identity, group text and native syntax."""
+pass
 
 import hashlib
 import html
@@ -21,11 +21,7 @@ def attrs(line):
 
 
 def parse_tt(path, root):
-    """Verse/translation spans, matching get_examples' citation unit, not guessed sentences.
-
-    Meta translation is a credit, not the example's translation. Native dependency
-    arcs and token IDs are retained; spans can include more than one syntactic sentence.
-    """
+    pass
     text = path.read_text(encoding="utf-8-sig")
     groups, tokens, meta = [], [], {}
     original_groups = []
@@ -188,7 +184,7 @@ class Corpus:
                             if t["lemma"]
                         ],
                     )
-                    # Corpus surface-group counts; fixed for training AND inference.
+                    
                     frequencies.update(row["sent"].split())
                     stats["sentences"] += 1
                     stats["tokens"] += len(row["tokens"])
@@ -212,7 +208,7 @@ class Corpus:
         return dict(stats)
 
     def candidates(self, lemma, upos=None):
-        # No top-N cap at retrieval: all matching examples are returned.
+        
         forms = variants(lemma)
         with self.connect() as db:
             if " " in lemma_key(lemma):

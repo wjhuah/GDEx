@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Hash original inputs and older implementations without modifying them."""
+
+pass
 import ast
 import hashlib
 import json

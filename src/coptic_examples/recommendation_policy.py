@@ -1,4 +1,4 @@
-"""Recommendation length and reviewed dialect restrictions."""
+pass
 
 import base64
 import json
@@ -8,7 +8,7 @@ from urllib.request import Request, urlopen
 from urllib.error import HTTPError
 from .text import COPTIC
 
-MAX_BOUND_GROUPS = 30
+MAX_BOUND_GROUPS = 20
 REMOTE = "https://api.github.com/repos/wjhuah/GDEx/contents/dialect_bias.md?ref=main"
 _checked = {}
 
@@ -90,5 +90,5 @@ def exclusion_reason(config, tla, dialect, candidate, rules=None):
     ):
         return "reviewed_dialect_restriction"
     if bound_group_count(candidate["sent"]) > MAX_BOUND_GROUPS:
-        return "over_30_bound_groups"
+        return "over_20_bound_groups"
     return None

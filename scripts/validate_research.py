@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Validate fold equality, negative provenance, deployed inference and real HTTP."""
+
+pass
 import hashlib
 import json
 import sys

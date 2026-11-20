@@ -1,4 +1,4 @@
-"""Dictionary-compatible local review pages. Rendering has no model side effects."""
+pass
 
 import html
 import json
@@ -308,7 +308,7 @@ def search_page(
         content += "</details>"
         excluded = short.get("excluded", result.get("excluded", {}))
         content += (
-            '<details class="panel"><summary>Retrieval details</summary><p>Length limit: 30 whitespace-separated groups.</p><p>Excluded: '
+            '<details class="panel"><summary>Retrieval details</summary><p>Length limit: 20 whitespace-separated groups.</p><p>Excluded: '
             + esc(", ".join(f"{k}: {v}" for k, v in excluded.items()))
             + "</p></details>"
         )

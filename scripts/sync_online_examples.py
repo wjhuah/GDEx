@@ -1,4 +1,4 @@
-"""Fetch every indexed CDO entry and atomically publish a separate source database."""
+pass
 
 import sys, json, time, hashlib, sqlite3, re, threading
 from pathlib import Path
@@ -9,7 +9,7 @@ from urllib.request import Request, urlopen
 root = Path(__file__).resolve().parents[1]
 cache = root / "cache/cdo_online"
 cache.mkdir(parents=True, exist_ok=True)
-report = root / "reports/本地复盘/线上例句覆盖"
+report = root / 'reports/local_2218a127/local_5ae67291'
 report.mkdir(parents=True, exist_ok=True)
 refresh = "--refresh" in sys.argv
 BASE = "https://coptic-dictionary.org"
@@ -85,7 +85,7 @@ with ThreadPoolExecutor(max_workers=6) as pool:
                 sum(not r["ok"] for r in manifest),
                 flush=True,
             )
-(report / "抓取清单.json").write_text(
+(report / '').write_text(
     json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
 )
 failures = [r for r in manifest if not r["ok"]]
@@ -173,7 +173,7 @@ assert db.execute("SELECT COUNT(*) FROM example").fetchone()[0] == sum(
 assert db.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
 db.close()
 tmp.replace(path)
-(report / "覆盖统计.json").write_text(
+(report / '').write_text(
     json.dumps(summary, ensure_ascii=False, indent=2) + "\n"
 )
 print(json.dumps(summary, ensure_ascii=False, indent=2), flush=True)

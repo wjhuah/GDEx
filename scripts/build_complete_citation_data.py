@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Export every original citation and rebuild augmentation with citation lineage."""
+
+pass
 
 import hashlib
 import json

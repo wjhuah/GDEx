@@ -1,4 +1,4 @@
-"""Store every Crum occurrence with its source and current alignment status."""
+pass
 
 import json
 import sys
@@ -7,15 +7,15 @@ from pathlib import Path
 
 root = Path(__file__).resolve().parents[1]
 folder = (
-    root / "reports/本地复盘" / (sys.argv[1] if len(sys.argv) > 1 else "批量修复第四轮")
+    root / 'reports/local_2218a127' / (sys.argv[1] if len(sys.argv) > 1 else '')
 )
-target = folder / "完整引用库.sqlite3"
+target = folder / ''
 temporary = target.with_suffix(".building.sqlite3")
 if temporary.exists():
     temporary.unlink()
 decisions = {}
-scoped = (folder / "异写表来源.json").exists()
-for line in (folder / "逐条修复.jsonl").open():
+scoped = (folder / '').exists()
+for line in (folder / '').open():
     r = json.loads(line)
     decisions[r["id"]] = r
 db = sqlite3.connect(temporary)
@@ -45,12 +45,12 @@ with db:
             if not scoped or (not record_only and p["dialect"] == "sahidic")
         ]
         status = (
-            "原记录未明确含S，仅记录"
+            ''
             if record_only
             else (
-                "原有训练配对"
+                ''
                 if existing
-                else "自动恢复配对" if d["accepted"] else d["status"]
+                else '' if d["accepted"] else d["status"]
             )
         )
         db.execute(
@@ -79,7 +79,7 @@ with db:
                     p["tla"],
                     p["dialect"],
                     p["sentence_id"],
-                    "已有训练",
+                    '',
                     "[]",
                     0,
                 ),
@@ -92,7 +92,7 @@ with db:
                     p["tla"],
                     p["dialect"],
                     p["sentence_id"],
-                    "自动恢复",
+                    '',
                     json.dumps(p["spans"]),
                     0,
                 ),
@@ -103,7 +103,7 @@ with db:
     stats = dict(db.execute("SELECT status,COUNT(*) FROM citation GROUP BY status"))
 db.close()
 temporary.replace(target)
-(folder / "入库统计.json").write_text(
+(folder / '').write_text(
     json.dumps(stats, ensure_ascii=False, indent=2) + "\n"
 )
 print(json.dumps(stats, ensure_ascii=False))

@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Compare class balancing with class-and-entry balancing on identical folds."""
+
+pass
 
 import sys, json
 from pathlib import Path

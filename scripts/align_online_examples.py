@@ -1,4 +1,4 @@
-"""Audit every online example against both original and supplemental corpus spans."""
+pass
 
 import sys, json, sqlite3, re
 from pathlib import Path
@@ -11,7 +11,7 @@ from coptic_examples.dataset import text_key
 from coptic_examples.text import lemma_key, norm, pos
 
 cfg = Config()
-report = cfg.reports / "本地复盘/线上例句覆盖"
+report = cfg.reports / 'local_2218a127/local_5ae67291'
 path = cfg.work / "cache/online_examples.sqlite3"
 db = sqlite3.connect(path)
 db.row_factory = sqlite3.Row
@@ -41,7 +41,7 @@ with SupplementedCorpus(cfg).connect() as corpus:
             )
             method = "punctuation_or_marks"
         if not ids:
-            counts["无本地对应片段"] += 1
+            counts[''] += 1
             pending.append(dict(e))
             continue
         counts[method] += 1
@@ -88,7 +88,7 @@ with SupplementedCorpus(cfg).connect() as corpus:
     summary = dict(
         online_examples=len(examples),
         alignment_counts=counts,
-        with_corpus_match=len(examples) - counts["无本地对应片段"],
+        with_corpus_match=len(examples) - counts[''],
         all_preserved=True,
         training_labels_added=0,
         C3553=[
@@ -103,10 +103,10 @@ with SupplementedCorpus(cfg).connect() as corpus:
         ("alignment_summary", json.dumps(summary, ensure_ascii=False)),
     )
     db.commit()
-(report / "语料对齐统计.json").write_text(
+(report / '').write_text(
     json.dumps(summary, ensure_ascii=False, indent=2) + "\n"
 )
-(report / "尚无对应TT的线上例句.json").write_text(
+(report / '').write_text(
     json.dumps(pending, ensure_ascii=False, indent=2) + "\n"
 )
 print(json.dumps(summary, ensure_ascii=False, indent=2), flush=True)

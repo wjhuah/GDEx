@@ -204,7 +204,7 @@ class PipelineTests(unittest.TestCase):
                 for f in nf
             )
         )
-        # Identical target sentence already positively labeled: do not manufacture a contradiction.
+        
         identical = [dict(r, text_key="same") for r in rows]
         self.assertEqual(make_negatives(identical, fs, "naive", Encoder()), ([], []))
 

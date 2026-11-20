@@ -1,4 +1,4 @@
-"""Evidence-based checks for damaged original spans paired with long translations."""
+pass
 
 import re
 import json

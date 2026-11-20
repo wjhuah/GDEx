@@ -1,4 +1,4 @@
-"""Definition-first admission, before quality or syntactic selection."""
+pass
 
 import json, math, re
 from collections import defaultdict, Counter

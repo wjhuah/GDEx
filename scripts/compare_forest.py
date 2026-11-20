@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Paired inclusion comparison on frozen spelling-family folds."""
+
+pass
 
 import sys, json, hashlib
 from pathlib import Path

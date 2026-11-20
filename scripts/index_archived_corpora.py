@@ -1,4 +1,4 @@
-"""Index TT archives omitted by the original unpacked-only corpus, additively."""
+pass
 
 import sys, json, zipfile, hashlib, sqlite3
 from pathlib import Path
@@ -11,7 +11,7 @@ from coptic_examples.corpus import parse_tt
 cfg = Config()
 extract = cfg.work / "cache/archived_corpora"
 extract.mkdir(parents=True, exist_ok=True)
-out = cfg.reports / "本地复盘/线上例句覆盖"
+out = cfg.reports / 'local_2218a127/local_5ae67291'
 out.mkdir(parents=True, exist_ok=True)
 path = cfg.work / "cache/supplemental_corpus.sqlite3"
 temp = path.with_suffix(".building.sqlite3")
@@ -79,10 +79,10 @@ db.commit()
 assert db.execute("pragma integrity_check").fetchone()[0] == "ok"
 db.close()
 temp.replace(path)
-(out / "压缩语料清单.json").write_text(
+(out / '').write_text(
     json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
 )
-(out / "补充语料统计.json").write_text(
+(out / '').write_text(
     json.dumps(
         dict(files=len(manifest), counts=counts, fingerprint=digest.hexdigest()),
         ensure_ascii=False,

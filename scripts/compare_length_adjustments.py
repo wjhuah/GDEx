@@ -1,4 +1,4 @@
-"""Fixed-fold preference comparison for explicit length policies."""
+pass
 
 import sys, json, sqlite3
 from pathlib import Path
@@ -12,8 +12,8 @@ from coptic_examples.recommendation_policy import coptic_letters
 from coptic_examples.ablation import expected_top_metric
 
 cfg = Config()
-folder = cfg.reports / "本地复盘/新增数据模型比较"
-db = sqlite3.connect(folder / "实验数据.sqlite3")
+folder = cfg.reports / 'local_2218a127/local_77165ac0'
+db = sqlite3.connect(folder / '')
 rows = [
     json.loads(v[0])
     for v in db.execute(
@@ -74,4 +74,4 @@ for fold in range(5):
                         total=total,
                     )
                 )
-write_json(folder / "句长策略对照.json", results)
+write_json(folder / '', results)

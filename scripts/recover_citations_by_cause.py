@@ -1,4 +1,4 @@
-"""Replay all original citations with independently traceable recovery evidence."""
+pass
 
 import bisect
 import hashlib
@@ -39,7 +39,7 @@ from coptic_examples.spelling_compatibility import SpellingCompatibility
 from coptic_examples.text import lemma_key, english
 
 cfg = Config()
-out = cfg.reports / "本地复盘" / (sys.argv[1] if len(sys.argv) > 1 else "批量修复")
+out = cfg.reports / '' / (sys.argv[1] if len(sys.argv) > 1 else '')
 out.mkdir(parents=True, exist_ok=True)
 lex, byform, pages = lexical_index(cfg.lexicon)
 cdo_records = json.loads((cfg.work / "cache/cdo_index.json").read_text())
@@ -48,7 +48,7 @@ for tla in cdo_added:
     pages[tla] = set()
     for form in lex[tla].forms:
         byform[form].append(tla)
-(out / "在线新增词条.json").write_text(
+(out / '').write_text(
     json.dumps(cdo_added, ensure_ascii=False, indent=2) + "\n"
 )
 registry = Dialects()
@@ -56,7 +56,7 @@ exact_spelling = len(sys.argv) > 2 and sys.argv[2] == "exact"
 spelling_compatibility = SpellingCompatibility(
     cfg.source / "coptic-nlp/data/norm_table.tab"
 )
-(out / "异写表来源.json").write_text(
+(out / '').write_text(
     json.dumps(
         dict(
             file=str(cfg.source / "coptic-nlp/data/norm_table.tab"),
@@ -64,7 +64,7 @@ spelling_compatibility = SpellingCompatibility(
             enabled=not exact_spelling,
             single_mapping_forms=len(spelling_compatibility.mapping),
             ambiguous_forms_excluded=spelling_compatibility.ambiguous,
-            scope="仅原记录代码明确包含S，且语料为sahidic",
+            scope='',
         ),
         ensure_ascii=False,
         indent=2,
@@ -120,7 +120,7 @@ def article_map(name):
     return text, hashlib.sha256(raw).hexdigest(), starts, roots, headings
 
 
-with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stream:
+with Corpus(cfg).connect() as db, (out / '').open("w") as stream:
     location_lookup = defaultdict(list)
     for sid, work, chapter, verse, dialect in db.execute(
         "SELECT id,work,chapter,verse,dialect FROM sentence"
@@ -156,7 +156,7 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
         )
         index = bisect.bisect_right(starts, r["char_start"]) - 1
         root = roots[index] if index >= 0 else ""
-        # Continuation paragraphs inherit the last explicit lexical heading.
+        
         heading_index = index
         while heading_index >= 0 and not has_lexical_heading(headings[heading_index]):
             if heading_index == 0 or roots[heading_index - 1] != root:
@@ -165,12 +165,12 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
         paragraph = headings[heading_index] if heading_index >= 0 else ""
         forms = expanded_heading_forms(paragraph, root)
         proposed = bind_forms(forms, r["page"], lex, byform, pages)
-        binding_basis = "完整标题与页码"
+        binding_basis = ''
         if root in forms:
             root_pool = bind_forms([root], r["page"], lex, byform, pages)
             if root_pool:
                 proposed = root_pool
-                binding_basis = "明确完整母词头优先于变化词形"
+                binding_basis = ''
         if not proposed and root:
             root_entries = byform.get(root, [])
             root_on_page = any(r["page"] in pages.get(t, set()) for t in root_entries)
@@ -183,9 +183,9 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
             }
             if root_on_page and len(expanded_pool) == 1:
                 proposed = sorted(expanded_pool)
-                binding_basis = "完整派生词形与母条目范围；派生条目页码需回看"
+                binding_basis = ''
         if not proposed:
-            # A complete printed heading can identify a lexeme despite coarse pagination.
+            
             full_pool = {
                 t
                 for form in forms
@@ -194,9 +194,9 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
             }
             if len(full_pool) == 1:
                 proposed = sorted(full_pool)
-                binding_basis = "完整标题唯一词条；页码差异已留存"
+                binding_basis = ''
         if not proposed:
-            # Explicit Crum glosses can distinguish same-spelling dictionary entries.
+            
             full_pool = {
                 t
                 for form in forms
@@ -230,7 +230,7 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
                 or (best == 1 and any(len(w) >= 5 for w in scores[winners[0]]))
             ):
                 proposed = winners
-                binding_basis = "完整标题与Crum明确释义消歧；页码差异留存"
+                binding_basis = ''
         if not proposed and len(root.replace(" ", "")) >= 3:
             header = paragraph.split("⟨gloss:", 1)[0].split("{bible:", 1)[0]
             abbreviations = [
@@ -251,9 +251,9 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
             ]
             if explicit_root_reference and root_candidates:
                 proposed = root_candidates
-                binding_basis = "母条目下的含词根缩写构式；未建立新词条"
+                binding_basis = ''
         if not proposed and len(root.replace(" ", "")) >= 3:
-            # Multiword construction headings can omit the already stated mother lemma.
+            
             lead = LEAD.match(paragraph)
             raw_heading = lemma_key(lead[1]) if lead else ""
             canonical = [
@@ -263,12 +263,12 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
             ]
             if len(raw_heading.split()) >= 2 and len(canonical) == 1:
                 proposed = canonical
-                binding_basis = "同一母条目下多词构式，按唯一规范母词头定位"
+                binding_basis = ''
         if not proposed:
             proposed = list(r["tla_candidates"])
-            binding_basis = "原有词条定位"
+            binding_basis = ''
 
-        # Resolve only dictionary-defined gender contrasts explicitly marked in Crum.
+        
         header = paragraph.split("⟨gloss:", 1)[0].split("{bible:", 1)[0]
         gender = re.findall(r"annotation: (masculine|feminine)", header)
         if len(set(gender)) == 1 and len(proposed) > 1:
@@ -280,9 +280,9 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
             ]
             if gender_pool:
                 proposed = gender_pool
-                binding_basis += "；标题明确语法性别"
+                binding_basis += ''
 
-        # Explicit same-form noun/verb continuation replaces inherited POS.
+        
         local = r["paragraph"].split(r["raw"], 1)[0]
         grammatical_header = local.split("⟨gloss:", 1)[0].split("{bible:", 1)[0]
         source_parts_of_speech = set(
@@ -293,9 +293,9 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
             matching_pos = [t for t in proposed if lex[t].pos == desired]
             if matching_pos:
                 proposed = matching_pos
-                binding_basis += "；Crum明确词类"
+                binding_basis += ''
             else:
-                # Continuations can change POS beyond the coarse printed page anchor.
+                
                 class_pool = {
                     t
                     for form in [*forms, root]
@@ -329,7 +329,7 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
                 ]
                 if len(winners) == 1 or len(class_pool) == 1:
                     proposed = winners if len(winners) == 1 else sorted(class_pool)
-                    binding_basis = "Crum词性续段与词典同词形同释义定位；页码差异留存"
+                    binding_basis = ''
         local_links = list(r["local_links"])
         reference = r["reference"]
         if reference.get("kind") == "verse":
@@ -394,7 +394,7 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
                             alternate_pool = set(agreeing)
                 if len(alternate_pool) == 1:
                     branch_pool = sorted(alternate_pool)
-                    branch_basis = "本条引文明确记载的方言替换词形"
+                    branch_basis = ''
             for tla in branch_pool:
                 e = lex[tla]
                 printed_variants = []
@@ -405,7 +405,7 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
                 if (
                     root in literal_forms
                     and root in e.forms
-                    and branch_basis != "本条引文明确记载的方言替换词形"
+                    and branch_basis != ''
                 ):
                     printed_variants = [
                         f for f in literal_forms if len(f.replace(" ", "")) >= 2
@@ -420,18 +420,18 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
                     continue
                 issues = []
                 if len(source_parts_of_speech) == 1 and e.pos != desired:
-                    issues.append("Crum明确词类与候选词条冲突")
+                    issues.append('')
                 codes = registry.data[c["dialect_id"]]["codes"]
                 if (
                     has_dialect_alternative(r["paragraph"], r["raw"], codes)
-                    and branch_basis != "本条引文明确记载的方言替换词形"
+                    and branch_basis != ''
                     and not government_alternative
                 ):
-                    issues.append("当前方言有括注替换读法")
+                    issues.append('')
                 if forbidden(c, rules[tla]):
-                    issues.append("人工标签冲突")
+                    issues.append('')
                 if alignment_issue(c):
-                    issues.append("原译跨度异常")
+                    issues.append('')
                 pos_matches = any(
                     t["pos"] == e.pos
                     for t in c["tokens"]
@@ -443,16 +443,16 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
                         tla in NATIVE
                         or max(len(f.replace(" ", "")) for f in e.forms) < 3
                     ):
-                        issues.append("短功能词的原生词性需核对")
+                        issues.append('')
                     else:
-                        warnings.append("TT词性与词典冲突，保留原标签作为特征")
+                        warnings.append('')
                 allowed = registry.from_codes(r["dialect_codes"])
                 if (
                     r["dialect_codes"]
                     and c["dialect_id"] not in allowed
-                    and branch_basis != "本条引文明确记载的方言替换词形"
+                    and branch_basis != ''
                 ):
-                    issues.append("方言范围冲突")
+                    issues.append('')
                 checks.append(
                     dict(
                         tla=tla,
@@ -474,17 +474,17 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
         matched = {p["tla"] for p in checks}
         accepted = [p for p in checks if not p["issues"] and p["binding_unique"]]
         if not active_sahidic:
-            state = "原记录未明确含S，仅记录"
+            state = ''
         elif accepted:
-            state = "唯一标题与完整词形对齐"
+            state = ''
         elif checks:
-            state = "词形对齐但词条或标注有冲突"
+            state = ''
         elif not proposed:
-            state = "标题扩展后仍待定位词条"
+            state = ''
         elif not any(link["dialect"] == "sahidic" for link in local_links):
-            state = "已有词条线索但缺对应经文"
+            state = ''
         else:
-            state = "已有词条线索但目标词形不符"
+            state = ''
         before[r["training_status"]] += 1
         counts[state] += 1
         has_sahidic_training = any(
@@ -500,15 +500,15 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
                         p,
                         citation_ids=[],
                         label=1,
-                        label_basis="Crum唯一标题与完整词形自动对齐",
+                        label_basis='',
                         expert_verified=False,
                     ),
                 )
                 pair["citation_ids"].append(oid)
         cause = (
-            "缩写或标题继承恢复"
+            ''
             if set(proposed) != set(r["tla_candidates"])
-            else "完整TT词形重新对齐"
+            else ''
         )
         row = dict(
             id=oid,
@@ -533,7 +533,7 @@ with Corpus(cfg).connect() as db, (out / "逐条修复.jsonl").open("w") as stre
         stream.write(json.dumps(row, ensure_ascii=False) + "\n")
         groups[state].append(oid)
 assert len(seen) == 41808 and sum(counts.values()) == 41808
-with (out / "恢复配对_待验证.jsonl").open("w") as f:
+with (out / '').open("w") as f:
     for pair in pairs.values():
         f.write(json.dumps(pair, ensure_ascii=False) + "\n")
 report = dict(
@@ -542,5 +542,5 @@ report = dict(
     recovered_occurrences_by_previous_status=gains,
     new_staging_pairs=len(pairs),
 )
-(out / "结果.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+(out / '').write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
 print(json.dumps(report, ensure_ascii=False, indent=2))

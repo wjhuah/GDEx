@@ -21,7 +21,7 @@ TABLE = """| TLA ID | Lemma | Sahidic rare | Bohairic rare |
 class RecommendationPolicyTests(unittest.TestCase):
     def test_letter_count_and_boundary(self):
         self.assertEqual(coptic_letters("Ϩ ⲟ̅ⲟⲩ ."), 4)
-        for n, want in [(30, None), (31, "over_30_bound_groups")]:
+        for n, want in [(20, None), (21, "over_20_bound_groups")]:
             self.assertEqual(
                 exclusion_reason(
                     None, "C992", "sahidic", {"sent": " ".join(["ⲁ"] * n)}, {}
@@ -35,7 +35,7 @@ class RecommendationPolicyTests(unittest.TestCase):
         )
         self.assertIsNone(
             exclusion_reason(
-                None, "C992", "sahidic", {"sent": "  \t".join(["ⲡⲁϣⲏⲣⲉ"] * 30)}, {}
+                None, "C992", "sahidic", {"sent": "  \t".join(["ⲡⲁϣⲏⲣⲉ"] * 20)}, {}
             )
         )
 
@@ -126,7 +126,7 @@ class RecommendationPolicyTests(unittest.TestCase):
     def test_long_current_error(self):
         self.assertEqual(
             exclusion_reason(None, "C6971", "sahidic", {"sent": "ⲡⲁϣⲏⲣⲉ " * 31}, {}),
-            "over_30_bound_groups",
+            "over_20_bound_groups",
         )
 
 

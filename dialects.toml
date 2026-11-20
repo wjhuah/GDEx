@@ -1,5 +1,3 @@
-# Metadata aliases are exact after case/whitespace normalization. Add a new
-# section to register a dialect; never modify the ranking algorithm to add one.
 [dialects.sahidic]
 name = "Sahidic"
 codes = ["S", "Sa", "Sf"]

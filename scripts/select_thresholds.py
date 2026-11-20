@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Choose inclusion operating points from development-fold predictions."""
+
+pass
 
 import sys, json
 from pathlib import Path

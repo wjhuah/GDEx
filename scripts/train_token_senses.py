@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Train and evaluate token sense contrasts using source-selected examples."""
+
+pass
 
 import sys, json
 from pathlib import Path

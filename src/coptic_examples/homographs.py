@@ -1,4 +1,4 @@
-"""Exact spelling collisions with explicit dialect and lexical evidence."""
+pass
 
 from collections import defaultdict
 from .text import lemma_key, pos

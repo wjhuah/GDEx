@@ -1,4 +1,4 @@
-"""Align the complete TT token stream to bound-group display text."""
+pass
 
 import html
 from .text import norm

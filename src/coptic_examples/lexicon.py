@@ -111,7 +111,7 @@ def load(path):
 
 
 def apply_snapshot(entries, records):
-    """Merge current definitions and attested dialect forms by TLA identity."""
+    pass
     for remote in records:
         tla = remote["id"]
         if tla not in entries:

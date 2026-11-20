@@ -1,4 +1,4 @@
-"""Local dictionary-compatible research UI and stable JSON search endpoint."""
+pass
 
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer

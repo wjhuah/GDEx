@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Retrain current learning tasks with feature blocks removed."""
+
+pass
 
 import sys, json
 from pathlib import Path

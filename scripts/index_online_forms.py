@@ -1,4 +1,4 @@
-"""Index source-only entries and aliases without changing the trained lexicon."""
+pass
 
 import sys, json, sqlite3
 from pathlib import Path

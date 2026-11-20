@@ -1,4 +1,4 @@
-"""Learned sense comparisons at a single TT target token."""
+pass
 
 import copy
 import json
@@ -100,7 +100,7 @@ def resolve(model, rows, entry, lex, architecture):
             raise RuntimeError("Retrain token-sense model after source changes")
     if not metadata.get("available"):
         return None
-    # Treat nearly equal scores as unresolved; the scores are uncalibrated.
+    
     min_margin = float(metadata.get("min_selection_margin", 0.05))
     scorer = lgb.Booster(model_file=str(path))
     from .token_review import decisions

@@ -1,4 +1,4 @@
-"""Write the concise English vocabulary table."""
+pass
 from pathlib import Path
 
 ROWS = [['ⲉⲓⲱⲧ', [['father', 'C992'], ['barley', 'C998'], ['father (title)', 'C993']]],

@@ -1,4 +1,4 @@
-"""Fixed surface frequency statistics and native dependency features for both fit and search."""
+pass
 
 import math
 import re
@@ -32,7 +32,7 @@ class Features:
         ]
         if target_indices is not None:
             positions = [i + 1 for i in target_indices]
-        # Context content-token frequency, excluding the target and punctuation.
+        
         lexical = [
             w
             for i, (w, t) in enumerate(zip(words, candidate["tokens"]), 1)
@@ -135,7 +135,7 @@ class Features:
 
 
 def quality(f):
-    # An explicit heuristic baseline, not a learned or certified Coptic GDEX score.
+    
     length = max(0.0, 1 - abs(f["sent_len"] - 20) / 40)
     return (
         0.4 * length

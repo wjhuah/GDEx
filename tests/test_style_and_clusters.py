@@ -85,7 +85,7 @@ def token(id, lemma, pos, dep, head="", xpos=""):
 
 class SelectionTests(unittest.TestCase):
     def test_information_prefers_descriptive_context_not_just_target_presence(self):
-        # English toy dependency fixtures, not invented Coptic translations.
+        
         plain = dict(
             sent="I like apples.",
             tokens=[

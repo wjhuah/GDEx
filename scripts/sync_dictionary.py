@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Save the CDO entry index used by the published dictionary."""
+
+pass
 
 import hashlib, json, sys, urllib.request
 from pathlib import Path

@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Train the selected cheap research baseline and audit the four sense anchors."""
+
+pass
 import hashlib
 import json
 import sys
@@ -25,7 +25,7 @@ def main():
         own=next(r for r in data if r['task']=='acceptance' and r['TLA']==anchor['expert_tla'] and r['text_key']==held)
         cross=lex[anchor['cross_tla']]
         wrong=dict(own,TLA=cross.tla,gloss=cross.gloss,x=own['x'][:-1]+[sm_freq(cross.gloss,own['candidate']['translation'])],cosine=vectors.cosine(cross.gloss,own['candidate']['translation']))
-        # Seen-family diagnostic, not the strict unseen-family main evaluation.
+        
         training=[r for r in data if r['text_key']!=held]
         row=dict(expert_tla=own['TLA'],cross_tla=cross.tla,translation=anchor['translation'],held_out_text=held,scores={})
         for semantic in [False,True]:

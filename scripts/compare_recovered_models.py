@@ -1,4 +1,4 @@
-"""Versioned recovery database and paired experiments against frozen validation rows."""
+pass
 
 import sys, json, hashlib, sqlite3, copy
 from pathlib import Path
@@ -37,9 +37,9 @@ from coptic_examples.ablation import expected_top_metric
 from coptic_examples.text import real_translation, editorial_heading
 
 cfg = Config()
-out = cfg.reports / "本地复盘/新增数据模型比较"
+out = cfg.reports / 'local_2218a127/local_77165ac0'
 out.mkdir(parents=True, exist_ok=True)
-source = cfg.reports / "本地复盘/仅S异写兼容"
+source = cfg.reports / 'local_2218a127/local_40c6713e'
 lex = load(cfg.lexicon)
 add_cdo_only_entries(lex, json.loads((cfg.work / "cache/cdo_index.json").read_text()))
 base = []
@@ -70,7 +70,7 @@ positions = {
         json.loads, (cfg.derived / "complete_citations/citations.jsonl").open()
     )
 }
-extra_path = out / "新增训练记录.jsonl"
+extra_path = out / ''
 excluded = Counter()
 extra = []
 if extra_path.exists():
@@ -79,7 +79,7 @@ else:
     ef = EntryFeatures(cfg, lex, "sahidic")
     seen = {(r["dialect"], r["tla"], r["text_key"]) for r in base}
     with Corpus(cfg).connect() as db:
-        for p in map(json.loads, (source / "恢复配对_待验证.jsonl").open()):
+        for p in map(json.loads, (source / '').open()):
             c = json.loads(
                 db.execute(
                     "select payload from sentence where id=?", (p["sentence_id"],)
@@ -91,11 +91,11 @@ else:
                 or not real_translation(c["translation"])
                 or editorial_heading(c["translation"])
             ):
-                excluded["文本或译文检查"] += 1
+                excluded[''] += 1
                 continue
             key = ("sahidic", e.tla, text_key(c))
             if key in seen:
-                excluded["已有同词条原文"] += 1
+                excluded[''] += 1
                 continue
             seen.add(key)
             c.setdefault("target_alignment", {})[e.tla] = list(
@@ -125,7 +125,7 @@ else:
     extra_path.write_text(
         "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in extra)
     )
-# Recover ordering only where explicit source positions exist. Recalculate the combined Crum sequence.
+
 combined = copy.deepcopy(base + extra)
 groups = defaultdict(list)
 for r in combined:
@@ -152,8 +152,8 @@ for group in groups.values():
             )
         ]
 combined_extra = combined[len(base) :]
-# Independent SQLite dataset: source provenance and original TT/translation/features stay available per row.
-db = sqlite3.connect(out / "实验数据.sqlite3")
+
+db = sqlite3.connect(out / '')
 db.executescript(
     "DROP TABLE IF EXISTS example; DROP TABLE IF EXISTS metadata; CREATE TABLE example(id INTEGER PRIMARY KEY, cohort TEXT,dialect TEXT,tla TEXT,text_key TEXT,fold INTEGER,label INTEGER,payload TEXT,UNIQUE(cohort,dialect,tla,text_key)); CREATE TABLE metadata(key TEXT PRIMARY KEY,value TEXT);"
 )
@@ -180,7 +180,7 @@ db.commit()
 assert db.execute("pragma integrity_check").fetchone()[0] == "ok"
 db.close()
 write_json(
-    out / "数据规模.json",
+    out / '',
     dict(
         original={
             d: dict(
@@ -320,7 +320,7 @@ for dialect in ["sahidic", "bohairic"]:
                     precision=float(precision_score(vy, proba > 0.5, zero_division=0)),
                     recall=float(recall_score(vy, proba > 0.5, zero_division=0)),
                 )
-                # Inclusion first, learned preference second; identical test candidates throughout.
+                
                 order = np.where(proba > 0.5, rs, rs - 1000000)
                 item = dict(
                     dialect=dialect,
@@ -348,7 +348,7 @@ for dialect in ["sahidic", "bohairic"]:
                             importance=dict(zip(COLUMNS_INCLUSION, map(float, imp))),
                         )
                     )
-                write_json(out / "逐折结果.json", results)
-                write_json(out / "特征重要性.json", importance)
+                write_json(out / '', results)
+                write_json(out / '', importance)
                 print(dialect, version, fold, method, cls, flush=True)
-write_json(out / "完成标记.json", dict(completed=True, fold_results=len(results)))
+write_json(out / '', dict(completed=True, fold_results=len(results)))

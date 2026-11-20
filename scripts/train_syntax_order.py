@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Crum ordering model using UD features only; definition gate handles relevance."""
+
+pass
 import sys,json
 from pathlib import Path
 import numpy as np
@@ -25,7 +25,7 @@ for d in ['sahidic','bohairic']:
   m=fit_linear(x,y,False);m['columns']=UD;m['provisional']=len(data)<100;m['training_rows']=len(data);m['validation']=cv
   write_json(cfg.work/'models'/d/'syntax_order.json',m)
   reports.append(dict(dialect=d,rows=len(data),validation=cv,mean_accuracy=float(np.mean([r['accuracy'] for r in cv])) if cv else None,provisional=m['provisional'],standardized_pair_coefficients=sorted(zip(UD,m['coefficients']),key=lambda v:-abs(v[1]))))
- # Matched-fold ablation of the token-count input.
+ 
  reduced=[dict(r,x=[v for k,v in zip(UD,r['x']) if k!='n_tokens']) for r in data];no_length=[]
  for fold in range(5):
   val=[r for r in reduced if fm[r['family']]==fold];held={r['text_key'] for r in rows if r['dialect']==d and fm[r['family']]==fold}

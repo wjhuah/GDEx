@@ -1,4 +1,4 @@
-"""Keep recorded editorial selections and partial orders in search results."""
+pass
 
 import heapq
 from collections import defaultdict

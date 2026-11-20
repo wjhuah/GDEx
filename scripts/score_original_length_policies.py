@@ -1,4 +1,4 @@
-"""Evaluate length policies using the saved LightGBM held-out predictions."""
+pass
 
 import sys, json, gzip
 from pathlib import Path
@@ -10,7 +10,7 @@ from coptic_examples.recommendation_policy import coptic_letters
 from coptic_examples.ablation import expected_top_metric
 
 root = Path(__file__).resolve().parents[1]
-out = root / "reports/本地复盘/原数据八算法对照"
+out = root / 'reports/local_2218a127/local_828c870c'
 data = {}
 for d in ["sahidic", "bohairic"]:
     for r in map(json.loads, (root / f"data/derived/model_rows_{d}.jsonl").open()):
@@ -23,7 +23,7 @@ for d in ["sahidic", "bohairic"]:
                 bound_groups=len(c["sent"].split()),
             )
 groups = defaultdict(list)
-with gzip.open(out / "留出预测.jsonl.gz", "rt") as stream:
+with gzip.open(out / '', "rt") as stream:
     for line in stream:
         r = json.loads(line)
         if r["method"] != "LightGBM" or r["label"] < 0:
@@ -83,6 +83,6 @@ for d in ["sahidic", "bohairic"]:
                             empty_groups=empty,
                         )
                     )
-(out / "句长策略逐折.json").write_text(
+(out / '').write_text(
     json.dumps(rows, ensure_ascii=False, indent=2) + "\n"
 )

@@ -1,3 +1,3 @@
-"""Current dictionary and held-out sense audit."""
+pass
 
 from .learning_review import sense_page as page

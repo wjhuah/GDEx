@@ -1,4 +1,4 @@
-"""Training labels and models for inclusion and editorial preference."""
+pass
 
 import hashlib, json, math
 from collections import Counter, defaultdict
@@ -84,7 +84,7 @@ def build_examples(config):
                     order=r["rank"],
                 )
             )
-    # Expand ALL rules over the complete attested pool instead of a training cap.
+    
     corpus = Corpus(config)
     ledger = []
     for tla, rr in rules.items():
@@ -131,7 +131,7 @@ def build_examples(config):
                 item["all_forbidden"] = True
                 item["ranks"] = []
                 item["sources"] = list(set(item["sources"]) | {"tab_forbidden"})
-    # Crum order is kept separately from its positive inclusion label.
+    
     from .config import database
 
     refs = {}
@@ -274,7 +274,7 @@ def fit_score(rows, joint=False, balance="class"):
         feature_name=COLUMNS_INCLUSION,
     )
 
-    # With a custom objective LightGBM leaves sample-weight application to the callback.
+    
     def weighted_objective(pred, data):
         g, h = objective(pred, data)
         return g * weights, h * weights
@@ -355,7 +355,7 @@ def augment(train, ratio, kind, ef, lex, memo):
             }
             if not target_ids.intersection(source_ids):
                 continue
-            # Co-occurring explicit meanings give an ambiguous sentence-level negative.
+            
             own_words = set(re.findall(r"[a-z]+", lex[tla].gloss.lower()))
             rival_words = set(re.findall(r"[a-z]+", lex[source["tla"]].gloss.lower()))
             stop = {
@@ -520,7 +520,7 @@ class LearningModel:
 
 
 def deduplicate_candidates(rows):
-    """Retain all source selections when identical texts occur in several corpora."""
+    pass
     unique = {}
     for row in rows:
         key = text_key(row)
@@ -545,7 +545,7 @@ def deduplicate_candidates(rows):
 
 
 def competing_senses(model, rows, entry, lex, architecture):
-    """Compare model predictions for a single shared target token."""
+    pass
     import copy
 
     from .token_senses import resolve

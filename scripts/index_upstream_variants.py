@@ -1,11 +1,11 @@
-"""Keep the pinned official TT variants alongside locally modified originals."""
+pass
 import sys,json,hashlib,sqlite3
 from pathlib import Path
 from urllib.request import urlopen
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'src'))
 from coptic_examples.config import Config
 from coptic_examples.corpus import parse_tt
-cfg=Config();folder=cfg.reports/'本地复盘/线上例句覆盖';manifest=json.loads((folder/'官方TT文件清单.json').read_text());commit=manifest['sha'];root=cfg.work/'cache/upstream_corpora';root.mkdir(exist_ok=True)
+cfg=Config();folder=cfg.reports/'local_2218a127/local_5ae67291';manifest=json.loads((folder/'').read_text());commit=manifest['sha'];root=cfg.work/'cache/upstream_corpora';root.mkdir(exist_ok=True)
 files=[]
 for r in manifest['files']:
  if not r['path'].endswith('.tt'):continue
@@ -20,4 +20,4 @@ for r in files:
  for c in parse_tt(root/r['path'],root):
   c['id']='upstream:'+c['id'];c['upstream_source']=dict(url=r['url'],commit=commit,blob_sha=r['sha']);db.execute('INSERT INTO sentence VALUES(?,?,?,?,?,?,?)',(c['id'],c['work'],c['chapter'],c['verse'],c['source'],c['dialect_id'],json.dumps(c,ensure_ascii=False)));db.executemany('INSERT INTO token VALUES(?,?,?)',[(c['id'],t['lemma'],t['pos']) for t in c['tokens'] if t['lemma']]);count+=1
 fingerprint=hashlib.sha256(json.dumps(files,sort_keys=True).encode()).hexdigest();db.execute('INSERT INTO metadata VALUES(?,?)',('fingerprint',fingerprint));db.commit();assert db.execute('pragma integrity_check').fetchone()[0]=='ok';db.close();tmp.replace(path)
-(folder/'官方版本补充统计.json').write_text(json.dumps(dict(commit=commit,files=files,spans=count),ensure_ascii=False,indent=2)+'\n');print('official variant files',len(files),'spans',count)
+(folder/'').write_text(json.dumps(dict(commit=commit,files=files,spans=count),ensure_ascii=False,indent=2)+'\n');print('official variant files',len(files),'spans',count)

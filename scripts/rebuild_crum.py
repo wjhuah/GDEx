@@ -1,10 +1,5 @@
-#!/usr/bin/env python3
-"""Replay the two audited legacy OCR stages into this project's derived folder only.
 
-The fragile annotated OCR grammar and Bible book aliases are upstream inputs, not
-silently rewritten heuristics. This adapter records hashes and overrides every
-output path before executing main. It never runs the old merger or feature code.
-"""
+pass
 import hashlib
 import importlib.util
 import sys

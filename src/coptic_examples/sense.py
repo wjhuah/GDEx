@@ -1,4 +1,4 @@
-"""Token-level eligibility precedes example quality. No substring or invented variants."""
+pass
 
 from .text import lemma_key
 from functools import lru_cache
@@ -24,7 +24,7 @@ def _registry():
     return Dialects()
 
 
-# Dictionary labels and corpus native tags encode distinctions lost in coarse UPOS.
+
 NATIVE = {
     "C615": {"PREP"},
     "C616": {"CCIRC"},
@@ -94,7 +94,7 @@ def _unreviewed_targets(candidate, entry):
             continue
         else:
             if not entry.pos:
-                continue  # unresolved POS is not permission to match everything
+                continue  
         hits.append(i)
     return sorted(set(hits))
 
@@ -163,7 +163,7 @@ def align_candidate(candidate, entry, allow_pos_mismatch=False):
 
 
 def recommendation_alignment(candidate, entry, source_selected=False):
-    """Keep POS repairs tied to a citation or a checked token context."""
+    pass
     import copy
     from .token_review import apply
 
@@ -229,7 +229,7 @@ def native_candidates(config, corpus, entry, dialect, allow_pos_mismatch=False):
                     (key, dialect, key, dialect),
                 )
             )
-    # Explicit, uniquely bound Crum citations may supply alignment when native POS disagrees.
+    
     cited = set()
     if not condition:
         with database(config.work / "cache/crum_bible.sqlite3") as audit:
@@ -278,7 +278,7 @@ def native_candidates(config, corpus, entry, dialect, allow_pos_mismatch=False):
 
 
 def sense_text(candidate, entry):
-    """Target-conditioned local contexts; English context is auxiliary evidence."""
+    pass
     import re
 
     features = []

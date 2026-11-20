@@ -1,4 +1,4 @@
-"""Real BGE only. No silent lexical or zero-vector substitution."""
+pass
 
 import hashlib
 import json

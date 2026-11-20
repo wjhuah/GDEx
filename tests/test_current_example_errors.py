@@ -33,7 +33,7 @@ class CurrentExampleErrors(unittest.TestCase):
         self.assertTrue(c["id"].endswith("Proverbs_09.tt#12"))
         self.assertEqual(len(c["sent"].split()), 43)
         self.assertEqual(
-            exclusion_reason(None, "C6971", "sahidic", c, {}), "over_30_bound_groups"
+            exclusion_reason(None, "C6971", "sahidic", c, {}), "over_20_bound_groups"
         )
 
     def test_actual_acts_20_14_is_excluded_from_c4327(self):

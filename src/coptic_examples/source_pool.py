@@ -1,4 +1,4 @@
-"""Additive source examples and corpus access; trained inputs stay unchanged."""
+pass
 
 import json
 import sqlite3

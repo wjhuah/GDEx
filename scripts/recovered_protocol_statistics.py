@@ -8,8 +8,8 @@ root = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(root / "src"))
 from coptic_examples.recommendation_policy import coptic_letters
 
-folder = root / "reports/本地复盘/新增数据模型比较"
-db = sqlite3.connect(folder / "实验数据.sqlite3")
+folder = root / 'reports/local_2218a127/local_77165ac0'
+db = sqlite3.connect(folder / '')
 groups = defaultdict(list)
 positions = {
     r["id"]: (
@@ -67,10 +67,10 @@ for (d, t), rr in groups.items():
             r[unit + "_z"] = (r[unit] - mean) / sd if sd else 0
     examples += rr
     entries.append(item)
-(folder / "合并数据逐词条句长.json").write_text(
+(folder / '').write_text(
     json.dumps(entries, ensure_ascii=False, indent=2)
 )
-(folder / "合并数据逐句句长.jsonl").write_text(
+(folder / '').write_text(
     "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in examples)
 )
 summary = {}
@@ -91,7 +91,7 @@ for d in ["sahidic", "bohairic"]:
             kept30=sum(v <= 30 for v in x),
             median_within_entry_rho=float(np.median(rho)) if rho else None,
         )
-(folder / "合并句长摘要.json").write_text(
+(folder / '').write_text(
     json.dumps(summary, ensure_ascii=False, indent=2)
 )
 rare = []
@@ -111,7 +111,7 @@ for path in sorted((root.parent / "Crum_plain_text").glob("*.txt")):
                 ],
             )
         )
-(folder / "明确S少见标记.json").write_text(
+(folder / '').write_text(
     json.dumps(rare, ensure_ascii=False, indent=2)
 )
 print(summary)

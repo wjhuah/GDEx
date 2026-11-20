@@ -1,4 +1,4 @@
-"""Separate literal quotation fragments, source qualifier scopes and full corpus spans."""
+pass
 
 import sys, json, re, hashlib
 from pathlib import Path
@@ -13,7 +13,7 @@ from coptic_examples.text import COPTIC
 from coptic_examples.qualifier_scope import rarity_scope
 
 cfg = Config()
-out = cfg.reports / "本地复盘/原数据八算法对照"
+out = cfg.reports / 'local_2218a127/local_828c870c'
 out.mkdir(parents=True, exist_ok=True)
 
 
@@ -52,10 +52,10 @@ for r in raw:
                 abbreviated=bool(re.search(r"[.…†⸗-]", q)),
                 candidate_tlas=r["tla_candidates"],
                 training_pairs=r["training_pairs"],
-                scope="引文后、下一个出处前的显式原书片段；括注的其他方言也保留，方言范围另查",
+                scope='',
             )
         )
-(out / "原书短引语.jsonl").write_text(
+(out / '').write_text(
     "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in fragments)
 )
 examples = []
@@ -108,10 +108,10 @@ for dialect in ["sahidic", "bohairic"]:
                 r[unit + "_z"] = (r[unit] - mean) / sd if sd else 0
         examples += rr
         entries.append(item)
-(out / "原数据逐句长度.jsonl").write_text(
+(out / '').write_text(
     "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in examples)
 )
-save("原数据逐词条长度.json", entries)
+save('', entries)
 rare = []
 for path in sorted((cfg.source / "Crum_plain_text").glob("*.txt")):
     text = path.read_text()
@@ -122,21 +122,21 @@ for path in sorted((cfg.source / "Crum_plain_text").glob("*.txt")):
             before = paragraph[: m.start()]
             after = paragraph[m.end() :]
             head = before.rsplit("⟪", 1)
-            scope = "待核定"
+            scope = 'Pending review'
             codes = []
             form = ""
-            # Only the complete immediate dialect tag cluster and parenthetical modifier count as explicit scope.
+            
             mm = re.search(
                 r"(?P<form>⟨[^⟩]+⟩)?\s*(?P<codes>(?:⟪[^⟫]+⟫\s*)+)\((?:very\s+|extremely\s+)?$",
                 before,
                 re.I,
             )
             if mm:
-                scope = "紧随方言词形的少见标记"
+                scope = ''
                 codes = re.findall(r"⟪([^⟫]+)⟫", mm["codes"])
                 form = mm["form"] or ""
             elif re.search(r"\brare\s*$", before, re.I):
-                scope = "待核定"
+                scope = 'Pending review'
             article_start = text.rfind("___", 0, paragraph_match.start())
             article_key = path.name + ":" + str(article_start)
             article_text = text[
@@ -161,7 +161,7 @@ for path in sorted((cfg.source / "Crum_plain_text").glob("*.txt")):
                     source_paragraph=paragraph,
                 )
             )
-(out / "少见标记逐处范围.jsonl").write_text(
+(out / '').write_text(
     "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rare)
 )
 summary = dict(
@@ -177,7 +177,7 @@ summary = dict(
 )
 summary["local_scope_counts"] = dict(Counter(r["local_scope"]["scope"] for r in rare))
 summary["local_scope_S_form_mentions"] = sum(
-    "S" in r["local_scope"]["dialect_codes"] and r["local_scope"]["scope"] == "方言词形"
+    "S" in r["local_scope"]["dialect_codes"] and r["local_scope"]["scope"] == 'Dialect form'
     for r in rare
 )
 summary["local_scope_S_article_blocks"] = len(
@@ -185,7 +185,7 @@ summary["local_scope_S_article_blocks"] = len(
         r["article_key"]
         for r in rare
         if "S" in r["local_scope"]["dialect_codes"]
-        and r["local_scope"]["scope"] == "方言词形"
+        and r["local_scope"]["scope"] == 'Dialect form'
     )
 )
 summary["explicit_S_rare_article_blocks"] = len(
@@ -207,5 +207,5 @@ for d in ["sahidic", "bohairic"]:
             kept30=sum(r[unit] <= 30 for r in rr),
             order_rho_median=float(np.median(rho)) if rho else None,
         )
-save("引文句长与方言摘要.json", summary)
+save('', summary)
 print(json.dumps(summary, ensure_ascii=False, indent=2))

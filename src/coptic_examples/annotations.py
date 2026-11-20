@@ -20,14 +20,14 @@ def location_matches(annotation, candidate):
     ):
         return False
     chapter, verse = annotation["chapter"], annotation["verse"]
-    # Bible work URNs may encode chapter / verse; explicit table columns take priority.
+    
     tail = annotation["URN"].split(":")[4:]
     if not chapter and tail and "-" not in tail[-1]:
         chapter = tail[-1].split(".")[0]
     if not verse and tail and "." in tail[-1] and "-" not in tail[-1]:
         verse = tail[-1].split(".", 1)[1]
     if not chapter and not verse:
-        return False  # A whole document is not a precise positive sentence annotation.
+        return False  
     return all(
         not wanted or location_key(wanted) == location_key(candidate[key])
         for wanted, key in [(chapter, "chapter"), (verse, "verse")]
@@ -40,7 +40,7 @@ def contains_lemma(row, lemma, string_match=False):
         return True
     if string_match:
         return any(f in lemma_key(row["sent"]) for f in forms)
-    # MWE: require contiguous annotation lemmas.
+    
     if " " in lemma_key(lemma):
         return lemma_key(lemma) in " ".join(t["lemma"] for t in row["tokens"])
     return False
@@ -64,7 +64,7 @@ def resolve_manual(annotations, corpus):
             if location_matches(a, r)
             and contains_lemma(r, a["lemma"], a["string_match"].lower().startswith("y"))
         ]
-        # Keep duplicate witnesses visibly; downstream splits group by text and lemma.
+        
         for r in matches:
             resolved.append(dict(TLA=a["TLA"], annotation=a, candidate=r))
         audit.append(

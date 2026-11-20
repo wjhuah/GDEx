@@ -1010,5 +1010,24 @@
     "rationale": "The enumeration distinguishes the oxen from the asses. This occurrence is the asses term eheyu, although TT supplies the cattle lemma.",
     "review_method": "context_reading",
     "expert_verified": false
+  },
+  {
+    "dialect": "sahidic",
+    "text_sha256": "8bcf8a8160fb3856fc2a6d6fa6358ddd5130764ae250019f9356fba9d54e7203",
+    "token_index": 28,
+    "expected_form": "ⲉϩⲟⲟⲩ",
+    "expected_lemma": "ⲉϩⲉ",
+    "scope": [
+      "C771",
+      "C772",
+      "C6965"
+    ],
+    "accepted": [
+      "C6965"
+    ],
+    "source": "sahidic.ot/23_Isaiah_60.tt#20",
+    "rationale": "Isaiah 60:20 refers to days of mourning, alongside sun and moon; the cattle lemma in TT is a contextual tagging error.",
+    "review_method": "context_reading",
+    "expert_verified": false
   }
 ]

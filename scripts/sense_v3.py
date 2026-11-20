@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Auditable cross-sense/unrelated augmentation and document-held-out evaluation."""
+
+pass
 import hashlib,json,sys,pickle
 from collections import defaultdict,Counter
 from pathlib import Path
@@ -41,7 +41,7 @@ def run():
   seen.add(key)
   item=dict(tla=e.tla,cid=c['id'],text_key=key[-1],dialect=c['dialect_id'],work=c['work'],y=int(r['evidence']=='manual'),kind=r['evidence'],weight=1.)
   (positives if item['y'] else negatives).append(item)
- # A unique Crum binding is weak positive evidence, never expert token gold.
+ 
  with database(cfg.work/'cache/crum_bible.sqlite3') as db:
   for payload,sid in db.execute("SELECT o.payload,l.sentence_id FROM occurrence o JOIN link l ON o.id=l.occurrence_id WHERE l.status='verified_target_form'"):
    r=json.loads(payload)
@@ -50,7 +50,7 @@ def run():
    if key in seen or not targets(c,e):continue
    seen.add(key);positives.append(dict(tla=tla,cid=sid,text_key=key[-1],dialect=c['dialect_id'],work=c['work'],y=1,kind='crum_weak',weight=.35))
  data=[r for r in positives+negatives if r['cid'] in sentences]
- # Exact translated/Coptic duplicates are kept together during splitting.
+ 
  def fold(r):return int(hashlib.sha256(r['work'].encode()).hexdigest()[:8],16)%5
  vec=HashingVectorizer(n_features=2**17,alternate_sign=False,lowercase=False,token_pattern=r'[^ ]+',norm='l2')
  def matrix(rows):return vec.transform(sense_text(sentences[r['cid']],lex[r['tla']]) for r in rows)
@@ -71,11 +71,11 @@ def run():
     key=(target.tla,source['text_key'])
     if target.tla==own.tla or target.gloss==own.gloss or key in known or counts[target.tla,source['dialect'],'cross']>=20:continue
     c=sentences[source['cid']]
-    # If another exact target token is possible, do NOT label the whole sentence negative.
+    
     compatible=targets(c,target)
     kind='cross_native_incompatible';weight=.35
     if compatible and mode!='naive_all':
-     if compatible!=targets(c,own):continue # another token elsewhere is not a competing sense
+     if compatible!=targets(c,own):continue 
      own_terms=set(english(own.gloss));target_terms=set(english(target.gloss));context=set(english(c['translation']))
      if source['kind']!='manual' or len(compatible)>1 or own_terms&target_terms or not own_terms&context or target_terms&context:continue
      kind='cross_lexical_inferred';weight=.15
@@ -124,13 +124,13 @@ def run():
   write_json(out/'focus_definition.json',dict(words=WORDS+['ϣⲁ'],tlas=sorted(focus_tlas),both_source_and_target_restricted=True))
   print('Scope comparison complete',flush=True);return
  write_json(cfg.derived/'sense_v3_negative_audit.json',audit)
- # Standalone experimental models; not silently substituted for the ranking models.
+ 
  for d in ['sahidic','bohairic']:
   subset=[r for r in data if r['dialect']==d]
   if len({r['y'] for r in subset})<2:continue
   model=LogisticRegression(C=2,max_iter=300,solver='liblinear',random_state=42).fit(matrix(subset),[r['y'] for r in subset],sample_weight=[r['weight'] for r in subset])
   p=cfg.work/'models'/d/'sense_v3.pkl';p.write_bytes(pickle.dumps((vec,model)))
- # Exhaustive TT token audit of review's list, with original local index counts for comparison.
+ 
  entries=[e for e in lex.values() if any(w==e.lemma for w in WORDS) or e.tla in {'C2787','C4008'}]
  inventory=[]
  with corpus.connect() as db:
@@ -141,7 +141,7 @@ def run():
     positive_keys={r['text_key'] for r in data if r['tla']==e.tla and r['dialect']==d and r['kind']=='manual'}
     inventory.append(dict(tla=e.tla,lemma=e.lemma,gloss=e.gloss,pos=e.pos,dialect=d,old_candidate_count=old,strict_TT_count=len(hits),manual_positive_texts=len(positive_keys),status='native category separation; same-category sense unresolved unless independent evidence' if hits else 'no eligible TT token',examples=[dict(id=c['id'],translation=c['translation'],source=c['source'],tokens=[c['tokens'][i] for i in ii]) for c,ii in hits[:3]],cdo='https://coptic-dictionary.org/entry/'+e.tla))
  write_json(out/'review_words.json',inventory)
- # Meaning of feature importance: gain is not a coefficient or causal effect.
+ 
  import lightgbm as lgb
  importance=[]
  for path in sorted((cfg.work/'models').glob('*/*.txt')):

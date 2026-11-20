@@ -1,4 +1,4 @@
-"""Build versioned comparison inputs while retaining the original rows and folds."""
+pass
 import sys,json,hashlib,sqlite3,copy
 from pathlib import Path
 from collections import Counter,defaultdict
@@ -11,7 +11,7 @@ from coptic_examples.sense import align_candidate
 from coptic_examples.integrity import alignment_issue
 from coptic_examples.dataset import text_key
 cfg=Config();lex=load(cfg.lexicon);dest=cfg.derived/'adjusted_20261113';dest.mkdir(exist_ok=True)
-report=cfg.reports/'本地复盘/调整后算法比较';report.mkdir(parents=True,exist_ok=True)
+report=cfg.reports/'local_2218a127/local_f9684944';report.mkdir(parents=True,exist_ok=True)
 versions=defaultdict(list)
 p=cfg.work/'cache/upstream_corpus.sqlite3'
 if p.exists():

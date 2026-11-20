@@ -1,8 +1,4 @@
-"""Matched-candidate ablations; Crum style and expert acceptance stay separate.
-
-Only cached, real BGE vectors are read. No downloads, embeddings or LLM calls.
-All generated negatives are training-only, after spelling-family/text purging.
-"""
+pass
 
 import hashlib
 import importlib.util
@@ -127,7 +123,7 @@ def crum4_module(config):
 
 
 class CachedVectors:
-    """Never substitute a zero/lexical vector when a cached BGE vector is absent."""
+    pass
 
     def __init__(self, config):
         self.config = config
@@ -307,7 +303,7 @@ def build_rows(config):
                     != 1
                 ):
                     continue
-                # Semantic comparisons require the same gloss, not just lemma/POS.
+                
                 e = lex[possible[0]]
                 key = (d, r["article_id"], text_key(c))
                 if key in seen:
@@ -389,7 +385,7 @@ def train_gain(row, scheme):
         return row["gain"]
     if row["task"] == "crum_style":
         return max(1.0, 3.0 - 0.1 * (row["rank"] - 1)) / 3
-    return row["gain"]  # TAB keeps 3/2/1; unranked examples stay a binary task.
+    return row["gain"]  
 
 
 def fit_ranker(rows, columns, scheme="continuous", rounds=100):
@@ -419,7 +415,7 @@ def fit_ranker(rows, columns, scheme="continuous", rounds=100):
             for r in ordered
         ]
     )[:, indices]
-    # The cosine column is never selected for a row with a missing vector.
+    
     if "sense_cosine" in columns:
         assert all(r["cosine"] is not None for r in ordered)
     labels = [gains.index(v) for v in values]
@@ -508,7 +504,7 @@ def quality_first(train, val, joint_scores, two_head=False):
     percentiles = np.full(len(val), 0.5)
     for indices in groups.values():
         values = raw[indices]
-        # Ties use their average rank, not a hidden source-order preference.
+        
         for i, value in zip(indices, values):
             percentiles[i] = (
                 np.sum(values < value) + 0.5 * (np.sum(values == value) - 1)
@@ -522,7 +518,7 @@ def quality_first(train, val, joint_scores, two_head=False):
 
 
 def expected_top_metric(gains, scores, k, discounted=True):
-    """Expected DCG/precision under uniformly random permutations within ties."""
+    pass
     gains = np.asarray(gains, dtype=float)
     scores = np.asarray(scores)
     order = np.argsort(-scores, kind="stable")

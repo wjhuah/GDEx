@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Reconcile raw Crum markers, usable links and training pairs."""
+
+pass
 
 import sys, json
 from pathlib import Path

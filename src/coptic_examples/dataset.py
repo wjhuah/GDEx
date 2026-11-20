@@ -1,4 +1,4 @@
-"""Rebuild supervision from original manual references and audited Crum references."""
+pass
 
 import csv
 import hashlib
@@ -57,7 +57,7 @@ def build(config):
             continue
         key = (tla, text_key(c))
         priority = int(a["priority"]) if a["priority"] in {"1", "2", "3"} else None
-        # Missing priority is positive evidence of inclusion, not an invented rank 3.
+        
         if priority is None:
             stats["manual_unranked_resolved"] += 1
         grade = {1: 30, 2: 20, 3: 10}.get(priority)
@@ -82,7 +82,7 @@ def build(config):
         ):
             manual_by_key[key] = record
     examples.extend(manual_by_key.values())
-    # Keep negatives from explicit forbidden rules; never infer negatives from absence.
+    
     seen = set(manual_by_key)
     all_forbidden = []
     for tla, rs in sorted(rules.items()):
@@ -107,7 +107,7 @@ def build(config):
                 )
                 if real_translation(c["translation"]):
                     pool.append(c)
-        # Bound training imbalance, never corpus coverage. Full rule hits are separately exported.
+        
         pool.sort(key=lambda c: hashlib.sha256(c["id"].encode()).hexdigest())
         for c in pool[:20]:
             examples.append(
@@ -139,8 +139,8 @@ def build(config):
         )
         w.writeheader()
         w.writerows(all_forbidden)
-    # Revalidate the existing OCR->Bible link table against actual TT source and target lemma.
-    # It is a legacy derived input, not a newly asserted gold annotation.
+    
+    
     rebuilt = config.derived / "crum_senses_matched.tsv"
     crum_path = (
         rebuilt
@@ -177,7 +177,7 @@ def build(config):
                     .as_posix()
                 )
             except ValueError:
-                # A relocated archive may retain an old machine's absolute prefix.
+                
                 source = r["corpus_file"].split("/corpora/", 1)[-1]
             matches = [
                 json.loads(x[0])
@@ -186,7 +186,7 @@ def build(config):
                     (source, int(r["chapter"]), int(r["verse"])),
                 )
             ]
-            # Dictionary spelling/inflection aliases count, but raw substrings do not.
+            
             valid = [
                 c
                 for c in matches
@@ -232,7 +232,7 @@ def build(config):
                         text_key=text_key(c),
                     )
                 )
-    # Dedupe within query, record conflicting labels and prefer strongest grade deterministically.
+    
     unique = {}
     conflicts = []
     for r in examples:
@@ -260,8 +260,8 @@ def build(config):
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
     write_json(config.reports / "crum_alignment_rejections.json", crum_audit)
     write_json(config.reports / "label_conflicts.json", conflicts)
-    # Map dictionary entries to all corpus spans, including native form variants, without ranking caps.
-    # This is a retrieval index, not a labeled dataset.
+    
+    
     mwe_rows = []
     mwe_first = defaultdict(list)
     for e in lex.values():
@@ -269,7 +269,7 @@ def build(config):
             components = [set(variants(x)) for x in e.lemma.split()]
             for first in components[0]:
                 mwe_first[first].append((e, components))
-    # Scan once, rather than repeatedly decoding a whole corpus for high-frequency MWE heads.
+    
     for c in corpus.all():
         ts = c["tokens"]
         for i, t in enumerate(ts):
@@ -311,7 +311,7 @@ def build(config):
         db.execute(
             "INSERT OR IGNORE INTO candidate SELECT f.tla,t.sentence_id,s.dialect,MIN(f.match_kind) FROM entry_form f JOIN token t ON f.lemma=t.lemma AND f.pos=t.pos JOIN sentence s ON s.id=t.sentence_id AND s.dialect=f.dialect GROUP BY f.tla,t.sentence_id"
         )
-        # MWEs require contiguous lemma sequences; they cannot be found by one token equality.
+        
         for tla, sid, kind in mwe_rows:
             dialect = db.execute(
                 "SELECT dialect FROM sentence WHERE id=?", (sid,)
@@ -324,7 +324,7 @@ def build(config):
                     "INSERT OR IGNORE INTO candidate VALUES(?,?,?,?)",
                     (tla, sid, dialect, kind),
                 )
-        # Explicit manual string-match cases can target a different corpus lemma/POS.
+        
         db.executemany(
             "INSERT OR IGNORE INTO candidate VALUES(?,?,?,?)",
             [
@@ -358,7 +358,7 @@ def build(config):
         label_conflicts=len(conflicts),
     )
     write_json(config.reports / "dataset_inventory.json", dict(stats))
-    # Every original span, all fields including licenses and unknown translations, is exported.
+    
     with (config.derived / "all_examples.jsonl").open("w", encoding="utf-8") as f:
         for c in corpus.all():
             f.write(json.dumps(c, ensure_ascii=False) + "\n")

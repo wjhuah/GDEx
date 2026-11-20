@@ -1,4 +1,4 @@
-"""Persist training-fold-only negative contrasts with their positive source records."""
+pass
 
 import sys, json, sqlite3
 from pathlib import Path
@@ -11,8 +11,8 @@ from coptic_examples.citation_recovery import add_cdo_only_entries
 from coptic_examples.inclusion import EntryFeatures
 
 cfg = Config()
-folder = cfg.reports / "本地复盘/新增数据模型比较"
-db = sqlite3.connect(folder / "实验数据.sqlite3")
+folder = cfg.reports / 'local_2218a127/local_77165ac0'
+db = sqlite3.connect(folder / '')
 rows = [
     json.loads(v[0])
     for v in db.execute("select payload from example where dialect='sahidic'")
@@ -26,7 +26,7 @@ db.executescript(
     "DROP TABLE IF EXISTS augmentation; CREATE TABLE augmentation(fold INTEGER,tla TEXT,text_key TEXT,label INTEGER,source_tla TEXT,sentence_id TEXT,reason TEXT,features TEXT,PRIMARY KEY(fold,tla,text_key));"
 )
 counts = []
-experiments = json.loads((folder / "逐折结果.json").read_text())
+experiments = json.loads((folder / '').read_text())
 for fold in range(5):
     val = [
         r for r in base if r["fold"] == fold and "crum_automatic" not in r["sources"]
@@ -74,4 +74,4 @@ for fold in range(5):
     print(counts[-1], flush=True)
 assert db.execute("pragma integrity_check").fetchone()[0] == "ok"
 db.close()
-write_json(folder / "增广数据库统计.json", counts)
+write_json(folder / '', counts)

@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Validate current dialect-separated artifacts and lossless Crum extraction."""
+
+pass
 import hashlib
 import json
 import sys

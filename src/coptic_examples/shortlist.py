@@ -1,7 +1,4 @@
-"""Low-cost, per-dialect models: expert acceptance and Crum ordering style.
-
-No embedding model or LLM is loaded. Inference is JSON weights + NumPy dot products.
-"""
+pass
 
 import hashlib
 import json
@@ -286,9 +283,9 @@ def train(config):
                         possible.append(tla)
                 if not possible:
                     continue
-                # Identical lemma/POS candidates produce identical local features.
-                # This learns an article's ordering without pretending to settle
-                # which of the synonymous TLA IDs its historical heading means.
+                
+                
+                
                 if len({(lex[t].lemma, lex[t].pos) for t in possible}) != 1:
                     continue
                 tla = possible[0]
@@ -316,7 +313,7 @@ def train(config):
                         sentence_id=sid,
                     )
                 )
-        # Two tasks, two model files; no manufactured 3/2/1 label from a Crum position.
+        
         report = dict(
             dialect=dialect,
             acceptance_rows=len(accepted),
@@ -342,7 +339,7 @@ def train(config):
         else:
             (directory / "crum_style.json").unlink(missing_ok=True)
             report["style_status"] = "insufficient_ordered_pairs"
-        # Auditable fixed lemma split; purge repeated Coptic spans across folds.
+        
         families = sorted({r["lemma"] for r in accepted + style})
         np.random.default_rng(42).shuffle(families)
         foldmap = {f: i % 5 for i, f in enumerate(families)}
@@ -644,7 +641,7 @@ class Shortlist:
                 row.update(
                     acceptance_score=float(accept), crum_style_percentile=float(style)
                 )
-                # Public initial tradeoff, not tuned against the diagnostic examples.
+                
                 row["shortlist_score"] = (
                     0.60 * float(accept)
                     + 0.20 * float(style)
@@ -728,8 +725,8 @@ class Shortlist:
             rows = order(rows)
         else:
             rows.sort(key=lambda r: (-r["shortlist_score"], r["id"]))
-        # Main inference ranks learned inclusion. Historical comparison methods
-        # retain their separate quality floor.
+        
+        
         acceptance_floor = (
             0.0
             if ranker in {"research", "definition_syntax"}

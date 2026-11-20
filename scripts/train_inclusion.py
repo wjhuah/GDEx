@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""TAB inclusion with Crum positives and same-form hard negatives; matched tests."""
+
+pass
 
 import sys, json, hashlib
 from pathlib import Path
@@ -160,7 +160,7 @@ for dialect in Dialects().data:
                 ):
                     continue
                 x = ef.vector(r["candidate"], e)
-                # Source and target must differ in explicit lexical support; ambiguous spans stay unlabelled.
+                
                 if not targets(r["candidate"], e):
                     continue
                 own_cos = r["features"][45]
@@ -275,7 +275,7 @@ for dialect in Dialects().data:
                     )
         print(dialect, "fold", fold, "complete", flush=True)
     neg = negatives(manual + crum)
-    # Primary product metric is within-entry ranking of known TAB candidates. Preserve augmentation as a measured alternative.
+    
     selected = (
         max(
             ["tab_crum_conditioned", "tab_crum_hard_negatives"],

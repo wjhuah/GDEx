@@ -1,4 +1,4 @@
-"""Preference algorithms on the same frozen candidates and positive training rows."""
+pass
 
 import sys, json, sqlite3, copy
 from pathlib import Path
@@ -15,8 +15,8 @@ from coptic_examples.inclusion import COLUMNS_INCLUSION
 from coptic_examples.ablation import expected_top_metric
 
 cfg = Config()
-out = cfg.reports / "本地复盘/新增数据模型比较"
-db = sqlite3.connect(out / "实验数据.sqlite3")
+out = cfg.reports / 'local_2218a127/local_77165ac0'
+db = sqlite3.connect(out / '')
 base = [
     json.loads(v[0])
     for v in db.execute("select payload from example where cohort='original'")
@@ -171,7 +171,7 @@ for dialect in ["sahidic", "bohairic"]:
                             importance=dict(zip(COLUMNS_INCLUSION, map(float, imp))),
                         )
                     )
-                write_json(out / "独立排序逐折结果.json", results)
-                write_json(out / "排序特征重要性.json", importance)
+                write_json(out / '', results)
+                write_json(out / '', importance)
                 print(dialect, version, fold, method, metrics, flush=True)
-write_json(out / "排序完成标记.json", dict(completed=True, fold_results=len(results)))
+write_json(out / '', dict(completed=True, fold_results=len(results)))

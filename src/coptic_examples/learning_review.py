@@ -1,4 +1,4 @@
-"""Render local evaluation artifacts for the currently deployed models."""
+pass
 
 import html
 import json

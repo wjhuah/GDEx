@@ -20,7 +20,7 @@ def database(path, **kwargs):
 
 @dataclass(frozen=True)
 class Config:
-    # All original inputs remain read-only outside this new project.
+    
     source: Path = Path(
         os.environ.get("COPTIC_SOURCE_ROOT", str(PROJECT.parent))
     ).resolve()

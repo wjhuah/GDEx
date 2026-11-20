@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Extract TAB labels, Crum preferences and candidate features."""
+
+pass
 
 import sys
 from pathlib import Path

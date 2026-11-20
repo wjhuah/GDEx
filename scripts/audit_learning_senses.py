@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Check the five spelling groups against the current dictionary and held-out models."""
+
+pass
 
 import sys, json, copy
 from pathlib import Path

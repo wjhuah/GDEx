@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 import hashlib,json,sys,urllib.request
 from pathlib import Path
 sys.dont_write_bytecode=True

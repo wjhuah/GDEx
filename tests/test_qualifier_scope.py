@@ -9,7 +9,7 @@ from coptic_examples.qualifier_scope import rarity_scope
 class QualifierScopeTests(unittest.TestCase):
     def test_c4327_sahidic_form_only(self):
         r = rarity_scope("⟨ⲧⲱⲙⲧ⟩ ⟪B⟫, ⟨-ⲙⲛⲧ⟩ ⟪S⟫ (", "), ⟨ⲧⲟⲙⲧ†⟩ ⟪B⟫")
-        self.assertEqual(r["scope"], "方言词形")
+        self.assertEqual(r["scope"], 'Dialect form')
         self.assertEqual(r["dialect_codes"], ["S"])
         self.assertIn("-ⲙⲛⲧ", r["form"])
 
@@ -21,19 +21,19 @@ class QualifierScopeTests(unittest.TestCase):
         r = rarity_scope(
             "⟪F⟫ & ⟦sg⟧{annotation: singular} as ⟦pl⟧{annotation: plural} (", "), ⟦nn⟧"
         )
-        self.assertEqual(r["scope"], "单数形式用作复数")
+        self.assertEqual(r["scope"], 'Singular form used as plural')
         self.assertEqual(r["dialect_codes"], [])
 
     def test_transitivity_is_local(self):
         r = rarity_scope("¶ ⟦tr⟧{annotation: transitive} (", "), ⟨gloss: destroy⟩")
-        self.assertEqual(r["scope"], "及物用法")
+        self.assertEqual(r["scope"], 'Transitive use')
 
     def test_construction_is_not_general_rarity(self):
         r = rarity_scope("¶ ", " without ⟨ⲉⲃ.⟩:")
-        self.assertEqual(r["scope"], "局部构式或搭配")
+        self.assertEqual(r["scope"], 'Local construction or collocation')
 
     def test_unclear_scope_stays_open(self):
-        self.assertEqual(rarity_scope("Unclear ", ".")["scope"], "待核定")
+        self.assertEqual(rarity_scope("Unclear ", ".")["scope"], 'Pending review')
 
 
 if __name__ == "__main__":

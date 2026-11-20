@@ -1,4 +1,4 @@
-"""Target-centred dependency frames and collocations, counted per dialect."""
+pass
 
 import json, math
 from collections import Counter, defaultdict
@@ -57,7 +57,7 @@ class Typicality:
         counts = []
         probabilities = []
         collocations = []
-        # Exclude this span's own counts, using the same operation at fit and query time.
+        
         own_frames = Counter(frame for frame, pairs in ev.values())
         own_pairs = Counter(p for frame, pairs in ev.values() for p in pairs)
         own_totals = Counter(frame[0] for frame, pairs in ev.values())

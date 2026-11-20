@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Matched-fold ranking tests for context frequency and lexical sense overlap."""
+
+pass
 import json,sys
 from pathlib import Path
 import numpy as np

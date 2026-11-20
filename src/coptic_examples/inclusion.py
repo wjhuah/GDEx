@@ -1,4 +1,4 @@
-"""Dictionary-conditioned inclusion prediction; source evidence supplies training labels."""
+pass
 
 import math, json
 from collections import defaultdict
@@ -75,7 +75,7 @@ class EntryFeatures:
         cs = [self.vectors.cosine(v.gloss, c["translation"]) for v in rivals]
         available = [v for v in cs if v is not None]
         rc = max(available) if available else None
-        # Missing rival vectors preserve a missing margin rather than inventing a semantic difference.
+        
         margin = (
             co - rc
             if co is not None and rc is not None and len(available) == len(cs)
