@@ -1,5 +1,34 @@
 # Task log
 
+## 2026-11-20
+
+For example, have one without an example? or don't have at all?
+ⲡⲁⲣⲁⲙⲩϥⲓ 10064
+grl_meaning
+
+
+Ask a human to translate the best missing translation part
+
+include 01 in feature eng...= 826 
+
+like 10064. 
+
+order of operation method 
+
+
+PCA - fewer dimensions - bow + bag of dependencies
+compare SBERT method2
+
+keep 50*5
+
+send amir 10*5, interface online\
+
+put the expert annotation in a google spreadsheet
+
+
+
+
+
 ## 2026-11-13
 
 - [x] Debug: ``TT segmentation error ⲙⲡϣⲁ worth``: ϣⲁ festival #4 Recommendation score 2.354 ⲙⲁⲣⲉⲧⲉϣⲡⲏⲣⲉ ⲙⲡϣⲁ ⲙⲡⲉⲛⲥⲱⲧⲏⲣ ϫⲣⲟ ⲉⲛⲉⲛϣⲁϫⲉ May the precious miracle of our Saviour overcome our(halting) speech
