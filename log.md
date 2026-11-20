@@ -2,6 +2,43 @@
 
 ## 2026-11-13
 
+- [x] Debug: ``TT segmentation error ⲙⲡϣⲁ worth``: ϣⲁ festival #4 Recommendation score 2.354 ⲙⲁⲣⲉⲧⲉϣⲡⲏⲣⲉ ⲙⲡϣⲁ ⲙⲡⲉⲛⲥⲱⲧⲏⲣ ϫⲣⲟ ⲉⲛⲉⲛϣⲁϫⲉ May the precious miracle of our Saviour overcome our(halting) speech
+- [x] Clean features:
+# Features
+
+| Feature | Definition |
+|---|---|
+| `bound_group_len` | space count |
+| `mean_log_word_frequency` | mean log frequency of context content words (ln10 + ln100) / 2 ≈ 3.45 |
+| `pronoun_ratio` | pronoun ratio |
+| `n_subordinate_clauses` | subordinate-clause count |
+| `mean_dep_distance` | mean dependency distance (↑ distributed - complex) |
+| `context_content_count` | rest non-function word |
+| `filled_argument_roles` | nsubj、obj、iobj、obl、ccomp、xcomp |
+| `sense_cosine` | happy ≈ glad BGE cosine |
+| `semantic_cache_missing` | missing semantic-cache 1 or 0 |
+| `sense_cosine_margin` | cosine margin over competing entries |
+| `sense_overlap` | definition nonfunction word coverage in translation |
+| `target_pos_match_ratio` | target POS agreement ratio, normally 1 |
+| `frame_probability` | relative frequency of the target dependency frame |
+| `collocation_log_mean` | mean log (ln(1 + 99) ≈ 4.61, ln(1 + 1) ≈ 0.69) frequency of dependency collocations |
+| `target_position_ratio` | relative target position |
+
+| Classification model | Features | AUC | Macro F1 |
+|---|---:|---:|---:|
+| Random Forest | 62 | 0.9337 | 0.7770 |
+| Random Forest | 15 | 0.9170 | 0.7651 |
+
+| Ranking model | Features | TAB NDCG@6 | Crum NDCG@6 |
+|---|---:|---:|---:|
+| LightGBM | 62 | 0.9510 | 0.9013 |
+| LightGBM | 15 | 0.9570 | 0.8980 |
+
+- [x] Try 20 spaces: in Crum, 20 - 7,352／15.11%	30 -  1,618／3.33% Sahidic, 1,507／20.05%、160／2.13%
+- [x] Penalty: score_after_length = og_score -  λ × max(0, length − 20)
+- [x] Cluster: related work, cf. [Borin](https://aclanthology.org/W12-3614.pdf)'s BOW and [Cook](https://euralex.org/elx_proceedings/Euralex2014/euralex_2014_022_p_319.pdf)'s MAX sum 
+- [x] Cluster: method 1 - BOW & Bag of constituent; method 2 - MAX sum Diversification
+`set_score = mean(r) + 0.35 * mean(pairwise distances)`
 
 20 spaces, good examlpls might less than average sentences lentgh
 
